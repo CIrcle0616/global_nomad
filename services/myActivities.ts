@@ -27,7 +27,7 @@ export function getMyReservedSchedule(teamId: string, activityId: number, date: 
 }
 
 // 내 체험 예약 시간대별 예약 내역 조회
-export function getMyReservations(
+export function getMyActivityReservations(
   teamId: string,
   activityId: number,
   scheduleId: number,
@@ -45,7 +45,7 @@ export function getMyReservations(
 }
 
 // 내 체험 예약 상태(승인, 거절) 업데이트
-export function patchMyReservations(
+export function patchMyActivityReservations(
   teamId: string,
   activityId: number,
   reservationId: number,
