@@ -4,8 +4,8 @@ interface OneButtonModalState {
   isOpen: boolean;
   content: string;
   buttonText: string;
-  onClose?: () => void;
-  openModal: (payload: { content: string; buttonText?: string; onClose?: () => void }) => void;
+  onConfirm?: () => void;
+  openModal: (payload: { content: string; buttonText?: string; onConfirm?: () => void }) => void; // onConfirm로 수정
   closeModal: () => void;
 }
 
@@ -13,11 +13,11 @@ export const useOneButtonModalStore = create<OneButtonModalState>(set => ({
   isOpen: false,
   content: '',
   buttonText: '확인',
-  onClose: undefined,
-  openModal: ({ content, buttonText = '확인', onClose }) => set({ isOpen: true, content, buttonText, onClose }),
+  onConfirm: undefined,
+  openModal: ({ content, buttonText = '확인', onConfirm }) => set({ isOpen: true, content, buttonText, onConfirm }),
   closeModal: () =>
     set(state => {
-      if (state.onClose) state.onClose();
-      return { isOpen: false, content: '', buttonText: '확인', onClose: undefined };
+      state.onConfirm?.();
+      return { isOpen: false, content: '', buttonText: '확인', onConfirm: undefined };
     }),
 }));

@@ -7,8 +7,7 @@ export default function ModalTest() {
   const { openModal: openOneModal } = useOneButtonModalStore();
 
   function handleSearch() {
-    console.log('검색 기능 실행!');
-    // 예를 들어 상태 업데이트, 라우팅, Alert 등 원하는 로직
+    console.log('삭제 기능 실행!');
   }
 
   const handleOpenTwoButtonModal = () => {
@@ -28,6 +27,16 @@ export default function ModalTest() {
     });
   };
 
+  const handleOpenOneButtonModalWithConfirm = () => {
+    openOneModal({
+      content: '작업이 완료되었습니다!',
+      buttonText: '확인',
+      onConfirm: () => {
+        handleSearch();
+      },
+    });
+  };
+
   return (
     <div className="flex gap-4">
       <button onClick={handleOpenTwoButtonModal} className="bg-blue-500 text-white px-4 py-2 rounded-md">
@@ -35,7 +44,11 @@ export default function ModalTest() {
       </button>
 
       <button onClick={handleOpenOneButtonModal} className="bg-green-500 text-white px-4 py-2 rounded-md">
-        OneButtonModal 열기
+        OneButtonModal 열기 (단순)
+      </button>
+
+      <button onClick={handleOpenOneButtonModalWithConfirm} className="bg-yellow-500 text-white px-4 py-2 rounded-md">
+        OneButtonModal 열기 (함수 실행 포함)
       </button>
     </div>
   );
