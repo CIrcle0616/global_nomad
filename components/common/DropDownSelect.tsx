@@ -2,7 +2,6 @@
 import { useEffect, useRef, useState } from 'react';
 import Input from './Input';
 import Image from 'next/image';
-import ArrowIcon from '@/public/ic_arrow.svg';
 import CheckIcon from '@/public/ic_check.svg';
 import DatePicker from './DatePicker';
 
@@ -12,6 +11,7 @@ type DropdownSelectProps = {
   onSelect: (value: string) => void;
   placeholder: string;
   type?: 'list' | 'datepicker';
+  icon?: React.ReactNode;
 };
 
 export default function DropdownSelect({
@@ -20,6 +20,7 @@ export default function DropdownSelect({
   placeholder,
   options,
   type = 'list',
+  icon,
 }: DropdownSelectProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); //외부 클릭 감지
@@ -49,19 +50,7 @@ export default function DropdownSelect({
   return (
     <div ref={dropdownRef} className="relative">
       <div onClick={toggle}>
-        <Input
-          value={selected || ''}
-          placeholder={placeholder}
-          onChange={() => {}}
-          readOnly
-          icon={
-            <Image
-              src={ArrowIcon}
-              alt="아래방향 화살표"
-              className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : 'rotate-0'}`}
-            />
-          }
-        />
+        <Input value={selected || ''} placeholder={placeholder} onChange={() => {}} readOnly icon={icon} />
       </div>
 
       {isOpen && (
