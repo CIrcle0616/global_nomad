@@ -237,11 +237,11 @@ export interface paths {
     put?: never;
     post?: never;
     /** 내 체험 삭제 */
-    delete: operations['Delete'];
+    delete: operations['ActivityDelete'];
     options?: never;
     head?: never;
     /** 내 체험 수정 */
-    patch: operations['Update'];
+    patch: operations['ActivityUpdate'];
     trace?: never;
   };
   '/{teamId}/my-notifications': {
@@ -1667,7 +1667,7 @@ export interface operations {
       };
     };
   };
-  Delete: {
+  ActivityDelete: {
     parameters: {
       query?: never;
       header?: never;
@@ -1724,7 +1724,7 @@ export interface operations {
       };
     };
   };
-  Update: {
+  ActivityUpdate: {
     parameters: {
       query?: never;
       header?: never;
