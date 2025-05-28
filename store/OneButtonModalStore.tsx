@@ -4,7 +4,8 @@ interface OneButtonModalState {
   isOpen: boolean;
   content: string;
   buttonText: string;
-  openModal: (payload: { content: string; buttonText?: string }) => void;
+  onClose?: () => void;
+  openModal: (payload: { content: string; buttonText?: string; onClose?: () => void }) => void;
   closeModal: () => void;
 }
 
@@ -12,7 +13,11 @@ export const useOneButtonModalStore = create<OneButtonModalState>(set => ({
   isOpen: false,
   content: '',
   buttonText: '확인',
-  openModal: ({ content, buttonText = '확인' }: { content: string; buttonText?: string }) =>
-    set({ isOpen: true, content, buttonText }),
-  closeModal: () => set({ isOpen: false, content: '', buttonText: '확인' }),
+  onClose: undefined,
+  openModal: ({ content, buttonText = '확인', onClose }) => set({ isOpen: true, content, buttonText, onClose }),
+  closeModal: () =>
+    set(state => {
+      if (state.onClose) state.onClose();
+      return { isOpen: false, content: '', buttonText: '확인', onClose: undefined };
+    }),
 }));
