@@ -1,3 +1,1 @@
-export default function MainPage() {
-  
-};
+export default function MainPage() {}
