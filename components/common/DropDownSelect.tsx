@@ -2,8 +2,8 @@
 import { useEffect, useRef, useState } from 'react';
 import Input from './Input';
 import Image from 'next/image';
-import ArrowIcon from '@/public/ic-arrow.svg';
-import CheckIcon from '@/public/ic-check.svg';
+import ArrowIcon from '@/public/ic_arrow.svg';
+import CheckIcon from '@/public/ic_check.svg';
 
 type DropdownSelectProps = {
   options: string[];
