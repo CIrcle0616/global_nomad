@@ -1,0 +1,24 @@
+import { fetchWrapper } from './fetchWrapper';
+
+// 회원가입
+export function signUp(teamId: string, body: { email: string; nickname: string; password: string }) {
+  return fetchWrapper(`/${teamId}/users`, 'POST', body);
+}
+
+// 내 정보 조회
+export function getUserMe(teamId: string) {
+  return fetchWrapper(`/${teamId}/users/me`, 'GET');
+}
+
+// 내 정보 수정
+export function patchUserMe(teamId: string, body: { nickname: string; profileImageUrl: string; newPassword: string }) {
+  return fetchWrapper(`/${teamId}/users/me`, 'PATCH', body);
+}
+
+// 프로필 이미지  url 생성
+export function postProfileImg(teamId: string, image: File) {
+  const formData = new FormData();
+  formData.append('image', image);
+
+  return fetchWrapper(`/${teamId}/users/me/image`, 'POST', formData);
+}
