@@ -13,18 +13,18 @@ const SIZE_MAP: {
   M: string;
   S: string;
 } = {
-  L: 'p-[11px] h-[56px] text-[16px] leading-[26px]',
-  M: 'p-[11px] h-[48px] text-[16px] leading-[26px]',
-  S: 'p-[8px] h-[38px] text-[14px] leading-[24px]',
+  L: 'p-[11px] h-[56px] lg-bold',
+  M: 'p-[11px] h-[48px] lg-bold',
+  S: 'p-[8px] h-[38px] md-bold',
 };
 const VARIANT_MAP: {
   primary: string;
   secondary: string;
 } = {
   primary:
-    'border-[#112211] bg-[#112211] rounded-xl text-white font-bold text-center disabled:border-[#A4A1AA] disabled:bg-[#A4A1AA] disabled:text-white',
+    'border border-nomad-black bg-nomad-black text-white font-bold text-center disabled:border-gray-600 disabled:bg-gray-600 disabled:text-white',
   secondary:
-    'border border-[#112211] rounded-lg text-[#112211] font-bold text-center  disabled:border-[#A4A1AA] disabled:bg-[#A4A1AA] disabled:text-white',
+    'border border-nomad-black text-nomad-black font-bold text-center  disabled:border-gray-600 disabled:bg-gray-600 disabled:text-white',
 };
 function commonButton({ size = 'L', variant = 'primary', children, width, className, ...rest }: Props) {
   return (
