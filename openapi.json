@@ -1,0 +1,4358 @@
+{
+  "components": {
+    "examples": {},
+    "headers": {},
+    "parameters": {},
+    "requestBodies": {},
+    "responses": {},
+    "schemas": {
+      "ActivityBasicDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "userId": {
+            "type": "number",
+            "format": "double"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "address": {
+            "type": "string"
+          },
+          "bannerImageUrl": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "reviewCount": {
+            "type": "number",
+            "format": "double"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "title",
+          "description",
+          "category",
+          "price",
+          "address",
+          "bannerImageUrl",
+          "rating",
+          "reviewCount",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ErrorResponsePayload": {
+        "properties": {
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": ["message"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "Method": {
+        "enum": ["offset", "cursor"],
+        "type": "string"
+      },
+      "Category": {
+        "enum": ["문화 · 예술", "식음료", "스포츠", "투어", "관광", "웰빙"],
+        "type": "string"
+      },
+      "Sort": {
+        "enum": ["most_reviewed", "price_asc", "price_desc", "latest"],
+        "type": "string"
+      },
+      "FindActivitiesQueryDto": {
+        "properties": {
+          "method": {
+            "$ref": "#/components/schemas/Method"
+          },
+          "cursorId": {
+            "type": "number",
+            "format": "double"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "keyword": {
+            "type": "string"
+          },
+          "sort": {
+            "$ref": "#/components/schemas/Sort"
+          },
+          "page": {
+            "type": "number",
+            "format": "double",
+            "default": 1
+          },
+          "size": {
+            "type": "number",
+            "format": "double",
+            "default": 20
+          }
+        },
+        "required": ["method"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ActivityWithSubImagesAndSchedulesDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "userId": {
+            "type": "number",
+            "format": "double"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "address": {
+            "type": "string"
+          },
+          "bannerImageUrl": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "reviewCount": {
+            "type": "number",
+            "format": "double"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "subImages": {
+            "items": {
+              "properties": {
+                "imageUrl": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "number",
+                  "format": "double"
+                }
+              },
+              "required": ["imageUrl", "id"],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "schedules": {
+            "items": {
+              "properties": {
+                "endTime": {
+                  "type": "string"
+                },
+                "startTime": {
+                  "type": "string"
+                },
+                "date": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "number",
+                  "format": "double"
+                }
+              },
+              "required": ["endTime", "startTime", "date", "id"],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "title",
+          "description",
+          "category",
+          "price",
+          "address",
+          "bannerImageUrl",
+          "rating",
+          "reviewCount",
+          "createdAt",
+          "updatedAt",
+          "subImages",
+          "schedules"
+        ],
+        "type": "object",
+        "additionalProperties": false,
+        "example": {
+          "id": 7,
+          "userId": 21,
+          "title": "함께 배우면 즐거운 스트릿댄스",
+          "description": "둠칫 둠칫 두둠칫",
+          "category": "투어",
+          "price": 10000,
+          "address": "서울특별시 강남구 테헤란로 427",
+          "bannerImageUrl": "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/a.png",
+          "subImages": [
+            {
+              "id": 1,
+              "imageUrl": "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/b.png"
+            }
+          ],
+          "schedules": [
+            {
+              "id": 1,
+              "date": "2023-12-01",
+              "startTime": "12:00",
+              "endTime": "13:00"
+            },
+            {
+              "id": 2,
+              "date": "2023-12-05",
+              "startTime": "12:00",
+              "endTime": "13:00"
+            }
+          ],
+          "reviewCount": 5,
+          "rating": 4.74,
+          "createdAt": "2023-12-31T21:28:50.589Z",
+          "updatedAt": "2023-12-31T21:28:50.589Z"
+        }
+      },
+      "ScheduleResponseDto": {
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "times": {
+            "items": {
+              "properties": {
+                "endTime": {
+                  "type": "string"
+                },
+                "startTime": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "number",
+                  "format": "double"
+                }
+              },
+              "required": ["endTime", "startTime", "id"],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": ["date", "times"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FindAvailableScheduleQueryDto": {
+        "properties": {
+          "year": {
+            "type": "string",
+            "example": "2024"
+          },
+          "month": {
+            "type": "string",
+            "example": "01"
+          }
+        },
+        "required": ["year", "month"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ReviewServiceResponseDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "user": {
+            "properties": {
+              "profileImageUrl": {
+                "type": "string",
+                "nullable": true
+              },
+              "nickname": {
+                "type": "string"
+              },
+              "id": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "required": ["profileImageUrl", "nickname", "id"],
+            "type": "object"
+          },
+          "activityId": {
+            "type": "number",
+            "format": "double"
+          },
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["id", "user", "activityId", "rating", "content", "createdAt", "updatedAt"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FindReviewsQueryDto": {
+        "properties": {
+          "page": {
+            "type": "number",
+            "format": "double",
+            "default": 1
+          },
+          "size": {
+            "type": "number",
+            "format": "double",
+            "default": 3
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ActivityWithSchedulesResponseDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "userId": {
+            "type": "number",
+            "format": "double"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "address": {
+            "type": "string"
+          },
+          "bannerImageUrl": {
+            "type": "string"
+          },
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "reviewCount": {
+            "type": "number",
+            "format": "double"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "subImages": {
+            "items": {
+              "properties": {
+                "imageUrl": {
+                  "type": "string"
+                },
+                "id": {
+                  "type": "number",
+                  "format": "double"
+                }
+              },
+              "required": ["imageUrl", "id"],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "schedules": {
+            "items": {
+              "properties": {
+                "times": {
+                  "items": {
+                    "properties": {
+                      "endTime": {
+                        "type": "string"
+                      },
+                      "startTime": {
+                        "type": "string"
+                      },
+                      "id": {
+                        "type": "number",
+                        "format": "double"
+                      }
+                    },
+                    "required": ["endTime", "startTime", "id"],
+                    "type": "object"
+                  },
+                  "type": "array"
+                },
+                "date": {
+                  "type": "string"
+                }
+              },
+              "required": ["times", "date"],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "id",
+          "userId",
+          "title",
+          "description",
+          "category",
+          "price",
+          "address",
+          "bannerImageUrl",
+          "rating",
+          "reviewCount",
+          "createdAt",
+          "updatedAt",
+          "subImages",
+          "schedules"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CreateScheduleBody": {
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "endTime": {
+            "type": "string"
+          }
+        },
+        "required": ["date", "startTime", "endTime"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CreateActivityBodyDto": {
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "address": {
+            "type": "string"
+          },
+          "schedules": {
+            "items": {
+              "$ref": "#/components/schemas/CreateScheduleBody"
+            },
+            "type": "array",
+            "default": []
+          },
+          "bannerImageUrl": {
+            "type": "string"
+          },
+          "subImageUrls": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "default": []
+          }
+        },
+        "required": ["title", "category", "description", "price", "address", "bannerImageUrl"],
+        "type": "object",
+        "additionalProperties": false,
+        "example": {
+          "title": "함께 배우면 즐거운 스트릿댄스",
+          "category": "투어",
+          "description": "둠칫 둠칫 두둠칫",
+          "address": "서울특별시 강남구 테헤란로 427",
+          "price": 10000,
+          "schedules": [
+            {
+              "date": "2023-12-01",
+              "startTime": "12:00",
+              "endTime": "13:00"
+            },
+            {
+              "date": "2023-12-05",
+              "startTime": "12:00",
+              "endTime": "13:00"
+            },
+            {
+              "date": "2023-12-05",
+              "startTime": "13:00",
+              "endTime": "14:00"
+            },
+            {
+              "date": "2023-12-05",
+              "startTime": "14:00",
+              "endTime": "15:00"
+            }
+          ],
+          "bannerImageUrl": "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/a.png",
+          "subImageUrls": [
+            "https://sprint-fe-project.s3.ap-northeast-2.amazonaws.com/globalnomad/activity_registration_image/b.png"
+          ]
+        }
+      },
+      "ReservationStatus": {
+        "enum": ["pending", "confirmed", "declined", "canceled", "completed"],
+        "type": "string"
+      },
+      "ReservationResponseDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "number",
+            "format": "double"
+          },
+          "activityId": {
+            "type": "number",
+            "format": "double"
+          },
+          "scheduleId": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReservationStatus"
+          },
+          "reviewSubmitted": {
+            "type": "boolean"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "headCount": {
+            "type": "number",
+            "format": "double"
+          },
+          "date": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "endTime": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "teamId",
+          "userId",
+          "activityId",
+          "scheduleId",
+          "status",
+          "reviewSubmitted",
+          "totalPrice",
+          "headCount",
+          "date",
+          "startTime",
+          "endTime",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CreateReservationBodyDto": {
+        "properties": {
+          "scheduleId": {
+            "type": "number",
+            "format": "double"
+          },
+          "headCount": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": ["scheduleId", "headCount"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "UserServiceResponseDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "email": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": ["id", "email", "nickname", "profileImageUrl", "createdAt", "updatedAt"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "LoginBodyDto": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "password"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FindMyActivitiesQueryDto": {
+        "properties": {
+          "cursorId": {
+            "type": "number",
+            "format": "double"
+          },
+          "size": {
+            "type": "number",
+            "format": "double",
+            "default": 20
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FindReservationsByMonthResponseDto": {
+        "properties": {
+          "date": {
+            "type": "string"
+          },
+          "reservations": {
+            "properties": {
+              "pending": {
+                "type": "number",
+                "format": "double"
+              },
+              "confirmed": {
+                "type": "number",
+                "format": "double"
+              },
+              "completed": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "required": ["pending", "confirmed", "completed"],
+            "type": "object"
+          }
+        },
+        "required": ["date", "reservations"],
+        "type": "object",
+        "additionalProperties": false,
+        "example": {
+          "date": "2024-01-09",
+          "reservations": {
+            "completed": 1,
+            "confirmed": 0,
+            "pending": 1
+          }
+        }
+      },
+      "FindReservationsByMonthQueryDto": {
+        "properties": {
+          "year": {
+            "type": "string",
+            "example": "2024"
+          },
+          "month": {
+            "type": "string",
+            "example": "01"
+          }
+        },
+        "required": ["year", "month"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ReservedScheduleResponseDto": {
+        "properties": {
+          "scheduleId": {
+            "type": "number",
+            "format": "double"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "endTime": {
+            "type": "string"
+          },
+          "count": {
+            "properties": {
+              "declined": {
+                "type": "number",
+                "format": "double"
+              },
+              "confirmed": {
+                "type": "number",
+                "format": "double"
+              },
+              "pending": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "required": ["declined", "confirmed", "pending"],
+            "type": "object"
+          }
+        },
+        "required": ["scheduleId", "startTime", "endTime", "count"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FindReservedScheduleQueryDto": {
+        "properties": {
+          "date": {
+            "type": "string"
+          }
+        },
+        "required": ["date"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "StatusEnum": {
+        "type": "string",
+        "enum": ["pending", "canceled", "confirmed", "declined"]
+      },
+      "Status": {
+        "$ref": "#/components/schemas/StatusEnum"
+      },
+      "ReservationWithUserResponseDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "number",
+            "format": "double"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "activityId": {
+            "type": "number",
+            "format": "double"
+          },
+          "scheduleId": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "$ref": "#/components/schemas/Status"
+          },
+          "reviewSubmitted": {
+            "type": "boolean"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "headCount": {
+            "type": "number",
+            "format": "double"
+          },
+          "date": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "endTime": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "nickname",
+          "userId",
+          "teamId",
+          "activityId",
+          "scheduleId",
+          "status",
+          "reviewSubmitted",
+          "totalPrice",
+          "headCount",
+          "date",
+          "startTime",
+          "endTime",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FindReservationsQueryDto": {
+        "properties": {
+          "cursorId": {
+            "type": "number",
+            "format": "double"
+          },
+          "size": {
+            "type": "number",
+            "format": "double",
+            "default": 10
+          },
+          "scheduleId": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["declined", "pending", "confirmed"]
+          }
+        },
+        "required": ["scheduleId", "status"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "UpdateMyActivityReservationBodyDto": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["declined", "confirmed"]
+          }
+        },
+        "required": ["status"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "UpdateMyActivityBodyDto": {
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "category": {
+            "$ref": "#/components/schemas/Category"
+          },
+          "description": {
+            "type": "string"
+          },
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "address": {
+            "type": "string"
+          },
+          "bannerImageUrl": {
+            "type": "string"
+          },
+          "subImageIdsToRemove": {
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "type": "array",
+            "default": []
+          },
+          "subImageUrlsToAdd": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "default": []
+          },
+          "scheduleIdsToRemove": {
+            "items": {
+              "type": "number",
+              "format": "double"
+            },
+            "type": "array",
+            "default": []
+          },
+          "schedulesToAdd": {
+            "items": {
+              "$ref": "#/components/schemas/CreateScheduleBody"
+            },
+            "type": "array",
+            "default": []
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "NotificationDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "number",
+            "format": "double"
+          },
+          "content": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "deletedAt": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          }
+        },
+        "required": ["id", "teamId", "userId", "content", "createdAt", "updatedAt", "deletedAt"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FindMyNotificationsQueryDto": {
+        "properties": {
+          "cursorId": {
+            "type": "number",
+            "format": "double"
+          },
+          "size": {
+            "type": "number",
+            "format": "double",
+            "default": 10
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ReservationWithActivityResponseDto": {
+        "properties": {
+          "id": {
+            "type": "number",
+            "format": "double"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "number",
+            "format": "double"
+          },
+          "activity": {
+            "properties": {
+              "bannerImageUrl": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "id": {
+                "type": "number",
+                "format": "double"
+              }
+            },
+            "required": ["bannerImageUrl", "title", "id"],
+            "type": "object"
+          },
+          "scheduleId": {
+            "type": "number",
+            "format": "double"
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReservationStatus"
+          },
+          "reviewSubmitted": {
+            "type": "boolean"
+          },
+          "totalPrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "headCount": {
+            "type": "number",
+            "format": "double"
+          },
+          "date": {
+            "type": "string"
+          },
+          "startTime": {
+            "type": "string"
+          },
+          "endTime": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "required": [
+          "id",
+          "teamId",
+          "userId",
+          "activity",
+          "scheduleId",
+          "status",
+          "reviewSubmitted",
+          "totalPrice",
+          "headCount",
+          "date",
+          "startTime",
+          "endTime",
+          "createdAt",
+          "updatedAt"
+        ],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "FindMyReservationsQueryDto": {
+        "properties": {
+          "cursorId": {
+            "type": "number",
+            "format": "double"
+          },
+          "size": {
+            "type": "number",
+            "format": "double",
+            "default": 10
+          },
+          "status": {
+            "$ref": "#/components/schemas/ReservationStatus"
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      },
+      "UpdateMyReservationBodyDto": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["canceled"],
+            "nullable": false
+          }
+        },
+        "required": ["status"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "CreateReviewBodyDto": {
+        "properties": {
+          "rating": {
+            "type": "number",
+            "format": "double"
+          },
+          "content": {
+            "type": "string"
+          }
+        },
+        "required": ["rating", "content"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "OauthApp": {
+        "properties": {
+          "createdAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "appKey": {
+            "type": "string"
+          },
+          "provider": {
+            "type": "string"
+          },
+          "teamId": {
+            "type": "string"
+          },
+          "id": {
+            "type": "number",
+            "format": "double"
+          }
+        },
+        "required": ["createdAt", "updatedAt", "appKey", "provider", "teamId", "id"],
+        "type": "object"
+      },
+      "OauthProvider": {
+        "type": "string",
+        "enum": ["google", "kakao"]
+      },
+      "UpsertOauthAppRequestBody": {
+        "properties": {
+          "appKey": {
+            "type": "string",
+            "description": "간편 로그인을 위한 인증 키 입니다.\nGoogle 의 경우에는 \"클라이언트 id\" 입니다.\nKakao 의 경우에는 \"REST API 키\" 입니다.\n실습을 위해 발급받은 키를 등록해주세요. 실제 서비스에서 사용 하는 키는 등록하시면 안됩니다."
+          },
+          "provider": {
+            "$ref": "#/components/schemas/OauthProvider"
+          }
+        },
+        "required": ["appKey", "provider"],
+        "type": "object"
+      },
+      "OauthToken": {
+        "type": "string",
+        "description": "간편 로그인 과정을 통해 발급받은 토큰입니다.<br />\nGoogle 의 경우에는 <b>Google Id 토큰</b>(JWT) 입니다.<br/>\nKakao 의 경우에는 <b>인가 코드</b> 입니다."
+      },
+      "SignInWithOauthRequestBody": {
+        "properties": {
+          "redirectUri": {
+            "type": "string",
+            "description": "Kakao 의 경우에는 필수입니다.<br/>\n인가 코드를 얻을 때 사용하였던 redirect_uri 값을 그대로 사용합니다.",
+            "example": "http://localhost:3000/oauth/kakao"
+          },
+          "token": {
+            "$ref": "#/components/schemas/OauthToken"
+          }
+        },
+        "required": ["token"],
+        "type": "object"
+      },
+      "SignUpWithOauthRequestBody": {
+        "allOf": [
+          {
+            "properties": {
+              "nickname": {
+                "type": "string"
+              }
+            },
+            "required": ["nickname"],
+            "type": "object"
+          },
+          {
+            "$ref": "#/components/schemas/SignInWithOauthRequestBody"
+          }
+        ]
+      },
+      "CreateUserBodyDto": {
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "nickname": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": ["email", "nickname", "password"],
+        "type": "object",
+        "additionalProperties": false
+      },
+      "UpdateUserBodyDto": {
+        "properties": {
+          "nickname": {
+            "type": "string"
+          },
+          "profileImageUrl": {
+            "type": "string",
+            "nullable": true
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        },
+        "type": "object",
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "info": {
+    "title": "server",
+    "version": "1.0.0",
+    "description": "codeit-globalnamad",
+    "contact": {}
+  },
+  "openapi": "3.0.0",
+  "paths": {
+    "/{teamId}/activities": {
+      "get": {
+        "operationId": "Find",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cursorId": {
+                      "type": "number",
+                      "format": "double",
+                      "nullable": true
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "activities": {
+                      "items": {
+                        "$ref": "#/components/schemas/ActivityBasicDto"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": ["totalCount", "activities"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "페이지네이션 방식은 offset, cursor 중 선택해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "cursorId는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "카테고리명이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 4": {
+                    "value": {
+                      "message": "keyword를 입력해주세요."
+                    }
+                  },
+                  "Example 5": {
+                    "value": {
+                      "message": "page는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 6": {
+                    "value": {
+                      "message": "size는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 7": {
+                    "value": {
+                      "message": "정렬 방식은 most_reviewed, price_asc, price_desc, latest 중 선택해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "체험 리스트 조회",
+        "tags": ["Activities"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "method",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/Method"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursorId",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "category",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Category"
+            }
+          },
+          {
+            "in": "query",
+            "name": "keyword",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "sort",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/Sort"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ]
+      },
+      "post": {
+        "operationId": "Create",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityWithSchedulesResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "제목은 문자열로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "제목을 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "카테고리명이 올바르시 않습니다."
+                    }
+                  },
+                  "Example 4": {
+                    "value": {
+                      "message": "설명은 문자열로 입력해주세요."
+                    }
+                  },
+                  "Example 5": {
+                    "value": {
+                      "message": "설명을 입력해주세요."
+                    }
+                  },
+                  "Example 6": {
+                    "value": {
+                      "message": "가격은 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 7": {
+                    "value": {
+                      "message": "주소는 문자열로 입력해주세요."
+                    }
+                  },
+                  "Example 8": {
+                    "value": {
+                      "message": "주소를 입력해주세요."
+                    }
+                  },
+                  "Example 9": {
+                    "value": {
+                      "message": "예약 가능한 시간대는 최소 1개 이상 등록해주세요."
+                    }
+                  },
+                  "Example 10": {
+                    "value": {
+                      "message": "예약 가능한 시간대는 배열로 입력해주세요."
+                    }
+                  },
+                  "Example 11": {
+                    "value": {
+                      "message": "배너 이미지 URL 형식이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 12": {
+                    "value": {
+                      "message": "소개 이미지 URL 형식이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 13": {
+                    "value": {
+                      "message": "소개 이미지는 최대 4개까지 등록할 수 있습니다."
+                    }
+                  },
+                  "Example 14": {
+                    "value": {
+                      "message": "날짜는 YYYY-MM-DD 형식으로 입력해주세요."
+                    }
+                  },
+                  "Example 15": {
+                    "value": {
+                      "message": "날짜는 YYYY-MM-DD 형식으로 입력해주세요."
+                    }
+                  },
+                  "Example 16": {
+                    "value": {
+                      "message": "시작 시간 형식이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 17": {
+                    "value": {
+                      "message": "종료 시간 형식이 올바르지 않습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "ConflictException",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "겹치는 예약 가능 시간대가 존재합니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "체험 등록",
+        "tags": ["Activities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateActivityBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/activities/{activityId}": {
+      "get": {
+        "operationId": "GetById",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityWithSubImagesAndSchedulesDto"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 체험입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "체험 상세 조회",
+        "tags": ["Activities"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/activities/{activityId}/available-schedule": {
+      "get": {
+        "operationId": "FindAvailableSchedule",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ScheduleResponseDto"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "year는 YYYY 형식으로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "month는 MM 형식으로 입력해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 체험입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "체험 예약 가능일 조회",
+        "tags": ["Activities"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "01"
+          }
+        ]
+      }
+    },
+    "/{teamId}/activities/{activityId}/reviews": {
+      "get": {
+        "operationId": "FindReviews",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "averageRating": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "reviews": {
+                      "items": {
+                        "$ref": "#/components/schemas/ReviewServiceResponseDto"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": ["averageRating", "totalCount", "reviews"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "page는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "size는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "page는 최소 1 이상이어야 합니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 체험입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "체험 리뷰 조회",
+        "tags": ["Activities"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "page",
+            "required": false,
+            "schema": {
+              "default": 1,
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "default": 3,
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/activities/{activityId}/reservations": {
+      "post": {
+        "operationId": "CreatReservation",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservationResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "scheduleId는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "headCount는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "이미 지난 일정은 예약할 수 없습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 체험입니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "ConflictException",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "확정 예약이 있는 일정은 예약할 수 없습니다."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "이미 예약한 일정입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "체험 예약 신청",
+        "tags": ["Activities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReservationBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/activities/image": {
+      "post": {
+        "operationId": "UploadActivityImage",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "activityImageUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["activityImageUrl"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "체험 이미지 url 생성",
+        "tags": ["Activities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/auth/login": {
+      "post": {
+        "operationId": "Login",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/UserServiceResponseDto"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["user", "refreshToken", "accessToken"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "이메일 형식으로 작성해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "이메일을 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "비밀번호는 문자열로 작성해주세요."
+                    }
+                  },
+                  "Example 4": {
+                    "value": {
+                      "message": "비밀번호를 입력해주세요."
+                    }
+                  },
+                  "Example 5": {
+                    "value": {
+                      "message": "비밀번호가 일치하지 않습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFoundException",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 유저입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "로그인",
+        "tags": ["Auth"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/auth/tokens": {
+      "post": {
+        "operationId": "Refresh",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["refreshToken", "accessToken"],
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "summary": "토큰 재발급",
+        "tags": ["Auth"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/my-activities": {
+      "get": {
+        "operationId": "FindByUserId",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cursorId": {
+                      "type": "number",
+                      "format": "double",
+                      "nullable": true
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "activities": {
+                      "items": {
+                        "$ref": "#/components/schemas/ActivityBasicDto"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": ["cursorId", "totalCount", "activities"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "cursorId는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "size는 숫자로 입력해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 체험 리스트 조회",
+        "tags": ["MyActivities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursorId",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "default": 20,
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/my-activities/{activityId}/reservation-dashboard": {
+      "get": {
+        "operationId": "FindReservationsByMonth",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/FindReservationsByMonthResponseDto"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "year는 YYYY 형식으로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "month는 MM 형식으로 입력해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 체험만 조회할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 체험 월별 예약 현황 조회",
+        "tags": ["MyActivities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "year",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "2024"
+          },
+          {
+            "in": "query",
+            "name": "month",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "01"
+          }
+        ]
+      }
+    },
+    "/{teamId}/my-activities/{activityId}/reserved-schedule": {
+      "get": {
+        "operationId": "FindReservedSchedule",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/ReservedScheduleResponseDto"
+                  },
+                  "type": "array"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "날짜는 YYYY-MM-DD 형식으로 입력해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 체험만 조회할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 체험 날짜별 예약 정보(신청, 승인, 거절)가 있는 스케줄 조회",
+        "tags": ["MyActivities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "date",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/my-activities/{activityId}/reservations": {
+      "get": {
+        "operationId": "FindReservations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cursorId": {
+                      "type": "number",
+                      "format": "double",
+                      "nullable": true
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "reservations": {
+                      "items": {
+                        "$ref": "#/components/schemas/ReservationWithUserResponseDto"
+                      },
+                      "type": "array"
+                    }
+                  },
+                  "required": ["cursorId", "totalCount", "reservations"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "cursorId는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "size는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "status는 pending, confirmed, declined 중 하나로 입력해주세요."
+                    }
+                  },
+                  "Example 4": {
+                    "value": {
+                      "message": "scheduleId는 숫자로 입력해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 체험만 조회할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 체험 예약 시간대별 예약 내역 조회",
+        "tags": ["MyActivities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursorId",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "scheduleId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "enum": ["declined", "pending", "confirmed"]
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/my-activities/{activityId}/reservations/{reservationId}": {
+      "patch": {
+        "operationId": "UpdateReservations",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservationResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "status는 pending, confirmed, declined 중 하나로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "예약 상태가 pending이 아닙니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 체험만 예약 상태를 변경할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 체험입니다."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "예약을 찾을 수 없습니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 체험 예약 상태(승인, 거절) 업데이트",
+        "tags": ["MyActivities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "path",
+            "name": "reservationId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMyActivityReservationBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/my-activities/{activityId}": {
+      "delete": {
+        "operationId": "Delete",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "신청 예약이 있는 체험은 삭제할 수 없습니다."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "확정 예약이 있는 체험은 삭제할 수 없습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 체험만 삭제할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 체험입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 체험 삭제",
+        "tags": ["MyActivities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ActivityWithSchedulesResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "제목은 문자열로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "제목을 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "카테고리명이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 4": {
+                    "value": {
+                      "message": "설명은 문자열로 입력해주세요."
+                    }
+                  },
+                  "Example 5": {
+                    "value": {
+                      "message": "설명을 입력해주세요."
+                    }
+                  },
+                  "Example 6": {
+                    "value": {
+                      "message": "가격은 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 7": {
+                    "value": {
+                      "message": "주소는 문자열로 입력해주세요."
+                    }
+                  },
+                  "Example 8": {
+                    "value": {
+                      "message": "주소를 입력해주세요."
+                    }
+                  },
+                  "Example 9": {
+                    "value": {
+                      "message": "배너 이미지 URL 형식이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 10": {
+                    "value": {
+                      "message": "삭제할 소개 이미지 id는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 11": {
+                    "value": {
+                      "message": "삭제할 소개 이미지 id를 배열로 입력해주세요."
+                    }
+                  },
+                  "Example 12": {
+                    "value": {
+                      "message": "소개 이미지 URL 형식이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 13": {
+                    "value": {
+                      "message": "추가할 소개 이미지 URL을 배열로 입력해주세요."
+                    }
+                  },
+                  "Example 14": {
+                    "value": {
+                      "message": "삭제할 예약 가능한 시간대 id는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 15": {
+                    "value": {
+                      "message": "삭제할 예약 가능한 시간대 id를 배열로 입력해주세요."
+                    }
+                  },
+                  "Example 16": {
+                    "value": {
+                      "message": "추가할 예약 가능한 시간대를 배열로 입력해주세요."
+                    }
+                  },
+                  "Example 17": {
+                    "value": {
+                      "message": "날짜는 YYYY-MM-DD 형식으로 입력해주세요."
+                    }
+                  },
+                  "Example 18": {
+                    "value": {
+                      "message": "시작 시간 형식이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 19": {
+                    "value": {
+                      "message": "종료 시간 형식이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 20": {
+                    "value": {
+                      "message": "예약이 있는 예약 시간대는 수정할 수 없습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 체험만 수정할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 체험입니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "ConflictException",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "겹치는 예약 가능 시간대가 존재합니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 체험 수정",
+        "tags": ["MyActivities"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "activityId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMyActivityBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/my-notifications": {
+      "get": {
+        "operationId": "FindMyNotifications",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cursorId": {
+                      "type": "number",
+                      "format": "double",
+                      "nullable": true
+                    },
+                    "notifications": {
+                      "items": {
+                        "$ref": "#/components/schemas/NotificationDto"
+                      },
+                      "type": "array"
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  },
+                  "required": ["cursorId", "notifications", "totalCount"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "cursorId는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "size는 숫자로 입력해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 알림 리스트 조회",
+        "tags": ["MyNotifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursorId",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/my-notifications/{notificationId}": {
+      "delete": {
+        "operationId": "Delete",
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 알림만 삭제할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 알림입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 알림 삭제",
+        "tags": ["MyNotifications"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "notificationId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/my-reservations": {
+      "get": {
+        "operationId": "Find",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "cursorId": {
+                      "type": "number",
+                      "format": "double",
+                      "nullable": true
+                    },
+                    "reservations": {
+                      "items": {
+                        "$ref": "#/components/schemas/ReservationWithActivityResponseDto"
+                      },
+                      "type": "array"
+                    },
+                    "totalCount": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  },
+                  "required": ["cursorId", "reservations", "totalCount"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "cursorId는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "size는 숫자로 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "status는 pending, confirmed, completed, declined, canceled  중 하나로 입력해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 예약 리스트 조회",
+        "tags": ["MyReservations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "cursorId",
+            "required": false,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "size",
+            "required": false,
+            "schema": {
+              "default": 10,
+              "format": "double",
+              "type": "number"
+            }
+          },
+          {
+            "in": "query",
+            "name": "status",
+            "required": false,
+            "schema": {
+              "$ref": "#/components/schemas/ReservationStatus"
+            }
+          }
+        ]
+      }
+    },
+    "/{teamId}/my-reservations/{reservationId}": {
+      "patch": {
+        "operationId": "Update",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ReservationResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "status는 canceled만 가능합니다."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "예약 취소는 예약 신청 상태에서만 가능합니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 예약만 취소할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 예약 수정 (취소)",
+        "tags": ["MyReservations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "reservationId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateMyReservationBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/my-reservations/{reservationId}/reviews": {
+      "post": {
+        "operationId": "CreateReview",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "deletedAt": {
+                      "type": "string",
+                      "format": "date-time",
+                      "nullable": true
+                    },
+                    "updatedAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "createdAt": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "content": {
+                      "type": "string"
+                    },
+                    "rating": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "userId": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "activityId": {
+                      "type": "number",
+                      "format": "double"
+                    },
+                    "teamId": {
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "number",
+                      "format": "double"
+                    }
+                  },
+                  "required": [
+                    "deletedAt",
+                    "updatedAt",
+                    "createdAt",
+                    "content",
+                    "rating",
+                    "userId",
+                    "activityId",
+                    "teamId",
+                    "id"
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "content는 문자열로 입력해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "rating은 1~5 사이 정수로 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "체험 완료 후 리뷰를 작성할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "본인의 예약만 리뷰를 작성할 수 있습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFound",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 예약입니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "이미 리뷰를 작성했습니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 예약 리뷰 작성",
+        "tags": ["MyReservations"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "reservationId",
+            "required": true,
+            "schema": {
+              "format": "double",
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateReviewBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/oauth/apps": {
+      "post": {
+        "operationId": "UpsertOauthApp",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OauthApp"
+                }
+              }
+            }
+          }
+        },
+        "description": "간편 로그인 App 등록/수정<br/>\nGoogle, Kakao 간편 로그인을 위한 App 을 등록하거나 수정합니다.<br/>\n이미 등록된 앱이 있을 경우 덮어씌워집니다.\n\n요청 데이터 중 appKey 는 각 서비스에서 발급받은 인증 키 입니다.<br/>\nGoogle 의 경우에는 <b>\"클라이언트 id\"</b> 입니다.<br/>\nKakao 의 경우에는 <b>\"REST API 키\"</b> 입니다.<br/>\n실습을 위해 발급받은 키를 등록해주세요. 실제 서비스에서 사용 하는 키를 등록해서는 안됩니다.",
+        "tags": ["Oauth"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpsertOauthAppRequestBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/oauth/sign-up/{provider}": {
+      "post": {
+        "operationId": "SignUpOauth",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/UserServiceResponseDto"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["user", "refreshToken", "accessToken"],
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "summary": "간편 회원가입",
+        "tags": ["Oauth"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "provider",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OauthProvider"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignUpWithOauthRequestBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/oauth/sign-in/{provider}": {
+      "post": {
+        "operationId": "SignInOauth",
+        "responses": {
+          "200": {
+            "description": "Ok",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "user": {
+                      "$ref": "#/components/schemas/UserServiceResponseDto"
+                    },
+                    "refreshToken": {
+                      "type": "string"
+                    },
+                    "accessToken": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["user", "refreshToken", "accessToken"],
+                  "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "summary": "간편 로그인",
+        "tags": ["Oauth"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "in": "path",
+            "name": "provider",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/OauthProvider"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignInWithOauthRequestBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/users": {
+      "post": {
+        "operationId": "Create",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserServiceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "이메일 형식으로 작성해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "이메일을 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "닉네임은 10자 이하로 작성해주세요."
+                    }
+                  },
+                  "Example 4": {
+                    "value": {
+                      "message": "닉네임을 입력해주세요."
+                    }
+                  },
+                  "Example 5": {
+                    "value": {
+                      "message": "비밀번호는 8자 이상 입력해주세요."
+                    }
+                  },
+                  "Example 6": {
+                    "value": {
+                      "message": "비밀번호를 입력해주세요."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "ConflictException",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "중복된 이메일입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "회원가입",
+        "tags": ["Users"],
+        "security": [],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/users/me": {
+      "get": {
+        "operationId": "GetMyInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserServiceResponseDto"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "NotFoundException",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "존재하지 않는 유저입니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 정보 조회",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ]
+      },
+      "patch": {
+        "operationId": "UpdateMyInfo",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserServiceResponseDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "닉네임은 10자 이하로 작성해주세요."
+                    }
+                  },
+                  "Example 2": {
+                    "value": {
+                      "message": "닉네임 또는 프로필 이미지를 입력해주세요."
+                    }
+                  },
+                  "Example 3": {
+                    "value": {
+                      "message": "프로필 이미지 URL 형식이 올바르지 않습니다."
+                    }
+                  },
+                  "Example 4": {
+                    "value": {
+                      "message": "수정할 내용이 없습니다."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "내 정보 수정",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserBodyDto"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{teamId}/users/me/image": {
+      "post": {
+        "operationId": "UploadProfileImage",
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "properties": {
+                    "profileImageUrl": {
+                      "type": "string"
+                    }
+                  },
+                  "required": ["profileImageUrl"],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponsePayload"
+                },
+                "examples": {
+                  "Example 1": {
+                    "value": {
+                      "message": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "summary": "프로필 이미지 url 생성",
+        "tags": ["Users"],
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "parameters": [
+          {
+            "in": "path",
+            "name": "teamId",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "image": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                },
+                "required": ["image"]
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "/"
+    }
+  ]
+}
