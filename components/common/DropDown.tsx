@@ -5,9 +5,10 @@ type DropdownMenuProps = {
   options: string[];
   onSelect: (value: string) => void;
   trigger: React.ReactNode; //필터, 아이콘 버튼
+  children?: (option: string) => React.ReactNode;
 };
 
-export default function DropdownMenu({ onSelect, options, trigger }: DropdownMenuProps) {
+export default function DropdownMenu({ onSelect, options, trigger, children }: DropdownMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null); //외부 클릭 감지
 
@@ -31,14 +32,10 @@ export default function DropdownMenu({ onSelect, options, trigger }: DropdownMen
     <div ref={dropdownRef} className="relative inline-block">
       <div onClick={toggle}>{trigger}</div>
       {isOpen && (
-        <ul className="absolute top-full mt-2 w-full min-w-[160px] border border-gray-200 rounded-md bg-white shadow-md z-50 divide-y divide-gray-200">
+        <ul className="absolute top-full right-0 border border-gray-200 shadow-md rounded-md bg-white z-50">
           {options.map(option => (
-            <li
-              key={option}
-              onClick={() => handleSelect(option)}
-              className="cursor-pointer py-3 hover:bg-gray-200 2lg-medium text-gray-900 text-center"
-            >
-              {option}
+            <li key={option} onClick={() => handleSelect(option)} className="cursor-pointer py-3 px-4">
+              {children ? children(option) : option}
             </li>
           ))}
         </ul>
