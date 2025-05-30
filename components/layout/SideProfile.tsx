@@ -46,7 +46,7 @@ export default function SideProfile() {
   };
 
   return (
-    <div className="bg-white rounded-xl shadow-md p-6 w-full h-fit shrink-0">
+    <div className="bg-white border border-gray-300 rounded-xl shadow-md p-6 w-full h-fit shrink-0">
       <div className="flex flex-col items-center mb-6">
         <div className="relative w-[160px] h-[160px] mb-3">
           <Image src={profileUrl} alt="프로필 이미지" fill className="rounded-full object-cover" />
