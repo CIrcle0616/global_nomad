@@ -1,16 +1,16 @@
 import { fetchWrapper } from './fetchWrapper';
 
 // 내 알림 리스트 조회
-export function getMyNotifications(teamId: string, cursorId?: number, size?: number) {
+export function getMyNotifications(cursorId?: number, size?: number) {
   const query = new URLSearchParams({
     ...(cursorId ? { cursorId: String(cursorId) } : {}),
     ...(size ? { size: String(size) } : {}),
   });
 
-  return fetchWrapper(`/${teamId}/my-notifications?${query}`, 'GET');
+  return fetchWrapper(`/my-notifications?${query}`, 'GET');
 }
 
 // 내 알림 삭제
-export function delMyNotifications(teamId: string, notificationId: number) {
-  return fetchWrapper(`/${teamId}/my-notifications/${notificationId}`, 'DELETE');
+export function delMyNotifications(notificationId: number) {
+  return fetchWrapper(`/my-notifications/${notificationId}`, 'DELETE');
 }
