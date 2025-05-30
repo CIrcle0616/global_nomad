@@ -1,54 +1,72 @@
 'use client';
-
-import { useTwoButtonModalStore, useOneButtonModalStore } from '@/store';
+import { useModalStore } from '@/store';
 
 export default function ModalTest() {
-  const { openModal: openTwoModal } = useTwoButtonModalStore();
-  const { openModal: openOneModal } = useOneButtonModalStore();
+  const { openModal, closeModal } = useModalStore();
 
-  function handleSearch() {
-    console.log('삭제 기능 실행!');
-  }
-
-  const handleOpenTwoButtonModal = () => {
-    openTwoModal({
-      content: '정말 삭제하시겠습니까?',
-      rightButtonText: '삭제',
-      leftButtonText: '취소',
-      onConfirm: () => handleSearch(),
-      onCancel: () => console.log('취소 처리'),
-    });
+  const handleConfirm = () => {
+    console.log('삭제 클릭');
   };
 
-  const handleOpenOneButtonModal = () => {
-    openOneModal({
-      content: '작업이 완료되었습니다!',
-      buttonText: '확인',
-    });
-  };
-
-  const handleOpenOneButtonModalWithConfirm = () => {
-    openOneModal({
-      content: '작업이 완료되었습니다!',
-      buttonText: '확인',
-      onConfirm: () => {
-        handleSearch();
-      },
-    });
+  const handleCancel = () => {
+    console.log('취소 클릭');
   };
 
   return (
-    <div className="flex gap-4">
-      <button onClick={handleOpenTwoButtonModal} className="bg-blue-500 text-white px-4 py-2 rounded-md">
-        TwoButtonModal 열기
+    <div className="flex flex-col items-center justify-center h-screen gap-4">
+      <h1 className="text-3xl-bold mb-4">모달 테스트</h1>
+
+      <button
+        className="bg-blue-500 text-white px-4 py-2 rounded"
+        onClick={() =>
+          openModal('oneButton', {
+            content: '정말 삭제할까요?',
+            buttonText: '확인',
+            onConfirm: () => console.log('OneButtonModal 확인 클릭'),
+          })
+        }
+      >
+        OneButtonModal 열기
       </button>
 
-      <button onClick={handleOpenOneButtonModal} className="bg-green-500 text-white px-4 py-2 rounded-md">
-        OneButtonModal 열기 (단순)
+      <button
+        onClick={() =>
+          openModal('twoButton', {
+            content: '정말 삭제할까요?',
+            rightButtonText: '삭제',
+            leftButtonText: '취소',
+            onConfirm: handleConfirm,
+            onCancel: handleCancel,
+          })
+        }
+      >
+        TwoButtonModal - 닫기만
       </button>
 
-      <button onClick={handleOpenOneButtonModalWithConfirm} className="bg-yellow-500 text-white px-4 py-2 rounded-md">
-        OneButtonModal 열기 (함수 실행 포함)
+      <button
+        onClick={() =>
+          openModal('twoButton', {
+            content: '정말 삭제할까요?',
+            rightButtonText: '삭제',
+            leftButtonText: '취소',
+            onConfirm: () => {
+              console.log('삭제 클릭');
+              closeModal();
+              setTimeout(() => {
+                openModal('twoButton', {
+                  content: '다음 TwoButtonModal입니다!',
+                  rightButtonText: '계속',
+                  leftButtonText: '취소',
+                  onConfirm: () => console.log('다음 TwoButtonModal 확인 클릭'),
+                  onCancel: () => console.log('다음 TwoButtonModal 취소 클릭'),
+                });
+              }, 0);
+            },
+            onCancel: handleCancel,
+          })
+        }
+      >
+        TwoButtonModal - 다음 모달도 TwoButtonModal로 열기
       </button>
     </div>
   );

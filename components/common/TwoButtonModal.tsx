@@ -1,37 +1,47 @@
 'use client';
-import { useTwoButtonModalStore } from '@/store';
+import { useModalStore } from '@/store';
 
-export default function TwoButtonModal() {
-  const { isOpen, content, rightButtonText, leftButtonText, onConfirm, onCancel, closeModal } =
-    useTwoButtonModalStore();
+interface ModalProps {
+  content: string;
+  rightButtonText?: string;
+  leftButtonText?: string;
+  onConfirm?: (options: { closeModal: () => void }) => void;
+  onCancel: () => void;
+}
 
-  if (!isOpen) return null;
+export default function TwoButtonModal({ content, rightButtonText, leftButtonText, onConfirm, onCancel }: ModalProps) {
+  const { isOpen, modalType, closeModal } = useModalStore();
+
+  if (!isOpen || modalType !== 'twoButton') {
+    console.log('모달 오류 확인');
+    return null;
+  }
 
   return (
-    <div
-      className="fixed inset-0 bg-black bg-opacity-50 w-screen h-screen flex items-center justify-center z-50"
-      onClick={closeModal}
-    >
-      <div className="bg-white rounded-2xl p-6 max-w-sm w-full" onClick={e => e.stopPropagation()}>
-        <p className="text-gray-900 text-xl-medium text-center">{content}</p>
-        <div className="mt-6 flex justify-between gap-4">
+    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50" onClick={closeModal}>
+      <div
+        className="bg-white rounded-2xl p-8 w-[300px] sm:w-[400px] md:w-[500px] shadow-lg"
+        onClick={e => e.stopPropagation()}
+      >
+        <p className="text-xl-semibold text-center text-gray-900 mb-6">{content}</p>
+
+        <div className="flex justify-between gap-4">
           <button
             onClick={() => {
-              onCancel?.();
+              onCancel();
               closeModal();
             }}
-            className="bg-gray-300 text-black px-6 py-3 rounded-xl text-md-medium"
+            className="bg-gray-300 text-black text-md-medium rounded-xl px-6 py-3 w-32"
           >
-            {leftButtonText ?? '취소'}
+            {leftButtonText ? leftButtonText : '취소'}
           </button>
           <button
             onClick={() => {
-              onConfirm?.();
-              closeModal();
+              onConfirm?.({ closeModal });
             }}
-            className="bg-nomad-black text-white px-6 py-3 rounded-xl text-md-medium"
+            className="bg-nomad-black text-white text-md-medium rounded-xl px-6 py-3 w-32"
           >
-            {rightButtonText ?? '확인'}
+            {rightButtonText ? rightButtonText : '확인'}
           </button>
         </div>
       </div>
