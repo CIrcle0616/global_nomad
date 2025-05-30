@@ -1,8 +1,8 @@
-import LoginForm from '@/components/domain/login/LoginForm';
-import HrWithText from '@/components/domain/login/HrWithText';
-import AuthLogo from '@/components/domain/login/AuthLogo';
-import KakaoOauthLink from '@/components/domain/login/KakaoOauthLink';
-import LinkToAuth from '@/components/domain/login/LinkToSign';
+import LoginForm from '@/components/domain/auth/LoginForm';
+import HrWithText from '@/components/domain/auth/HrWithText';
+import AuthLogo from '@/components/domain/auth/AuthLogo';
+import KakaoOauthLink from '@/components/domain/auth/KakaoOauthLink';
+import LinkToAuth from '@/components/domain/auth/LinkToSign';
 
 export default function LoginPage() {
   return (
