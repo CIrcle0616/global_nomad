@@ -29,7 +29,7 @@ export default function SignUpForm() {
 
   const signUpMutation = useMutation<CreateUserSuccessResponse, Error, CreateUserBodyDto>({
     mutationFn: credentials => {
-      return signUp('14-3', credentials);
+      return signUp(credentials);
     },
     onSuccess: () => {
       alert('회원가입 성공');

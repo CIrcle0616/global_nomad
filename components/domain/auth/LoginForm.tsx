@@ -27,7 +27,7 @@ export default function LoginForm() {
 
   const loginMutation = useMutation<LoginSuccessResponse, Error, LoginInputs>({
     mutationFn: credentials => {
-      return loginUser('14-3', credentials);
+      return loginUser(credentials);
     },
     onSuccess: data => {
       setAuth(data.user, data.accessToken, data.refreshToken);

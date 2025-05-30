@@ -20,10 +20,8 @@ interface AuthStore {
 }
 
 export const useAuthStore = create<AuthStore>()(
-  // create 함수를 두 번 호출하는 형태로 변경
   persist(
     (set, get) => ({
-      // get 함수도 사용 가능 (isAuthenticated 같은 함수에서)
       user: null,
       accessToken: null,
       refreshToken: null,
