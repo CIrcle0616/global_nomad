@@ -22,8 +22,8 @@ export default function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
-  } = useForm<LoginInputs>();
+    formState: { errors, isValid },
+  } = useForm<LoginInputs>({ mode: 'onChange' });
 
   const loginMutation = useMutation<LoginSuccessResponse, Error, LoginInputs>({
     mutationFn: credentials => {
@@ -105,7 +105,7 @@ export default function LoginForm() {
 
       <div>
         <button
-          disabled={Object.keys(errors).length > 0 || isSubmitting}
+          disabled={!isValid || loginMutation.isPending}
           className="w-full rounded-md px-[136px] py-[14px] bg-nomad-black text-white disabled:bg-gray-600 mb-[26px]"
         >
           로그인 하기

@@ -7,7 +7,7 @@ import LinkToAuth from '@/components/domain/auth/LinkToSign';
 export default function LoginPage() {
   return (
     <main className="w-full max-w-[640px] h-screen pt-[110px] px-3 mx-auto">
-      <div className="relative w-[270px] md:w-[340px] h-[154px] md:h-[192px] mx-auto mb-6">
+      <div className="w-[270px] md:w-[340px] h-[154px] md:h-[192px] mx-auto mb-6">
         <AuthLogo />
       </div>
 
@@ -22,7 +22,7 @@ export default function LoginPage() {
       <div>
         <HrWithText text="SNS 계정으로 로그인하기" />
 
-        <div className="relative w-12 h-12 mx-auto">
+        <div className="w-12 md:w-[72px] h-12 md:h-[72px] mx-auto">
           <KakaoOauthLink />
         </div>
       </div>
