@@ -1,0 +1,10 @@
+import { GetActivityDetailSuccessResponse } from '@/types/domain/activity/types';
+import Image from 'next/image';
+
+export default function ActivityImgSection({ data }: { data: GetActivityDetailSuccessResponse }) {
+  return (
+    <div className="w-[375px] h-[310px] md:mt-4">
+      <Image src={data.bannerImageUrl} alt="활동 이미지" className="size-full" />
+    </div>
+  );
+}
