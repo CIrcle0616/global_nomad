@@ -9,13 +9,13 @@ export default function ActivityDetailHeader({ data }: { data: GetActivityDetail
         <div className="text-2xl-bold md:text-3xl-bold text-nomad-black mb-4">{data.title}</div>
         <div className="flex flex-row gap-3 items-center">
           <div className="flex flex-row items-center gap-1.5">
-            <Image src="/ic_star_on.svg" className="size-4" alt="별점" />
+            <Image src="/ic_star_on.svg" width={16} height={16} alt="별점" />
             <div className="text-md-regular text-black">
               {data.rating.toFixed(1)} ({data.reviewCount})
             </div>
           </div>
           <div className="flex flex-row items-center gap-1.5">
-            <Image src="/ic_location.svg" className="size-4" alt="지도마커" />
+            <Image src="/ic_location.svg" width={16} height={16} alt="지도마커" />
             <div className="text-md-regular text-nomad-black">{data.address}</div>
           </div>
         </div>

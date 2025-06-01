@@ -64,7 +64,7 @@ export default function ActivityMap({ address }: { address: string }) {
         <MapMarker position={position} />
       </Map>
       <div className="flex items-center mt-2 gap-1">
-        <Image src="/ic_location.svg" className="size-4" alt="지도마커" />
+        <Image src="/ic_location.svg" width={16} height={16} alt="지도마커" />
         <div className="text-md-regular text-nomad-black ">{address}</div>
       </div>
     </div>

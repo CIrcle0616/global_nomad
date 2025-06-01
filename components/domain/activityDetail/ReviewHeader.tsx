@@ -26,7 +26,7 @@ export default function ReviewHeader({ data }: { data: GetActivityReviewsSuccess
         <div className="flex flex-col gap-2">
           <div className="text-2lg-regular text-nomad-black">{rating()}</div>
           <div className="text-md-regular text-black flex items-center gap-1">
-            <Image src="/ic_star_on.svg" className="size-4" alt="별점" />
+            <Image src="/ic_star_on.svg" width={16} height={16} alt="별점" />
             {data.totalCount.toLocaleString()}개 후기
           </div>
         </div>

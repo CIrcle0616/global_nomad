@@ -16,6 +16,8 @@ export default function ReviewList({ data }: { data: GetActivityReviewsSuccessRe
             <Image
               src={review.user.profileImageUrl || '/ic_empty.svg'}
               alt="Profile"
+              width={45}
+              height={45}
               className="size-full object-cover rounded-full"
             />
           </div>
