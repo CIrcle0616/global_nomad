@@ -1,5 +1,5 @@
-import OneButtonModal from '@/components/common/OneButtonModal';
 import '@/app/globals.css';
+import GlobalModal from '@/components/common/GlobalModal';
 import { ReactNode } from 'react';
 import { Providers } from './provider';
 
