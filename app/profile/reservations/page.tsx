@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useMemo } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
 import Image from 'next/image';
 
 import DropdownMenu from '@/components/common/DropDown';
@@ -14,11 +13,7 @@ import { reservationsResponse } from '@/constants/reservationsMock';
 import { ReservationWithActivityResponseDto } from '@/types/index';
 
 export default function ReservationsPage() {
-  const router = useRouter();
-
-  const searchParams = useSearchParams();
-  const statusParam = searchParams.get('status') || '';
-  const [status, setStatus] = useState<string>(statusParam);
+  const [status, setStatus] = useState<string>('');
 
   const reservations: ReservationWithActivityResponseDto[] = reservationsResponse.reservations;
 
@@ -27,9 +22,6 @@ export default function ReservationsPage() {
   const handleSelectStatus = (label: string) => {
     const selectedOption = filterOptions.find(option => option.label === label);
     const statusValue = selectedOption ? selectedOption.value : '';
-
-    const search = statusValue ? `?status=${statusValue}` : '';
-    router.replace(search);
 
     setStatus(statusValue);
     setIsLoading(true);
