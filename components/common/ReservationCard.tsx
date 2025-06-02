@@ -1,33 +1,10 @@
-import CommonButton from '@/components/common/CommonButton';
 import Image from 'next/image';
 
-interface Reservation {
-  activity: {
-    bannerImageUrl: string;
-    title: string;
-    id: number;
-  };
-  scheduleId: number;
-  status: string;
-  reviewSubmitted: boolean;
-  totalPrice: number;
-  headCount: number;
-  date: string;
-  startTime: string;
-  endTime: string;
-  createdAt: string;
-  updatedAt: string;
-}
+import CommonButton from '@/components/common/CommonButton';
+import { statusMap } from '@/constants/statusMap';
+import { ReservationWithActivityResponseDto } from '@/types/index';
 
-const statusMap: { [key: string]: { text: string; color: string } } = {
-  pending: { text: '예약 완료', color: 'text-blue-300' },
-  canceled: { text: '예약 취소', color: 'text-gray-800' },
-  confirmed: { text: '예약 승인', color: 'text-orange-500' },
-  declined: { text: '예약 거절', color: 'text-red-500' },
-  completed: { text: '체험 완료', color: 'text-gray-800' },
-};
-
-export default function ReservationCard({ reservation }: { reservation: Reservation }) {
+export default function ReservationCard({ reservation }: { reservation: ReservationWithActivityResponseDto }) {
   const displayStatus = statusMap[reservation.status] || {
     text: reservation.status,
     color: '',
