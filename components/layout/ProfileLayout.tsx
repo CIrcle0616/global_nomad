@@ -17,7 +17,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
           </div>
 
           {/* 오른쪽 메인 콘텐츠 */}
-          <main className="flex-1 md:ml-6">{children}</main>
+          <main className="flex-1">{children}</main>
         </div>
       </div>
 

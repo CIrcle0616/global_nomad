@@ -1,6 +1,6 @@
 import { useAuthStore } from '@/store/useAuthStore';
 
-const BASE_URL = 'https://sp-globalnomad-api.vercel.app/14-3';
+const BASE_URL = 'https://sp-globalnomad-api.vercel.app/14-2';
 
 export async function fetchWrapper<T>(
   url: string,
