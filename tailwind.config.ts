@@ -84,7 +84,23 @@ const config: Config = {
         'xs-regular': ['12px', { lineHeight: '18px', fontWeight: '400' }],
       },
     },
+    keyframes: {
+      'fade-slide-in': {
+        '0%': {
+          opacity: '0',
+          transform: 'translateY(16px)',
+        },
+        '100%': {
+          opacity: '1',
+          transform: 'translateY(0)',
+        },
+      },
+    },
+    animation: {
+      'fade-slide-in': 'fade-slide-in 0.4s ease-out',
+    },
   },
+
   plugins: [],
 };
 
