@@ -1,3 +1,4 @@
+import { HttpError } from '@/constants/utils/errors';
 import { useAuthStore } from '@/store/useAuthStore';
 
 const BASE_URL = 'https://sp-globalnomad-api.vercel.app/14-2';
@@ -35,7 +36,7 @@ export async function fetchWrapper<T>(
   const result = await response.json();
 
   if (!response.ok) {
-    throw new Error(result.message || 'API 요청 실패');
+    throw new HttpError(result?.message || 'API 요청 실패', response.status);
   }
 
   return result;
