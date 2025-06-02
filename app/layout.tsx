@@ -10,7 +10,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <Providers>
           {children}
           {/* 전역 모달 컴포넌트 위치 */}
-          <OneButtonModal />
+          <GlobalModal />
         </Providers>
       </body>
     </html>
