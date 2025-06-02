@@ -1,9 +1,9 @@
 import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  // 목업 데이터 이미지를 받기 위해 작성함
+  /* config options here */
   images: {
-    domains: ['picsum.photos', 'fastly.picsum.photos'],
+    domains: ['sprint-fe-project.s3.ap-northeast-2.amazonaws.com'],
   },
 };
 
