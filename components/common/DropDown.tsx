@@ -34,7 +34,11 @@ export default function DropdownMenu({ onSelect, options, trigger, children }: D
       {isOpen && (
         <ul className="absolute top-full mt-2 left-0 w-full min-w-[160px] border border-gray-200 shadow-md rounded-md bg-white z-50">
           {options.map(option => (
-            <li key={option} onClick={() => handleSelect(option)} className="cursor-pointer py-3 px-4">
+            <li
+              key={option}
+              onClick={() => handleSelect(option)}
+              className="cursor-pointer py-3 px-4 border-b border-gray-300 last:border-b-0 text-center hover:bg-gray-300"
+            >
               {children ? children(option) : option}
             </li>
           ))}
