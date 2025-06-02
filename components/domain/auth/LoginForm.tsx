@@ -1,6 +1,8 @@
 'use client';
 
+import { HttpError } from '@/constants/utils/errors';
 import { loginUser } from '@/services/auth';
+import { useModalStore } from '@/store';
 import { useAuthStore } from '@/store/useAuthStore';
 import { LoginSuccessResponse } from '@/types/domain/auth/types';
 import { useMutation } from '@tanstack/react-query';
@@ -18,6 +20,7 @@ export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { setAuth } = useAuthStore();
+  const { openModal } = useModalStore();
 
   const {
     register,
@@ -25,17 +28,27 @@ export default function LoginForm() {
     formState: { errors, isValid },
   } = useForm<LoginInputs>({ mode: 'onChange' });
 
-  const loginMutation = useMutation<LoginSuccessResponse, Error, LoginInputs>({
+  const loginMutation = useMutation<LoginSuccessResponse, HttpError, LoginInputs>({
     mutationFn: credentials => {
       return loginUser(credentials);
     },
     onSuccess: data => {
       setAuth(data.user, data.accessToken, data.refreshToken);
-      alert('로그인 성공');
       router.push('/');
     },
     onError: error => {
-      console.log(error);
+      const { status } = error;
+      if (status === 404) {
+        openModal('oneButton', {
+          content: '존재하지 않는 유저입니다.',
+          onConfirm: () => console.log('존재하지 않는 유저입니다.'),
+        });
+      } else {
+        openModal('oneButton', {
+          content: error.message,
+          onConfirm: () => console.log(`로그인 에러: ${error.message}`),
+        });
+      }
     },
   });
 

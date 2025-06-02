@@ -1,6 +1,8 @@
 'use client';
 
+import { HttpError } from '@/constants/utils/errors';
 import { signUp } from '@/services/users';
+import { useModalStore } from '@/store';
 import { CreateUserBodyDto } from '@/types';
 import { CreateUserSuccessResponse } from '@/types/domain/user/types';
 import { useMutation } from '@tanstack/react-query';
@@ -17,6 +19,7 @@ export default function SignUpForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
   const router = useRouter();
+  const { openModal } = useModalStore();
 
   const {
     register,
@@ -27,16 +30,28 @@ export default function SignUpForm() {
 
   const passwordValue = watch('password');
 
-  const signUpMutation = useMutation<CreateUserSuccessResponse, Error, CreateUserBodyDto>({
+  const signUpMutation = useMutation<CreateUserSuccessResponse, HttpError, CreateUserBodyDto>({
     mutationFn: credentials => {
       return signUp(credentials);
     },
     onSuccess: () => {
-      alert('회원가입 성공');
-      router.push('/login');
+      openModal('oneButton', {
+        content: '가입이 완료되었습니다!',
+        onConfirm: () => router.push('/'),
+        buttonText: '확인',
+      });
     },
     onError: error => {
-      console.log(error);
+      const { status } = error;
+      if (status === 409) {
+        openModal('oneButton', {
+          content: '이미 사용중인 이메일입니다.',
+          onConfirm: () => console.log('중복이메일'),
+          buttonText: '확인',
+        });
+      } else {
+        openModal('oneButton', { content: error.message, onConfirm: () => console.log('에러'), buttonText: '확인' });
+      }
     },
   });
 
