@@ -1,5 +1,7 @@
 'use client';
-import { useModalStore } from '@/store';
+import { useModalStore } from '@/store/modalStore';
+import OneButtonModal from './OneButtonModal';
+import TwoButtonModal from './TwoButtonModal';
 
 export default function ModalTest() {
   const { openModal, closeModal } = useModalStore();
@@ -19,7 +21,7 @@ export default function ModalTest() {
       <button
         className="bg-blue-500 text-white px-4 py-2 rounded"
         onClick={() =>
-          openModal('oneButton', {
+          openModal(OneButtonModal, {
             content: '정말 삭제할까요?',
             buttonText: '확인',
             onConfirm: () => console.log('OneButtonModal 확인 클릭'),
@@ -31,7 +33,7 @@ export default function ModalTest() {
 
       <button
         onClick={() =>
-          openModal('twoButton', {
+          openModal(TwoButtonModal, {
             content: '정말 삭제할까요?',
             rightButtonText: '삭제',
             leftButtonText: '취소',
@@ -45,7 +47,7 @@ export default function ModalTest() {
 
       <button
         onClick={() =>
-          openModal('twoButton', {
+          openModal(TwoButtonModal, {
             content: '정말 삭제할까요?',
             rightButtonText: '삭제',
             leftButtonText: '취소',
@@ -53,7 +55,7 @@ export default function ModalTest() {
               console.log('삭제 클릭');
               closeModal();
               setTimeout(() => {
-                openModal('twoButton', {
+                openModal(TwoButtonModal, {
                   content: '다음 TwoButtonModal입니다!',
                   rightButtonText: '계속',
                   leftButtonText: '취소',
