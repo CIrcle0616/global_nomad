@@ -5,6 +5,7 @@ import ParticipantSelector from './parts/ParticipantSelector';
 import PriceTotal from './parts/PriceTotal';
 import { useTabletModalStore } from '@/store/useReservationTabletStore';
 import TabletDateTimeModal from './parts/TabletDateTimeModal';
+import { formatSelectedDateTime } from '@/lib/format';
 import clsx from 'clsx';
 
 interface ReservationTabletProps {
@@ -19,7 +20,7 @@ interface ReservationTabletProps {
   onCountChange: (count: number) => void;
   onReserve: () => void;
   pricePerPerson: number;
-  availableTimes: string[];
+  availableTimes: { startTime: string; endTime: string }[];
   loading?: boolean;
 }
 
@@ -74,7 +75,7 @@ export default function ReservationTablet({
 
             <div onClick={toggleModal} className="text-black hover:underline cursor-pointer text-sm">
               {state.date && state.time ? (
-                formatSelectedDateTime(state.date, state.time)
+                formatSelectedDateTime(state.date, state.time, availableTimes)
               ) : (
                 <span className="underline text-sm text-gray-800 hover:text-black cursor-pointer">
                   날짜를 선택해주세요
@@ -105,18 +106,4 @@ export default function ReservationTablet({
       </div>
     </>
   );
-}
-
-function formatSelectedDateTime(date: Date, time: string): string {
-  const cleanTime = time.split('~')[0];
-
-  const year = String(date.getFullYear()).slice(2);
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
-
-  const [hour, minute] = cleanTime.split(':');
-  const startTime = `${hour.padStart(2, '0')}:${minute}`;
-  const endTime = `${String((Number(hour) + 1) % 24).padStart(2, '0')}:${minute}`;
-
-  return `${year}/${month}/${day} ${startTime} ~ ${endTime}`;
 }

@@ -18,7 +18,7 @@ interface ReservationPCProps {
   onCountChange: (count: number) => void;
   onReserve: () => void;
   pricePerPerson: number;
-  availableTimes: string[];
+  availableTimes: { startTime: string; endTime: string }[];
   loading?: boolean;
 }
 
@@ -56,8 +56,11 @@ export default function ReservationPC({
       {state.date && (
         <div className="mb-6">
           <span className="block text-black mb-2 text-2lg-bold">예약 가능한 시간</span>
-
-          <TimeSelector times={availableTimes} selected={state.time} onChange={onTimeChange} disabled={loading} />
+          {availableTimes.length > 0 ? (
+            <TimeSelector times={availableTimes} selected={state.time} onChange={onTimeChange} disabled={loading} />
+          ) : (
+            <p className="text-sm text-gray-500">예약 가능한 시간이 없습니다.</p>
+          )}
         </div>
       )}
       <div className="border border-gray-300 mb-4" />

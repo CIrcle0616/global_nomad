@@ -1,6 +1,7 @@
 'use client';
 
 import CommonButton from '@/components/common/CommonButton';
+import { formatSelectedDateTime } from '@/lib/format';
 
 interface ReservationMobileFooterProps {
   state: {
@@ -9,6 +10,7 @@ interface ReservationMobileFooterProps {
     count: number;
   };
   pricePerPerson: number;
+  availableTimes: { startTime: string; endTime: string }[];
   onClickDateSelect: () => void;
   onClickReserve: () => void;
   loading?: boolean;
@@ -19,14 +21,13 @@ export default function ReservationMobileFooter({
   pricePerPerson,
   onClickDateSelect,
   onClickReserve,
+  availableTimes,
   loading = false,
 }: ReservationMobileFooterProps) {
   const isComplete = !!state.date && state.time && state.count > 0;
   const totalPrice = pricePerPerson * state.count;
 
-  const formattedDateTime = state.date
-    ? `${state.date.getFullYear().toString().slice(2)}/${String(state.date.getMonth() + 1).padStart(2, '0')}/${String(state.date.getDate()).padStart(2, '0')} ${state.time} ~ ${String((parseInt(state.time) + 1) % 24).padStart(2, '0')}:${state.time.split(':')[1]}`
-    : '';
+  const formattedDateTime = state.date ? formatSelectedDateTime(state.date, state.time, availableTimes) : '';
   return (
     <div className="p-4">
       <div className="flex items-center justify-between">

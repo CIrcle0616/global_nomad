@@ -15,7 +15,7 @@ interface TabletDateTimeModalProps {
   onDateChange: (date: Date | undefined) => void;
   onTimeChange: (time: string) => void;
   onReserve: () => void;
-  availableTimes: string[];
+  availableTimes: { startTime: string; endTime: string }[];
   loading?: boolean;
 }
 
@@ -73,7 +73,11 @@ export default function TabletDateTimeModal({
         <div className="mt-[30px]">
           <span className="block text-black mb-1 text-2lg-bold">예약 가능한 시간</span>
           <div className="mt-2">
-            <TimeSelector times={availableTimes} selected={tempTime} onChange={setTempTime} disabled={loading} />
+            {availableTimes.length > 0 ? (
+              <TimeSelector times={availableTimes} selected={tempTime} onChange={setTempTime} disabled={loading} />
+            ) : (
+              <p className="text-sm text-gray-500">예약 가능한 시간이 없습니다.</p>
+            )}
           </div>
         </div>
       )}

@@ -6,6 +6,7 @@ import ReservationMobile from './ReservationMobile';
 import ReservationMobileFooter from './ReservationMobileFooter';
 import ReservationTablet from './ReservationTablet';
 import ReservationPC from './ReservationPC';
+import { useState } from 'react';
 
 interface ReservationState {
   date: Date | undefined;
@@ -19,9 +20,9 @@ interface ReservationBoxProps {
   onTimeChange: (time: string) => void;
   onCountChange: (count: number) => void;
   onReserve: () => void;
-  onClickDateSelect?: () => void;
+
   pricePerPerson: number;
-  availableTimes: string[];
+  availableTimes: { startTime: string; endTime: string }[];
   loading?: boolean;
 }
 
@@ -31,32 +32,39 @@ export default function ReservationBox({
   onTimeChange,
   onCountChange,
   onReserve,
-  onClickDateSelect,
+
   pricePerPerson,
   availableTimes,
   loading = false,
 }: ReservationBoxProps) {
   const device = useMediaQuery();
+  const [isMobileFormOpen, setIsMobileFormOpen] = useState(false);
 
   if (device === 'mobile') {
     return (
       <>
-        <ReservationMobile
-          state={state}
-          onDateChange={onDateChange}
-          onTimeChange={onTimeChange}
-          onCountChange={onCountChange}
-          onReserve={onReserve}
-          availableTimes={availableTimes}
-          loading={loading}
-        />
-        <ReservationMobileFooter
-          state={state}
-          pricePerPerson={pricePerPerson}
-          onClickDateSelect={onClickDateSelect ?? (() => {})}
-          onClickReserve={onReserve}
-          loading={loading}
-        />
+        {isMobileFormOpen && (
+          <ReservationMobile
+            state={state}
+            onDateChange={onDateChange}
+            onTimeChange={onTimeChange}
+            onCountChange={onCountChange}
+            onReserve={onReserve}
+            availableTimes={availableTimes}
+            loading={loading}
+            onClose={() => setIsMobileFormOpen(false)}
+          />
+        )}
+        {!isMobileFormOpen && (
+          <ReservationMobileFooter
+            state={state}
+            pricePerPerson={pricePerPerson}
+            availableTimes={availableTimes}
+            onClickDateSelect={() => setIsMobileFormOpen(true)}
+            onClickReserve={onReserve}
+            loading={loading}
+          />
+        )}
       </>
     );
   }
