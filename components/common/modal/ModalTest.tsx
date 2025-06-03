@@ -1,5 +1,5 @@
 'use client';
-import { useModalStore } from '@/store';
+import { useModalStore } from '@/store/modalStore';
 import OneButtonModal from './OneButtonModal';
 import TwoButtonModal from './TwoButtonModal';
 

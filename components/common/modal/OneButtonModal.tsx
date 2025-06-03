@@ -1,4 +1,4 @@
-import { useModalStore } from '@/store';
+import { useModalStore } from '@/store/modalStore';
 
 interface OneButtonModalProps {
   content: string;
@@ -10,10 +10,7 @@ export default function OneButtonModal({ content, buttonText, onConfirm }: OneBu
   const { closeModal } = useModalStore();
 
   return (
-    <div
-      className="bg-white rounded-2xl p-8 w-[300px] sm:w-[400px] md:w-[500px] shadow-lg"
-      onClick={e => e.stopPropagation()}
-    >
+    <div className="bg-white rounded-2xl p-8 w-[300px] sm:w-[400px] md:w-[500px] shadow-lg">
       <p className="text-xl-semibold text-center text-gray-900 mb-6">{content}</p>
       <div className="flex justify-center">
         <button

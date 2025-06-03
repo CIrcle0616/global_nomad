@@ -1,5 +1,5 @@
 'use client';
-import { useModalStore } from '@/store';
+import { useModalStore } from '@/store/modalStore';
 
 interface ModalProps {
   content: string;
