@@ -5,21 +5,7 @@ import GetActivityFunction from './MyActivityList';
 import ActivityCard from '@/components/domain/activity/ActivityCard';
 import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
-
-interface Activity {
-  id: number;
-  userId: number;
-  title: string;
-  description: string;
-  category: string;
-  price: number;
-  address: string;
-  bannerImageUrl: string;
-  rating: number;
-  reviewCount: number;
-  createdAt: string;
-  updatedAt: string;
-}
+import { ActivityBasicDto } from '@/types';
 
 export default function ActivityManagePage() {
   const authStore = useAuthStore();
@@ -68,7 +54,7 @@ export default function ActivityManagePage() {
       <h1 className="text-3xl-bold mb-6 ml-4">내 체험 관리</h1>
       <div className="grid gap-6">
         {data?.pages.map(page =>
-          page.activities.map((activity: Activity) => (
+          page.activities.map((activity: ActivityBasicDto) => (
             <ActivityCard
               key={activity.id}
               title={activity.title}
