@@ -1,9 +1,10 @@
 import { GetActivityDetailSuccessResponse } from '@/types/domain/activity/types';
 import Image from 'next/image';
+import DropDownActivityDetail from './DropdownActivityDetail';
 
 export default function ActivityDetailHeader({ data }: { data: GetActivityDetailSuccessResponse }) {
   return (
-    <div className="w-[343px] md:w-full flex flex-col mx-4 mt-4 md:mt-6 md:mx-0">
+    <div className="w-[343px] md:w-full flex flex-row mx-4 mt-4 md:mt-6 md:mx-0 gap-[11px] items-center">
       <div>
         <div className="text-md-regular text-nomad-black mb-2.5">{data.category}</div>
         <div className="text-2xl-bold md:text-3xl-bold text-nomad-black mb-4">{data.title}</div>
@@ -20,6 +21,8 @@ export default function ActivityDetailHeader({ data }: { data: GetActivityDetail
           </div>
         </div>
       </div>
+
+      <DropDownActivityDetail userId={data.userId} activityId={data.id} />
     </div>
   );
 }
