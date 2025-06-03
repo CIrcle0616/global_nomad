@@ -1,5 +1,5 @@
 import '@/app/globals.css';
-import GlobalModal from '@/components/common/GlobalModal';
+import GlobalModal from '@/components/common/modal/GlobalModal';
 import { ReactNode } from 'react';
 import { Providers } from './provider';
 
