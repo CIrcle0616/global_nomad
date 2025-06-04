@@ -2,7 +2,7 @@
 
 import { HttpError } from '@/constants/utils/errors';
 import { signUp } from '@/services/users';
-import { useModalStore } from '@/store';
+import { useModalStore } from '@/store/modalStore';
 import { CreateUserBodyDto } from '@/types';
 import { CreateUserSuccessResponse } from '@/types/domain/user/types';
 import { useMutation } from '@tanstack/react-query';

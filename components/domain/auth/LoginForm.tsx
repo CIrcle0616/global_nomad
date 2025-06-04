@@ -2,7 +2,7 @@
 
 import { HttpError } from '@/constants/utils/errors';
 import { loginUser } from '@/services/auth';
-import { useModalStore } from '@/store';
+import { useModalStore } from '@/store/modalStore';
 import { useAuthStore } from '@/store/useAuthStore';
 import { LoginSuccessResponse } from '@/types/domain/auth/types';
 import { useMutation } from '@tanstack/react-query';
