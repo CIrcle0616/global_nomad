@@ -1,5 +1,6 @@
 'use client';
 
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
 import { HttpError } from '@/constants/utils/errors';
 import { loginUser } from '@/services/auth';
 import { useModalStore } from '@/store/modalStore';
@@ -26,7 +27,7 @@ export default function LoginForm() {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginInputs>({ mode: 'onChange' });
+  } = useForm<LoginInputs>({ mode: 'onBlur' });
 
   const loginMutation = useMutation<LoginSuccessResponse, HttpError, LoginInputs>({
     mutationFn: credentials => {
@@ -39,14 +40,13 @@ export default function LoginForm() {
     onError: error => {
       const { status } = error;
       if (status === 404) {
-        openModal('oneButton', {
+        openModal(OneButtonModal, {
           content: '존재하지 않는 유저입니다.',
-          onConfirm: () => console.log('존재하지 않는 유저입니다.'),
+          onConfirm: () => router.push('/'),
         });
       } else {
-        openModal('oneButton', {
+        openModal(OneButtonModal, {
           content: error.message,
-          onConfirm: () => console.log(`로그인 에러: ${error.message}`),
         });
       }
     },
