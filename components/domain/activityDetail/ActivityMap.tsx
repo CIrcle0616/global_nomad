@@ -59,7 +59,7 @@ export default function ActivityMap({ address }: { address: string }) {
   if (!position) return <p>지도 위치 변환 중...</p>;
 
   return (
-    <div className="w-[327px] mx-auto h-[450px] md:w-[429px] md:h-[276px] md:m-0 lg:w-[800px] lg:h-[476px] my-10">
+    <div className="w-[327px] mx-auto h-[450px] md:w-[429px] md:h-[276px] lg:w-[789px] lg:h-[476px] my-10">
       <Map center={position} className="size-full" level={3}>
         <MapMarker position={position} />
       </Map>
