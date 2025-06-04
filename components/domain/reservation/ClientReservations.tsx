@@ -24,6 +24,7 @@ export default function ClientReservations() {
     setStatus(statusValue);
   };
 
+  // useQuery로 예약 데이터를 가져옴
   const { data, isLoading, isError } = useQuery({
     queryKey: ['myReservations', status],
     queryFn: () => getMyReservations(undefined, undefined, status),
@@ -31,7 +32,7 @@ export default function ClientReservations() {
 
   const filteredReservations = useMemo(() => {
     const reservations = data?.reservations || [];
-    return [...reservations].sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+    return [...reservations].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
   }, [data]);
 
   return (
