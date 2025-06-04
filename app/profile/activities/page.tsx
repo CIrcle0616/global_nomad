@@ -1,15 +1,15 @@
 'use client';
 
 import { useAuthStore } from '@/store/useAuthStore';
-import GetActivityFunction from './MyActivityList';
 import ActivityCard from '@/components/domain/activity/ActivityCard';
 import { useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { ActivityBasicDto } from '@/types';
+import GetActivityFunction from '@/components/domain/activity/MyActivityList';
 
 export default function ActivityManagePage() {
-  const authStore = useAuthStore();
-
+  const setAuth = useAuthStore(state => state.setAuth);
+  //어차피 나중에 로그인 합쳐지면 없어질 코드 임시 로그인
   useEffect(() => {
     const fakeUser = {
       id: 1907,
@@ -23,8 +23,8 @@ export default function ActivityManagePage() {
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTkwNywidGVhbUlkIjoiMTQtMyIsImlhdCI6MTc0ODc2MTE5MiwiZXhwIjoxNzQ4NzYyOTkyLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.7izPQVqTaMHMJA5HAEveL4KSfdhxk98tUFAGnS2nhm4';
     const fakeRefreshToken =
       'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTkwNywidGVhbUlkIjoiMTQtMyIsImlhdCI6MTc0ODc2MTE5MiwiZXhwIjoxNzQ5OTcwNzkyLCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.m558KPdlR3b81RZkM_faxS-hThXQjHYK4r0kQ9lL13Q';
-    authStore.setAuth(fakeUser, fakeAccessToken, fakeRefreshToken);
-  }, [authStore]);
+    setAuth(fakeUser, fakeAccessToken, fakeRefreshToken);
+  }, [setAuth]);
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['activities'],
