@@ -27,6 +27,7 @@ export async function fetchWrapper<T>(
     method,
     headers,
     body: isFormData ? body : body ? JSON.stringify(body) : undefined,
+    credentials: 'include', // 설정했는데 CORS에러 발생 -> api proxy 서버 필요
   });
 
   if (response.status === 204) {
