@@ -1,7 +1,6 @@
 import { HttpError } from '@/constants/utils/errors';
-import { useAuthStore } from '@/store/useAuthStore';
 
-const BASE_URL = 'https://sp-globalnomad-api.vercel.app/14-2';
+const PROXY_API_PREFIX = '/api/proxy';
 
 export async function fetchWrapper<T>(
   url: string,
@@ -9,8 +8,6 @@ export async function fetchWrapper<T>(
   body?: unknown,
   customHeaders: Record<string, string> = {},
 ): Promise<T> {
-  const accessToken = useAuthStore.getState().accessToken;
-
   const isFormData = body instanceof FormData;
 
   const headers: Record<string, string> = {
@@ -19,11 +16,9 @@ export async function fetchWrapper<T>(
     ...customHeaders,
   };
 
-  if (accessToken) {
-    headers['Authorization'] = `Bearer ${accessToken}`;
-  }
+  const requestUrl = `${PROXY_API_PREFIX}${url.startsWith('/') ? url : `/${url}`}`;
 
-  const response = await fetch(`${BASE_URL}${url}`, {
+  const response = await fetch(requestUrl, {
     method,
     headers,
     body: isFormData ? body : body ? JSON.stringify(body) : undefined,
@@ -37,6 +32,8 @@ export async function fetchWrapper<T>(
   const result = await response.json();
 
   if (!response.ok) {
+    if (response.status === 401) {
+    }
     throw new HttpError(result?.message || 'API 요청 실패', response.status);
   }
 
