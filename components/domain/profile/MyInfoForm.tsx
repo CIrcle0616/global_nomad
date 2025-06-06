@@ -130,10 +130,6 @@ export default function MyInfoPage() {
               rules={{
                 required: '비밀번호를 입력해주세요.',
                 minLength: { value: 8, message: '8자 이상 입력해 주세요.' },
-                pattern: {
-                  value: /^(?=.*[a-zA-Z])(?=.*[0-9]).{8,}$/,
-                  message: '영문과 숫자를 포함해 주세요.',
-                },
               }}
               control={control}
               render={({ field }) => (
