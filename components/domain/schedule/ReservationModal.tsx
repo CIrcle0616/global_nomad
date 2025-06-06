@@ -103,7 +103,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
 
       {/* 시간 드롭다운  */}
       {ScheduleOptions.length > 0 && (
-        <div className="mb-4">
+        <div className="mb-4 w-full">
           <DropdownSelect
             type="list"
             selected={selectedScheduleLabel}
