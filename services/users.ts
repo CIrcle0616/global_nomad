@@ -16,8 +16,12 @@ export function signUp(body: {
 }
 
 // 내 정보 조회
-export function getUserMe(): Promise<GetMyInfoSuccessResponse> {
-  return fetchWrapper<GetMyInfoSuccessResponse>(`/users/me`, 'GET');
+export function getUserMe(accessToken?: string): Promise<GetMyInfoSuccessResponse> {
+  return fetchWrapper<GetMyInfoSuccessResponse>(`/users/me`, 'GET', undefined, {
+    ...(accessToken && {
+      Authorization: `Bearer ${accessToken}`,
+    }),
+  });
 }
 
 // 내 정보 수정
