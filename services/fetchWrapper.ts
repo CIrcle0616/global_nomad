@@ -16,7 +16,7 @@ export async function fetchWrapper<T>(
     ...customHeaders,
   };
 
-  const requestUrl = `${PROXY_API_PREFIX}${url.startsWith('/') ? url : `/${url}`}`;
+  const requestUrl = url.startsWith('/api') ? `${url}` : `${PROXY_API_PREFIX}${url.startsWith('/') ? url : `/${url}`}`;
 
   const response = await fetch(requestUrl, {
     method,
