@@ -4,7 +4,7 @@ import { useState, useMemo, useEffect, useRef } from 'react';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import Image from 'next/image';
 
-import ReservationCard from '@/components/common/ReservationCard';
+import ReservationCard from '@/components/domain/reservation/ReservationCard';
 import SkeletonCard from '@/components/skeleton/SkeletonCard';
 import EmptyState from '@/components/empty/EmptyState';
 import DropdownMenu from '@/components/common/DropDown';

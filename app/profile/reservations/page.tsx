@@ -1,4 +1,5 @@
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
+
 import { getMyReservations } from '@/services/myReservations';
 import ClientReservations from '../../../components/domain/reservation/ClientReservations';
 
