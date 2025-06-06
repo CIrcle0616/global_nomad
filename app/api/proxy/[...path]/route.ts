@@ -3,14 +3,14 @@ import { cookies } from 'next/headers';
 
 const BASE_URL = process.env.BASE_URL;
 
-async function refreshAccessToken(refreshTokenValue: string): Promise<string | null> {
+async function refreshAccessToken(refreshToken: string): Promise<string | null> {
   try {
     const response = await fetch(`${BASE_URL}/auth/tokens`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        Authorization: `Bearer ${refreshToken}`,
       },
-      body: JSON.stringify({ refreshToken: refreshTokenValue }),
     });
 
     if (!response.ok) {
@@ -46,12 +46,12 @@ async function refreshAccessToken(refreshTokenValue: string): Promise<string | n
   }
 }
 
-async function handler(req: NextRequest, { params }: { params: { path: string[] } }) {
+async function handler(req: NextRequest, { params }: { params: Promise<{ path: string[] }> }) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
   const refreshToken = cookieStore.get('refreshToken')?.value;
 
-  const path = await params.path.join('/');
+  const path = (await params).path.join('/');
   const targetUrl = `${BASE_URL}/${path}${req.nextUrl.search}`;
 
   const makeRequest = async (token: string | undefined) => {
@@ -101,7 +101,7 @@ async function handler(req: NextRequest, { params }: { params: { path: string[] 
     }
   }
 
-  const responseBody = await response.json();
+  const responseBody = await response.text();
   const responseHeaders = new Headers();
   responseHeaders.set('Content-Type', response.headers.get('Content-Type') || 'application/json');
 
