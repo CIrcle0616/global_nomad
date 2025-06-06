@@ -22,9 +22,9 @@ export function getUserMe(): Promise<GetMyInfoSuccessResponse> {
 
 // 내 정보 수정
 export function patchUserMe(body: {
-  nickname: string;
-  profileImageUrl: string;
-  newPassword: string;
+  nickname?: string;
+  profileImageUrl?: string | null;
+  newPassword?: string;
 }): Promise<UpdateMyInfoSuccessResponse> {
   return fetchWrapper<UpdateMyInfoSuccessResponse>(`/users/me`, 'PATCH', body);
 }
