@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import scrollbarHide from 'tailwind-scrollbar-hide';
 
 // content 경로가 프로젝트 구조와 일치하기!
 const config: Config = {
@@ -101,7 +102,7 @@ const config: Config = {
     },
   },
 
-  plugins: [],
+  plugins: [scrollbarHide],
 };
 
 export default config;
