@@ -1,18 +1,11 @@
 'use client';
 
-import { getUserMe } from '@/services/users';
-import { GetMyInfoSuccessResponse } from '@/types/domain/user/types';
-import { useQuery } from '@tanstack/react-query';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useRouter } from 'next/navigation';
 
 export default function OauthHandlerPage() {
-  const { data } = useQuery<GetMyInfoSuccessResponse>({
-    queryKey: ['users'],
-    queryFn: async () => {
-      const user = await getUserMe();
-      return user;
-    },
-    retry: 3,
-  });
-
-  return <h1>{data?.id}</h1>;
+  const router = useRouter();
+  const { setIsLoggedIn } = useAuthStore();
+  setIsLoggedIn(true);
+  router.push('/');
 }
