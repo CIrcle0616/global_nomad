@@ -29,13 +29,14 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
   const [selectedScheduleId, setSelectedScheduleId] = useState<number | null>(null);
   const [selectedScheduleLabel, setSelectedScheduleLabel] = useState<string>('');
 
-  //시간대 목록 가져오기
+  //해당 날짜 시간대 목록 가져오기
   const { data: scheduleData } = useQuery({
     queryKey: ['reservedSchedule', activityId, date, statusTab],
     queryFn: () => getMyReservedSchedule(activityId, date),
     enabled: !!date,
   });
 
+  //드롭다운 옵션으로 변경
   const ScheduleOptions: ScheduleOption[] = (scheduleData ?? []).map(s => ({
     id: s.scheduleId,
     startTime: s.startTime,
@@ -61,6 +62,22 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       refetch();
     },
   });
+
+  //승인 버튼: 승인 후 나머지 자동 거절
+  const handleApprove = (targetId: number) => {
+    if (!reservationData) return;
+    mutation.mutate(
+      { reservationId: targetId, status: 'APPROVED' },
+      {
+        onSuccess: () => {
+          const rejectTargets = reservationData.reservations.filter(r => r.id !== targetId);
+          rejectTargets.forEach(res => {
+            mutation.mutate({ reservationId: res.id, status: 'REJECTED' });
+          });
+        },
+      },
+    );
+  };
 
   const handleTabChange = (status: TabStatus) => {
     setStatusTab(status);
@@ -121,37 +138,38 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       ) : reservationData?.reservations.length === 0 ? (
         <p>예약 내역이 없습니다.</p>
       ) : (
-        reservationData?.reservations.map(res => (
-          <div key={res.id} className="border rounded-md mb-2 px-4 py-3">
-            <p className="mb-1">
-              <span className="text-gray-800 text-lg-semibold">닉네임 </span>
-              <span className="text-lg-medium"> {res.nickname}</span>
-            </p>
+        reservationData?.reservations
+          .slice()
+          .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+          .map(res => (
+            <div key={res.id} className="border rounded-md mb-2 px-4 py-3">
+              <p className="mb-1">
+                <span className="text-gray-800 text-lg-semibold">닉네임 </span>
+                <span className="text-lg-medium"> {res.nickname}</span>
+              </p>
 
-            <p className="mb-1">
-              <span className="text-gray-800 text-lg-semibold">인원 </span>
-              <span className="text-lg-medium"> {res.headCount}명</span>
-            </p>
+              <p className="mb-1">
+                <span className="text-gray-800 text-lg-semibold">인원 </span>
+                <span className="text-lg-medium"> {res.headCount}명</span>
+              </p>
 
-            <div className="flex gap-2 justify-end  mt-2">
-              <CommonButton
-                size="S"
-                className="px-3 rounded-md"
-                onClick={() => mutation.mutate({ reservationId: res.id, status: 'APPROVED' })}
-              >
-                승인하기
-              </CommonButton>
-              <CommonButton
-                size="S"
-                className=" px-3 rounded-md"
-                variant="secondary"
-                onClick={() => mutation.mutate({ reservationId: res.id, status: 'REJECTED' })}
-              >
-                거절하기
-              </CommonButton>
+              {statusTab === 'PENDING' && (
+                <div className="flex gap-2 justify-end  mt-2">
+                  <CommonButton size="S" className="px-3 rounded-md" onClick={() => handleApprove(res.id)}>
+                    승인하기
+                  </CommonButton>
+                  <CommonButton
+                    size="S"
+                    className=" px-3 rounded-md"
+                    variant="secondary"
+                    onClick={() => mutation.mutate({ reservationId: res.id, status: 'REJECTED' })}
+                  >
+                    거절하기
+                  </CommonButton>
+                </div>
+              )}
             </div>
-          </div>
-        ))
+          ))
       )}
     </div>
   );
