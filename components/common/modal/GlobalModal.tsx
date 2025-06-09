@@ -1,6 +1,6 @@
 'use client';
 
-import React, { MouseEvent, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useModalStore } from '@/store/modalStore';
 
 export default function GlobalModal() {
@@ -35,23 +35,12 @@ export default function GlobalModal() {
     };
   }, [isOpen, closeModal]);
 
-  //모달 외부 클릭 시 닫기
-  const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
-    if (modalRef.current && !modalRef.current.contains(e.target as Node)) {
-      closeModal();
-    }
-  };
-
   if (!isOpen || !ModalContentComponent) {
     return null;
   }
 
   return (
-    <div
-      role="dialog"
-      className="fixed inset-0 bg-[#000000B2] flex justify-center items-center z-[9999]"
-      onClick={handleOverlayClick}
-    >
+    <div role="dialog" className="fixed inset-0 bg-[#000000B2] flex justify-center items-center z-[9999]">
       <div ref={modalRef}>{ModalContentComponent && <ModalContentComponent {...modalProps} />}</div>
     </div>
   );

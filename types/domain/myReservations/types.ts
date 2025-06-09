@@ -12,6 +12,7 @@ import { paths } from '../../api'; // 원본 타입 파일
 export type GetMyReservationsSuccessResponse =
   paths['/{teamId}/my-reservations']['get']['responses']['200']['content']['application/json'];
 
+export type Reservation = GetMyReservationsSuccessResponse['reservations'][number];
 /**
  * 내 예약 리스트 조회 시 잘못된 요청 에러 응답 (400 Bad Request)
  * GET /{teamId}/my-reservations

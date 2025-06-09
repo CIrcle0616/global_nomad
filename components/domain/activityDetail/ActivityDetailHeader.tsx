@@ -21,8 +21,9 @@ export default function ActivityDetailHeader({ data }: { data: GetActivityDetail
           </div>
         </div>
       </div>
-
-      <DropDownActivityDetail userId={data.userId} activityId={data.id} />
+      <div className="ml-auto cursor-pointer">
+        <DropDownActivityDetail userId={data.userId} activityId={data.id} />
+      </div>
     </div>
   );
 }

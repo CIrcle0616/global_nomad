@@ -1,8 +1,9 @@
 'use client';
 
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
 import { HttpError } from '@/constants/utils/errors';
 import { signUp } from '@/services/users';
-import { useModalStore } from '@/store';
+import { useModalStore } from '@/store/modalStore';
 import { CreateUserBodyDto } from '@/types';
 import { CreateUserSuccessResponse } from '@/types/domain/user/types';
 import { useMutation } from '@tanstack/react-query';
@@ -35,22 +36,19 @@ export default function SignUpForm() {
       return signUp(credentials);
     },
     onSuccess: () => {
-      openModal('oneButton', {
+      openModal(OneButtonModal, {
         content: '가입이 완료되었습니다!',
         onConfirm: () => router.push('/'),
-        buttonText: '확인',
       });
     },
     onError: error => {
       const { status } = error;
       if (status === 409) {
-        openModal('oneButton', {
+        openModal(OneButtonModal, {
           content: '이미 사용중인 이메일입니다.',
-          onConfirm: () => console.log('중복이메일'),
-          buttonText: '확인',
         });
       } else {
-        openModal('oneButton', { content: error.message, onConfirm: () => console.log('에러'), buttonText: '확인' });
+        openModal(OneButtonModal, { content: error.message });
       }
     },
   });

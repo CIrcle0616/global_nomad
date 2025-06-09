@@ -1,9 +1,9 @@
 'use client';
 
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
 import { HttpError } from '@/constants/utils/errors';
 import { loginUser } from '@/services/auth';
-import { useModalStore } from '@/store';
-import { useAuthStore } from '@/store/useAuthStore';
+import { useModalStore } from '@/store/modalStore';
 import { LoginSuccessResponse } from '@/types/domain/auth/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -19,7 +19,6 @@ interface LoginInputs {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { setAuth } = useAuthStore();
   const { openModal } = useModalStore();
 
   const {
@@ -32,21 +31,19 @@ export default function LoginForm() {
     mutationFn: credentials => {
       return loginUser(credentials);
     },
-    onSuccess: data => {
-      setAuth(data.user, data.accessToken, data.refreshToken);
+    onSuccess: () => {
       router.push('/');
     },
     onError: error => {
       const { status } = error;
       if (status === 404) {
-        openModal('oneButton', {
+        openModal(OneButtonModal, {
           content: '존재하지 않는 유저입니다.',
-          onConfirm: () => console.log('존재하지 않는 유저입니다.'),
+          onConfirm: () => router.push('/'),
         });
       } else {
-        openModal('oneButton', {
+        openModal(OneButtonModal, {
           content: error.message,
-          onConfirm: () => console.log(`로그인 에러: ${error.message}`),
         });
       }
     },
