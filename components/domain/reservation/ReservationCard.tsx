@@ -25,7 +25,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
       rightButtonText: '취소하기',
       onConfirm: async ({ closeModal }: { closeModal: () => void }) => {
         try {
-          await patchMyReservations(reservation.id, { status: 'canceled' });
+          await patchMyReservations({ reservationId: reservation.id, body: { status: 'canceled' } });
           console.log('예약 취소 성공');
 
           await queryClient.invalidateQueries({ queryKey: ['myReservations'] });
@@ -99,7 +99,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
             </CommonButton>
           )}
 
-          {reservation.status === 'declined' && (
+          {reservation.status === 'completed' && (
             <>
               {reviewSubmitted ? (
                 <CommonButton

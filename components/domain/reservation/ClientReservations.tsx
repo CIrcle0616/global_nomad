@@ -18,6 +18,8 @@ const INITIAL_RENDER_COUNT = 5;
 
 export default function ClientReservations() {
   const [status, setStatus] = useState<string>('');
+  const [renderCount, setRenderCount] = useState(INITIAL_RENDER_COUNT);
+  const [displayReservations, setDisplayReservations] = useState<Reservation[]>([]);
 
   const selectedLabel = useMemo(() => {
     return filterOptions.find(option => option.value === status)?.label || '전체';
@@ -32,7 +34,8 @@ export default function ClientReservations() {
   // 커서 기반 무한 스크롤 예약 데이터 불러오기
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } = useInfiniteQuery({
     queryKey: ['myReservations', status],
-    queryFn: ({ pageParam }: { pageParam?: number }) => getMyReservations(pageParam, PAGE_SIZE, status),
+    queryFn: ({ pageParam }: { pageParam?: number }) =>
+      getMyReservations({ cursorId: pageParam, size: PAGE_SIZE, status }),
     getNextPageParam: lastPage => {
       const reservations = lastPage?.reservations ?? [];
       if (!reservations.length) return undefined;
@@ -41,14 +44,22 @@ export default function ClientReservations() {
     initialPageParam: undefined,
   });
 
-  // 모든 예약 데이터를 한 배열로 합치기
-  const allReservations: Reservation[] = Array.isArray(data?.pages)
-    ? data.pages.flatMap(page => page.reservations ?? [])
-    : [];
+  // memo로 모든 예약 데이터 최적화
+  const allReservations = useMemo(() => {
+    return Array.isArray(data?.pages) ? data.pages.flatMap(page => page.reservations ?? []) : [];
+  }, [data]);
 
-  const [renderCount, setRenderCount] = useState(INITIAL_RENDER_COUNT);
+  // renderCount만큼 예약 데이터를 보여줄 상태 관리
+  useEffect(() => {
+    const newReservations = allReservations.slice(0, renderCount);
+    setDisplayReservations(newReservations);
+  }, [allReservations, renderCount]);
 
-  // IntersectionObserver로 스크롤 감지
+  useEffect(() => {
+    setRenderCount(INITIAL_RENDER_COUNT);
+  }, [status, data]);
+
+  // IntersectionObserver로 무한스크롤
   const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -76,24 +87,24 @@ export default function ClientReservations() {
     };
   }, [hasNextPage, isFetchingNextPage, fetchNextPage, renderCount, allReservations.length]);
 
-  useEffect(() => {
-    setRenderCount(INITIAL_RENDER_COUNT);
-  }, [status, data]);
-
   return (
-    <div className="mb-6 ml-4">
+    <div className="mb-6 ml-6">
       <div className="flex items-center justify-between mb-4 max-w-full md:max-w-[600px] lg:max-w-[792px]">
-        <h1 className="text-3xl-bold">예약 내역</h1>
+        <h1 className="text-3xl-bold mb-2">예약 내역</h1>
         <DropdownMenu
           options={filterOptions.map(option => option.label)}
           onSelect={handleSelectStatus}
           trigger={
-            <button className="w-[158px] h-[53px] rounded-[15px] border border-green-500 bg-white flex items-center justify-between px-4">
+            <button className="w-[158px] h-[53px] rounded-[15px] border border-green-500 bg-white flex items-center justify-between px-4 mb-2">
               <span className="text-green-500 text-2lg-medium">{selectedLabel}</span>
               <Image src="/ic_vector.svg" alt="드롭다운 아이콘" width={16} height={16} />
             </button>
           }
-        />
+        >
+          {option => (
+            <span className="flex justify-center items-center w-full text-center mb-2 last:mb-0">{option}</span>
+          )}
+        </DropdownMenu>
       </div>
 
       {isLoading ? (
@@ -108,7 +119,7 @@ export default function ClientReservations() {
         <EmptyState />
       ) : (
         <div className="flex flex-col gap-6 mb-40">
-          {allReservations.slice(0, renderCount).map(reservation => (
+          {displayReservations.map(reservation => (
             <ReservationCard key={reservation.id} reservation={reservation} />
           ))}
 
