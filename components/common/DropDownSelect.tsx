@@ -43,19 +43,21 @@ export default function DropdownSelect({
 
   if (type === 'list' && options) {
     return (
-      <DropdownMenu
-        options={options}
-        onSelect={onSelect}
-        trigger={
-          <Input
-            value={selected || ''}
-            placeholder={placeholder}
-            onChange={() => {}}
-            readOnly
-            icon={{ element: icon }}
-          />
-        }
-      ></DropdownMenu>
+      <div className="w-full">
+        <DropdownMenu
+          options={options}
+          onSelect={onSelect}
+          trigger={
+            <Input
+              value={selected || ''}
+              placeholder={placeholder}
+              onChange={() => {}}
+              readOnly
+              icon={{ element: icon }}
+            />
+          }
+        ></DropdownMenu>
+      </div>
     );
   }
 

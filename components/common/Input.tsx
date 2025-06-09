@@ -36,7 +36,7 @@ export default function Input({
   const hint = status?.hint;
 
   return (
-    <div className="flex flex-col gap-1.5 w-full">
+    <div className="flex flex-col gap-1.5">
       <div className="relative">
         <input
           type={type}
