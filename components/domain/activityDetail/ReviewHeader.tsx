@@ -1,7 +1,16 @@
+import DropdownSelect from '@/components/common/DropDownSelect';
 import { GetActivityReviewsSuccessResponse } from '@/types/domain/activity/types';
 import Image from 'next/image';
 
-export default function ReviewHeader({ data }: { data: GetActivityReviewsSuccessResponse }) {
+export default function ReviewHeader({
+  data,
+  filter,
+  setFilter,
+}: {
+  data: GetActivityReviewsSuccessResponse;
+  filter: string;
+  setFilter: (filter: '최신 순' | '별점 높은 순' | '별점 낮은 순') => void;
+}) {
   const rating = () => {
     if (data.averageRating > 4) {
       return '매우 만족';
@@ -29,6 +38,19 @@ export default function ReviewHeader({ data }: { data: GetActivityReviewsSuccess
             <Image src="/ic_star_on.svg" width={16} height={16} alt="별점" />
             {data.totalCount.toLocaleString()}개 후기
           </div>
+        </div>
+        <div className="ml-auto w-[135px] md:w-[160px] text-green-500">
+          <DropdownSelect
+            onSelect={(value: string) => {
+              if (value === '최신 순' || value === '별점 높은 순' || value === '별점 낮은 순') {
+                setFilter(value);
+              }
+            }}
+            selected={filter}
+            options={['별점 높은 순', '별점 낮은 순', '최신 순']}
+            placeholder="필터"
+            icon={<Image src="/ic_arrow.svg" alt="필터 아이콘" width={22} height={22} />}
+          />
         </div>
       </div>
     </>
