@@ -1,3 +1,3 @@
 export default function SchedulePage() {
-  return <h1>예약 현황을 나타내는 페이지를 작성해주세요.</h1>;
+  return <h1 className="text-3xl-bold mb-6 ml-4">예약 현황</h1>;
 }

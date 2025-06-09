@@ -1,3 +1,3 @@
 export default function ProfileInfoPage() {
-  return <h1>내 정보 관리 페이지를 작성해주세요</h1>
-};
+  return <h1 className="text-3xl-bold mb-6 ml-4">내 정보</h1>;
+}
