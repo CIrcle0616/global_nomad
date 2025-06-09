@@ -32,7 +32,7 @@ export default function ReviewHeader({
       <div className="text-xl-bold text-nomad-black mb-[18px]">후기</div>
       <div className="flex gap-4 items-center">
         <div className="text-[50px] font-semibold text-nomad-black">{data.averageRating.toFixed(1)}</div>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1">
           <div className="text-2lg-regular text-nomad-black">{rating()}</div>
           <div className="text-md-regular text-black flex items-center gap-1">
             <Image src="/ic_star_on.svg" width={16} height={16} alt="별점" />
