@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import ScheduleClientInner from './ScheduleClientInner';
 
 export default async function SchedulePage() {
-  const { activities } = await getMyActivities();
+  const { activities } = await getMyActivities({});
 
   const today = new Date();
   const year = format(today, 'yyyy');
@@ -16,7 +16,7 @@ export default async function SchedulePage() {
   if (firstActivityId) {
     await queryClient.prefetchQuery({
       queryKey: ['reservationBoard', firstActivityId, year, month],
-      queryFn: () => getMyReservationBoard(firstActivityId, year, month),
+      queryFn: () => getMyReservationBoard({ activityId: firstActivityId, year, month }),
     });
   }
 
