@@ -46,7 +46,15 @@ export default function DropdownSelect({
       <DropdownMenu
         options={options}
         onSelect={onSelect}
-        trigger={<Input value={selected || ''} placeholder={placeholder} onChange={() => {}} readOnly icon={icon} />}
+        trigger={
+          <Input
+            value={selected || ''}
+            placeholder={placeholder}
+            onChange={() => {}}
+            readOnly
+            icon={{ element: icon }}
+          />
+        }
       ></DropdownMenu>
     );
   }
@@ -54,7 +62,7 @@ export default function DropdownSelect({
   return (
     <div ref={dropdownRef} className="relative w-full">
       <div onClick={toggle}>
-        <Input value={selected || ''} placeholder={placeholder} onChange={() => {}} readOnly icon={icon} />
+        <Input value={selected || ''} placeholder={placeholder} onChange={() => {}} readOnly icon={{ element: icon }} />
       </div>
 
       {isOpen && (

@@ -4,30 +4,42 @@ import clsx from 'clsx';
 import React from 'react';
 
 type InputProps = {
+  type?: 'text' | 'email' | 'password';
   value: string;
   placeholder?: string;
-  error?: string;
-  hint?: string;
   readOnly?: boolean;
-  icon?: React.ReactNode;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
+
+  onChange: (e: React.ChangeEvent) => void;
+  onBlur?: (e: React.FocusEvent) => void;
+  status?: {
+    error?: string;
+    hint?: string;
+  };
+  icon?: {
+    element: React.ReactNode;
+    onClick?: () => void;
+  };
 };
 
 export default function Input({
+  type = 'text',
   value,
   placeholder = '',
-  error,
-  hint,
-  icon,
+
   readOnly = false,
   onChange,
   onBlur,
+  status,
+  icon,
 }: InputProps) {
+  const error = status?.error;
+  const hint = status?.hint;
+
   return (
     <div className="flex flex-col gap-1.5 w-full">
       <div className="relative">
         <input
+          type={type}
           value={value}
           onChange={onChange}
           onBlur={onBlur}
@@ -47,8 +59,11 @@ export default function Input({
         />
 
         {icon && (
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center cursor-pointer">
-            {icon}
+          <div
+            onClick={icon.onClick}
+            className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 flex items-center justify-center cursor-pointer"
+          >
+            {icon.element}
           </div>
         )}
       </div>
