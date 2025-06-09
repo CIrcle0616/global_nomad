@@ -11,15 +11,11 @@ import DropdownMenu from '@/components/common/DropDown';
 
 import { filterOptions } from '@/constants/filterOption';
 import { getMyReservations } from '@/services/myReservations';
-import { Reservation } from '@/types/domain/myReservations/types';
 
 const PAGE_SIZE = 10;
-const INITIAL_RENDER_COUNT = 5;
 
 export default function ClientReservations() {
   const [status, setStatus] = useState<string>('');
-  const [renderCount, setRenderCount] = useState(INITIAL_RENDER_COUNT);
-  const [displayReservations, setDisplayReservations] = useState<Reservation[]>([]);
 
   const selectedLabel = useMemo(() => {
     return filterOptions.find(option => option.value === status)?.label || '전체';
@@ -30,7 +26,6 @@ export default function ClientReservations() {
     const statusValue = selectedOption ? selectedOption.value : '';
     setStatus(statusValue);
   };
-
   // 커서 기반 무한 스크롤 예약 데이터 불러오기
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } = useInfiniteQuery({
     queryKey: ['myReservations', status],
@@ -44,37 +39,15 @@ export default function ClientReservations() {
     initialPageParam: undefined,
   });
 
-  // memo로 모든 예약 데이터 최적화
-  const allReservations = useMemo(() => {
-    return Array.isArray(data?.pages) ? data.pages.flatMap(page => page.reservations ?? []) : [];
-  }, [data]);
-
-  // renderCount만큼 예약 데이터를 보여줄 상태 관리
-  useEffect(() => {
-    const newReservations = allReservations.slice(0, renderCount);
-    setDisplayReservations(newReservations);
-  }, [allReservations, renderCount]);
-
-  useEffect(() => {
-    setRenderCount(INITIAL_RENDER_COUNT);
-  }, [status, data]);
-
-  // IntersectionObserver로 무한스크롤
   const observerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!observerRef.current) {
-      return () => {};
-    }
+    if (!observerRef.current) return () => {};
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
-          if (renderCount < allReservations.length) {
-            setRenderCount(prev => Math.min(prev + INITIAL_RENDER_COUNT, allReservations.length));
-          } else if (hasNextPage && !isFetchingNextPage) {
-            fetchNextPage();
-          }
+        if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
         }
       },
       { rootMargin: '100px' },
@@ -82,10 +55,11 @@ export default function ClientReservations() {
 
     observer.observe(observerRef.current);
 
-    return () => {
-      observer.disconnect();
-    };
-  }, [hasNextPage, isFetchingNextPage, fetchNextPage, renderCount, allReservations.length]);
+    return () => observer.disconnect();
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  // 모든 예약 데이터 펼치기
+  const allReservations = data?.pages.flatMap(page => page.reservations ?? []) ?? [];
 
   return (
     <div className="mb-6 ml-6">
@@ -119,12 +93,20 @@ export default function ClientReservations() {
         <EmptyState />
       ) : (
         <div className="flex flex-col gap-6 mb-40">
-          {displayReservations.map(reservation => (
-            <ReservationCard key={reservation.id} reservation={reservation} />
-          ))}
+          {data?.pages.map(page =>
+            page.reservations.map(reservation => <ReservationCard key={reservation.id} reservation={reservation} />),
+          )}
 
           <div ref={observerRef} style={{ height: 1 }} />
-          {isFetchingNextPage && <div>로딩 중...</div>}
+
+          {/* 로딩 중 스켈레톤 */}
+          {isFetchingNextPage && (
+            <div className="flex flex-col gap-4">
+              {Array.from({ length: 1 }).map((_, idx) => (
+                <SkeletonCard key={idx} />
+              ))}
+            </div>
+          )}
         </div>
       )}
     </div>
