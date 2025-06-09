@@ -4,7 +4,6 @@ import OneButtonModal from '@/components/common/modal/OneButtonModal';
 import { HttpError } from '@/constants/utils/errors';
 import { loginUser } from '@/services/auth';
 import { useModalStore } from '@/store/modalStore';
-import { useAuthStore } from '@/store/useAuthStore';
 import { LoginSuccessResponse } from '@/types/domain/auth/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
@@ -20,21 +19,19 @@ interface LoginInputs {
 export default function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
-  const { setAuth } = useAuthStore();
   const { openModal } = useModalStore();
 
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm<LoginInputs>({ mode: 'onBlur' });
+  } = useForm<LoginInputs>({ mode: 'onChange' });
 
   const loginMutation = useMutation<LoginSuccessResponse, HttpError, LoginInputs>({
     mutationFn: credentials => {
       return loginUser(credentials);
     },
-    onSuccess: data => {
-      setAuth(data.user, data.accessToken, data.refreshToken);
+    onSuccess: () => {
       router.push('/');
     },
     onError: error => {

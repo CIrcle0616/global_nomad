@@ -41,3 +41,5 @@ export type LoginNotFoundResponse =
  */
 export type RefreshTokenSuccessResponse =
   paths['/{teamId}/auth/tokens']['post']['responses']['201']['content']['application/json'];
+
+export type LogoutSuccessResponse = { message: string };

@@ -27,7 +27,7 @@ export default function SignUpForm() {
     handleSubmit,
     watch,
     formState: { errors, isValid },
-  } = useForm<SignUpFormInputs>({ mode: 'onBlur' });
+  } = useForm<SignUpFormInputs>({ mode: 'onChange' });
 
   const passwordValue = watch('password');
 
