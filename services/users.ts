@@ -26,9 +26,9 @@ export function getUserMe(accessToken?: string): Promise<GetMyInfoSuccessRespons
 
 // 내 정보 수정
 export function patchUserMe(body: {
-  nickname: string;
-  profileImageUrl: string;
-  newPassword: string;
+  nickname?: string;
+  profileImageUrl?: string | null;
+  newPassword?: string;
 }): Promise<UpdateMyInfoSuccessResponse> {
   return fetchWrapper<UpdateMyInfoSuccessResponse>(`/users/me`, 'PATCH', body);
 }
