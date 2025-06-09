@@ -1,6 +1,5 @@
 'use client';
 
-import { useAuthStore } from '@/store/useAuthStore';
 import ActivityCard from '@/components/domain/activity/ActivityCard';
 import { useEffect, useRef } from 'react';
 import { InfiniteData, UseInfiniteQueryResult, useInfiniteQuery } from '@tanstack/react-query';
@@ -8,25 +7,8 @@ import { ActivityBasicDto } from '@/types';
 import Link from 'next/link';
 import { getMyActivities } from '@/services/myActivities';
 import { GetMyActivitiesSuccessResponse } from '@/types/domain/myActivities/types';
-export default function ActivityManagePage() {
-  const setAuth = useAuthStore(state => state.setAuth);
 
-  //어차피 나중에 로그인 합쳐지면 없어질 코드 임시 로그인
-  useEffect(() => {
-    const fakeUser = {
-      id: 1929,
-      email: 'tempojt@naver.com',
-      nickname: '오종택2',
-      profileImageUrl: '',
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    const fakeAccessToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTkyOSwidGVhbUlkIjoiMTQtMiIsImlhdCI6MTc0OTA0NTkwNiwiZXhwIjoxNzQ5MDQ3NzA2LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.xuQkhJT22BfX9kgrCqEo3RyrlQhzUUl80CVC6kejj2w';
-    const fakeRefreshToken =
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTkyOSwidGVhbUlkIjoiMTQtMiIsImlhdCI6MTc0OTA0NTkwNiwiZXhwIjoxNzUwMjU1NTA2LCJpc3MiOiJzcC1nbG9iYWxub21hZCJ9.6fmN1poBwLV0N6BxmQuOO-4bA1vvKfhM8cjSE6tAX-A';
-    setAuth(fakeUser, fakeAccessToken, fakeRefreshToken);
-  }, [setAuth]);
+export default function ActivityManagePage() {
   type PageType = GetMyActivitiesSuccessResponse;
 
   const {
@@ -42,7 +24,7 @@ export default function ActivityManagePage() {
     number | undefined
   >({
     queryKey: ['activities'],
-    queryFn: ({ pageParam = undefined }) => getMyActivities(pageParam),
+    queryFn: ({ pageParam = undefined }) => getMyActivities({ cursorId: pageParam }),
     getNextPageParam: lastPage => lastPage.cursorId ?? undefined,
     initialPageParam: undefined,
   });
