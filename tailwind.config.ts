@@ -102,7 +102,9 @@ const config: Config = {
     },
   },
 
+
   plugins: [scrollbarHide],
+
 };
 
 export default config;

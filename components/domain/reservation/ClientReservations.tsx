@@ -1,15 +1,20 @@
 'use client';
 
-import { useQuery } from '@tanstack/react-query';
-import ReservationCard from '@/components/common/ReservationCard';
+import { useState, useMemo, useEffect, useRef } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import Image from 'next/image';
+
+import ReservationCard from '@/components/domain/reservation/ReservationCard';
 import SkeletonCard from '@/components/skeleton/SkeletonCard';
 import EmptyState from '@/components/empty/EmptyState';
 import DropdownMenu from '@/components/common/DropDown';
-import Image from 'next/image';
 
 import { filterOptions } from '@/constants/filterOption';
 import { getMyReservations } from '@/services/myReservations';
-import { useState, useMemo } from 'react';
+import { Reservation } from '@/types/domain/myReservations/types';
+
+const PAGE_SIZE = 10;
+const INITIAL_RENDER_COUNT = 5;
 
 export default function ClientReservations() {
   const [status, setStatus] = useState<string>('');
@@ -24,16 +29,56 @@ export default function ClientReservations() {
     setStatus(statusValue);
   };
 
-  // useQuery로 예약 데이터를 가져옴
-  const { data, isLoading, isError } = useQuery({
+  // 커서 기반 무한 스크롤 예약 데이터 불러오기
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } = useInfiniteQuery({
     queryKey: ['myReservations', status],
-    queryFn: () => getMyReservations(undefined, undefined, status),
+    queryFn: ({ pageParam }: { pageParam?: number }) => getMyReservations(pageParam, PAGE_SIZE, status),
+    getNextPageParam: lastPage => {
+      const reservations = lastPage?.reservations ?? [];
+      if (!reservations.length) return undefined;
+      return lastPage.cursorId ?? reservations[reservations.length - 1].id;
+    },
+    initialPageParam: undefined,
   });
 
-  const filteredReservations = useMemo(() => {
-    const reservations = data?.reservations || [];
-    return [...reservations].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-  }, [data]);
+  // 모든 예약 데이터를 한 배열로 합치기
+  const allReservations: Reservation[] = Array.isArray(data?.pages)
+    ? data.pages.flatMap(page => page.reservations ?? [])
+    : [];
+
+  const [renderCount, setRenderCount] = useState(INITIAL_RENDER_COUNT);
+
+  // IntersectionObserver로 스크롤 감지
+  const observerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!observerRef.current) {
+      return () => {};
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          if (renderCount < allReservations.length) {
+            setRenderCount(prev => Math.min(prev + INITIAL_RENDER_COUNT, allReservations.length));
+          } else if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+          }
+        }
+      },
+      { rootMargin: '100px' },
+    );
+
+    observer.observe(observerRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [hasNextPage, isFetchingNextPage, fetchNextPage, renderCount, allReservations.length]);
+
+  useEffect(() => {
+    setRenderCount(INITIAL_RENDER_COUNT);
+  }, [status, data]);
 
   return (
     <div className="mb-6 ml-4">
@@ -53,19 +98,22 @@ export default function ClientReservations() {
 
       {isLoading ? (
         <div className="flex flex-col gap-6 mb-40">
-          {Array.from({ length: 6 }).map((_, idx) => (
+          {Array.from({ length: 5 }).map((_, idx) => (
             <SkeletonCard key={idx} />
           ))}
         </div>
       ) : isError ? (
-        <div className="text-red-500 mt-4">예약 내역을 불러오는 데 실패했습니다.</div>
-      ) : filteredReservations.length === 0 ? (
+        <div className="text-red-500 text-lg mt-4">예약 내역을 불러오는 데 실패했습니다.</div>
+      ) : allReservations.length === 0 ? (
         <EmptyState />
       ) : (
         <div className="flex flex-col gap-6 mb-40">
-          {filteredReservations.map(reservation => (
+          {allReservations.slice(0, renderCount).map(reservation => (
             <ReservationCard key={reservation.id} reservation={reservation} />
           ))}
+
+          <div ref={observerRef} style={{ height: 1 }} />
+          {isFetchingNextPage && <div>로딩 중...</div>}
         </div>
       )}
     </div>
