@@ -60,7 +60,7 @@ export default function ActivityMap({ address }: { address: string }) {
 
   return (
     <div className="w-[327px] mx-auto h-[450px] md:w-[429px] md:h-[276px] lg:w-[789px] lg:h-[476px] my-10">
-      <Map center={position} className="size-full" level={3}>
+      <Map center={position} className="size-full -z-50" level={3}>
         <MapMarker position={position} />
       </Map>
       <div className="flex items-center mt-2 gap-1">
