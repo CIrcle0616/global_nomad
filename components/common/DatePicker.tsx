@@ -15,7 +15,7 @@ export default function DatePicker({ selected, onSelect }: DatePickerProps) {
   const [month, setMonth] = useState(new Date());
 
   return (
-    <div className="space-y-2 rounded-lg border border-gray-200 py-2.5 w-[305px] h-[241px]">
+    <div className="z-[9999] bg-white space-y-2 rounded-lg border border-gray-200 py-2.5 w-[305px] h-[241px]">
       <div className="flex items-center justify-around w-[250px] mx-auto">
         <button
           onClick={() => setMonth(subMonths(month, 1))}
