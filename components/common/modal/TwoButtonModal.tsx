@@ -1,5 +1,8 @@
 'use client';
+import Image from 'next/image';
 import { useModalStore } from '@/store/modalStore';
+import CommonButton from '@/components/common/CommonButton';
+import ModalIconSrc from '@/public/ic_modal_check.svg';
 
 interface ModalProps {
   content: string;
@@ -13,26 +16,36 @@ export default function TwoButtonModal({ content, rightButtonText, leftButtonTex
   const { closeModal } = useModalStore();
 
   return (
-    <div className="bg-white rounded-2xl p-8 w-[300px] sm:w-[400px] md:w-[500px] shadow-lg">
-      <p className="text-xl-semibold text-center text-gray-900 mb-6">{content}</p>
-      <div className="flex justify-between gap-4">
-        <button
+    <div className="relative w-[298px] p-[24px] bg-white rounded-lg shadow-lg">
+      <div className="absolute w-6 h-6 top-6 left-0 right-0 mx-auto">
+        <Image src={ModalIconSrc} width={24} height={24} alt="" />
+      </div>
+      <div className="mt-[40px] mb-[32px] flex justify-center items-center">
+        <p className="max-h-[62px] text-2lg-medium text-nomad-gray overflow-auto">{content}</p>
+      </div>
+      <div className="flex justify-center gap-2">
+        <CommonButton
+          size="S"
+          type="submit"
+          width="w-[80px]"
+          variant="secondary"
           onClick={() => {
             onCancel();
             closeModal();
           }}
-          className="bg-gray-300 text-black text-md-medium rounded-xl px-6 py-3 w-32"
         >
           {leftButtonText ? leftButtonText : '취소'}
-        </button>
-        <button
+        </CommonButton>
+        <CommonButton
+          size="S"
+          type="submit"
+          width="w-[80px]"
           onClick={() => {
             onConfirm?.({ closeModal });
           }}
-          className="bg-nomad-black text-white text-md-medium rounded-xl px-6 py-3 w-32"
         >
           {rightButtonText ? rightButtonText : '확인'}
-        </button>
+        </CommonButton>
       </div>
     </div>
   );

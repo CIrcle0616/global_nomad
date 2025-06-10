@@ -1,4 +1,5 @@
 import { useModalStore } from '@/store/modalStore';
+import CommonButton from '@/components/common/CommonButton';
 
 interface OneButtonModalProps {
   content: string;
@@ -10,18 +11,23 @@ export default function OneButtonModal({ content, buttonText, onConfirm }: OneBu
   const { closeModal } = useModalStore();
 
   return (
-    <div className="bg-white rounded-2xl p-8 w-[300px] sm:w-[400px] md:w-[500px] shadow-lg">
-      <p className="text-xl-semibold text-center text-gray-900 mb-6">{content}</p>
-      <div className="flex justify-center">
-        <button
+    <div className="w-[87vw] p-[28px] bg-white rounded-lg shadow-lg md:w-[540px]">
+      <div className="h-[66px] my-[25px] md:my-[40px] flex justify-center items-center">
+        <p className="max-h-[100%] text-2lg-medium text-nomad-gray overflow-auto">{content}</p>
+      </div>
+      <div className="text-center md:text-right">
+        <CommonButton
+          size="M"
+          type="submit"
+          width="w-[138px]"
           onClick={() => {
             if (onConfirm) onConfirm();
             closeModal();
           }}
-          className="bg-nomad-black text-white text-md-medium rounded-xl px-6 py-3 w-32"
+          className="p-[9px] text-md-medium h-[42px] md:w-[120px] md:h-[48px]"
         >
           {buttonText || '확인'}
-        </button>
+        </CommonButton>
       </div>
     </div>
   );
