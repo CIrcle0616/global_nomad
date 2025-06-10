@@ -21,7 +21,7 @@ export default function TwoButtonModal({ content, rightButtonText, leftButtonTex
         <Image src={ModalIconSrc} width={24} height={24} alt="" />
       </div>
       <div className="mt-[40px] mb-[32px] flex justify-center items-center">
-        <p className="max-h-[62px] text-2lg-medium text-nomad-gray overflow-auto">{content}</p>
+        <p className="max-h-[62px] text-2lg-regular text-nomad-black overflow-auto">{content}</p>
       </div>
       <div className="flex justify-center gap-2">
         <CommonButton
