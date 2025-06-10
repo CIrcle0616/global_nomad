@@ -1,7 +1,7 @@
 import '@/app/globals.css';
 import GlobalModal from '@/components/common/modal/GlobalModal';
 import { ReactNode } from 'react';
-import { Providers } from './provider';
+import { Providers } from '../lib/provider';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
