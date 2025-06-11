@@ -13,7 +13,7 @@ export default function PopularActivitySection() {
   const isDesktop = deviceType === 'desktop';
 
   return (
-    <section className="-mt-[36px]">
+    <section className="mt-8 lg:mt-[34px]">
       <header className="flex mb-4 md:mb-8 justify-between">
         <h2 className="text-[18px] font-bold leading-none md:text-[36px] text-black">&#128293; 인기 체험</h2>
         {isDesktop && (

@@ -1,3 +1,5 @@
+'use client';
+
 import { getActivities } from '@/services/activities';
 import { ActivityBasicDto } from '@/types';
 import { GetActivitiesSuccessResponse } from '@/types/domain/activity/types';

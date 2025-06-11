@@ -1,10 +1,11 @@
+'use client';
+
 import useMediaQuery from '@/store/useMediaQuery';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { getActivities } from '@/services/activities';
-import useIsClient from './useIsClient';
 
-enum SizeByDeviceType {
+export enum SizeByDeviceType {
   mobile = 4,
   tablet = 9,
   desktop = 8,
@@ -13,7 +14,6 @@ enum SizeByDeviceType {
 export default function useMainActivityList() {
   const searchParams = useSearchParams();
   const deviceType = useMediaQuery();
-  const isClient = useIsClient();
   const keyword = searchParams.get('keyword') || undefined;
   const page = Number(searchParams.get('page')) || undefined;
   const sort = searchParams.get('sort') || undefined;
@@ -27,11 +27,10 @@ export default function useMainActivityList() {
 
   const queryParams = { keyword, page, sort, category, size: pageSize };
 
-  const { data } = useQuery({
+  const { data, isPending } = useQuery({
     queryKey: ['activities', queryParams],
     queryFn: () => getActivities({ method: 'offset', ...queryParams }),
-    enabled: isClient,
   });
 
-  return { activities: data?.activities || [], hasKeyword };
+  return { activities: data?.activities || [], hasKeyword, isPending };
 }
