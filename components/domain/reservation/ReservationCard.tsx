@@ -59,6 +59,14 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
               ? 'text-gray-800'
               : '';
 
+  // 버튼과 placeholder의 공통 클래스
+  const buttonPlaceholderClass =
+    'h-[32px] md:h-[40px] lg:h-[43px] min-w-[80px] md:min-w-[112px] lg:min-w-[144px] text-[14px] rounded-[6px]';
+
+  // 공통 버튼 클래스
+  const buttonClass =
+    '!h-[32px] md:!h-[40px] lg:!h-[43px] !min-w-[80px] md:!min-w-[112px] lg:!min-w-[144px] text-[14px] md:text-[16px] lg:text-[18px] rounded-[6px] !p-[6px] md:!p-[8px]';
+
   return (
     <div className="flex w-full max-w-full md:max-w-[600px] lg:max-w-[792px] h-[128px] md:h-[156px] lg:h-[204px] bg-white rounded-xl overflow-hidden shadow-md border border-gray-100">
       <div className="flex-shrink-0 w-[128px] md:w-[156px] lg:w-[204px] h-full relative">
@@ -71,8 +79,8 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
         />
       </div>
 
-      <div className="flex flex-col justify-center p-4 flex-1 min-w-0">
-        <p className={`text-lg-bold leading-tight mb-1 ${statusTextColorClass}`}>{statusInfo.text}</p>
+      <div className="flex flex-col justify-center p-2 flex-1 min-w-0">
+        <p className={`text-md-bold md:text-lg-bold leading-tight mb-1 ${statusTextColorClass}`}>{statusInfo.text}</p>
 
         <h2 className="text-black font-semibold truncate whitespace-nowrap overflow-hidden leading-tight text-md-bold md:text-lg-bold lg:text-xl-bold mb-1 lg:mb-4">
           {reservation.activity.title}
@@ -84,17 +92,12 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
         </p>
 
         <div className="flex items-center justify-between mt-0 md:mt-2 lg:mt-4">
-          <p className="text-lg-bold md:text-xl-bold lg:text-2xl-bold text-black">
+          <p className="text-lg-bold mt-2 md:text-xl-bold lg:text-2xl-bold text-black">
             ₩{reservation.totalPrice.toLocaleString()}원
           </p>
 
           {reservation.status === 'pending' && (
-            <CommonButton
-              size="S"
-              variant="secondary"
-              onClick={handleCancelReservation}
-              className="h-[32px] md:h-[40px] lg:h-[43px] min-w-[80px] md:min-w-[112px] lg:min-w-[144px] rounded-[6px]"
-            >
+            <CommonButton size="S" variant="secondary" onClick={handleCancelReservation} className={buttonClass}>
               예약 취소
             </CommonButton>
           )}
@@ -106,7 +109,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
                   size="S"
                   variant="secondary"
                   disabled
-                  className="h-[32px] md:h-[40px] lg:h-[43px] min-w-[80px] md:min-w-[112px] lg:min-w-[144px] rounded-[6px] bg-gray-300 text-gray-500 cursor-not-allowed"
+                  className={`${buttonClass} bg-gray-300 text-gray-500 cursor-not-allowed`}
                 >
                   작성 완료
                 </CommonButton>
@@ -122,16 +125,19 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
                         const { closeModal } = useModalStore.getState();
                         closeModal();
                       },
-
                       onReviewSubmit: () => setReviewSubmitted(true),
                     })
                   }
-                  className="h-[32px] md:h-[40px] lg:h-[43px] min-w-[80px] md:min-w-[112px] lg:min-w-[144px] rounded-[6px]"
+                  className={buttonClass}
                 >
                   후기 작성
                 </CommonButton>
               )}
             </>
+          )}
+
+          {reservation.status !== 'pending' && reservation.status !== 'completed' && (
+            <div className={buttonPlaceholderClass} />
           )}
         </div>
       </div>
