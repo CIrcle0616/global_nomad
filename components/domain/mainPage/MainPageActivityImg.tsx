@@ -3,11 +3,12 @@ import Image from 'next/image';
 interface MainPageActivityImgProps {
   imageUrl: string;
   title?: string;
+  className?: string;
 }
 
-export default function MainPageActivityImg({ imageUrl, title }: MainPageActivityImgProps) {
+export default function MainPageActivityImg({ imageUrl, title, className = '' }: MainPageActivityImgProps) {
   return (
-    <div className="relative w-[186px] h-[186px] md:w-[384px] md:h-[384px]">
+    <div className={`relative ${className}`}>
       <Image src={imageUrl} fill alt={title ?? ''} className="object-cover object-center" />;
     </div>
   );
