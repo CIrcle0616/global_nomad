@@ -3,6 +3,7 @@
 import DropdownSelect from '@/components/common/DropDownSelect';
 import { useState, useRef } from 'react';
 import Image from 'next/image';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 type TimeForm = {
   id: number;
@@ -11,12 +12,23 @@ type TimeForm = {
   endTime: string;
 };
 
+interface AddressData {
+  address: string;
+  addressType: 'R' | 'J';
+  bname: string;
+  buildingName: string;
+  zonecode: string;
+  userSelectedType: 'R' | 'J';
+  jibunAddress: string;
+  roadAddress: string;
+}
+
 export default function NewAndEditActivityPage() {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [detail, setDetail] = useState('');
   const [price, setPrice] = useState('');
-  const [post, setPost] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
   const [selecteDate, setSelectedDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
@@ -35,8 +47,15 @@ export default function NewAndEditActivityPage() {
   const handleDetailChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(event.target.value);
   };
+  const handleAddressDetailChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setDetailAddress(event.target.value);
+  const [address, setAddress] = useState('');
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => setPrice(event.target.value);
-  const handlePostChange = (event: React.ChangeEvent<HTMLInputElement>) => setPost(event.target.value);
+  const open = useDaumPostcodePopup();
+  const handleAddressChange = (data: AddressData) => setAddress(data.address);
+  const handleAddressClick = () => {
+    open({ onComplete: handleAddressChange });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -99,7 +118,7 @@ export default function NewAndEditActivityPage() {
           <option value="" disabled hidden>
             카테고리 선택
           </option>
-          <option value="음식">문화 예술</option>
+          <option value="문화 예술">문화 예술</option>
           <option value="식음료">식음료</option>
           <option value="스포츠">스포츠</option>
           <option value="투어">투어</option>
@@ -127,10 +146,19 @@ export default function NewAndEditActivityPage() {
 
         <input
           type="text"
-          value={post}
-          onChange={handlePostChange}
+          value={address}
+          readOnly
+          onClick={handleAddressClick}
+          className="w-full border border-gray-300 rounded px-4 py-2 cursor-pointer bg-white"
+          placeholder="주소를 검색하려면 클릭하세요"
+        />
+
+        <input
+          type="text"
+          value={detailAddress}
+          onChange={handleAddressDetailChange}
           className="w-full border border-gray-300 rounded px-4 py-2"
-          placeholder="주소를 입력하세요"
+          placeholder="상세 주소를 입력하세요"
         />
         <h1 className="text-2xl font-bold mb-2">예약 가능한 시간대</h1>
 
