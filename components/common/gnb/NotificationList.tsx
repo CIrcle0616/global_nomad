@@ -44,7 +44,7 @@ export default function NotificationList() {
   });
 
   return (
-    <div className="p-3 max-h-[400px] overflow-y-auto w-[360px] z-100" style={{ backgroundColor: '#CDE8D5' }}>
+    <div className="p-3 z-100 bg-[#CDE8D5] w-full h-full sm:w-full sm:h-auto sm:max-h-[400px] ">
       <div className="flex items-center px-3 py-x">
         <span className="text-xl-bold mt-[5px] mb-[5px]">알림 {filtered.length}개</span>
       </div>

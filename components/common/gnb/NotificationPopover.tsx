@@ -1,6 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
+import closeIcon from '@/public/ic_close.svg';
 
 type NotificationPopoverProps = {
   onClose: () => void;
@@ -23,8 +25,11 @@ export default function NotificationPopover({ children, onClose }: NotificationP
   return (
     <div
       ref={popoverRef}
-      className="overflow-y-auto absolute top-full right-0 border border-gray-200 shadow-md rounded-md z-50"
+      className={`z-50 overflow-y-auto fixed top-0 left-0 w-screen h-screen bg-white sm:absolute sm:top-full sm:right-0 sm:translate-x-[-120px] lg:translate-x-[-60px] sm:w-[360px] sm:h-auto sm:rounded-md sm:shadow-md sm:border sm:border-gray-200 sm:bg-white`}
     >
+      <button className="absolute top-4 right-4 sm:hidden" onClick={onClose}>
+        <Image src={closeIcon} alt="닫기" width={24} height={24} />
+      </button>
       {children}
     </div>
   );
