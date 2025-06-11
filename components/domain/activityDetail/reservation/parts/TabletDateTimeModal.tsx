@@ -1,17 +1,16 @@
 'use client';
 
-import { useTabletModalStore } from '@/store/useReservationTabletStore';
+import { useModalStore } from '@/store/modalStore';
 import DateSelector from './DateSelector';
 import TimeSelector from './TimeSelector';
 import CommonButton from '@/components/common/CommonButton';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface TabletDateTimeModalProps {
   state: {
     date: Date | undefined;
     time: string;
   };
-
   onDateChange: (date: Date | undefined) => void;
   onTimeChange: (time: string) => void;
   onReserve: () => void;
@@ -27,8 +26,7 @@ export default function TabletDateTimeModal({
   availableTimes,
   loading = false,
 }: TabletDateTimeModalProps) {
-  const { isOpen, toggleModal } = useTabletModalStore();
-  const modalRef = useRef<HTMLDivElement>(null);
+  const { closeModal } = useModalStore();
 
   const [tempDate, setTempDate] = useState<Date | undefined>(state.date);
   const [tempTime, setTempTime] = useState<string>(state.time);
@@ -36,32 +34,12 @@ export default function TabletDateTimeModal({
   const isReservable = !!tempDate && tempTime;
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        toggleModal();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener('mousedown', handleClickOutside);
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [isOpen, toggleModal]);
-
-  useEffect(() => {
-    if (isOpen) {
-      setTempDate(state.date);
-      setTempTime(state.time);
-    }
-  }, [isOpen, state.date, state.time]);
-
-  if (!isOpen) return null;
+    setTempDate(state.date);
+    setTempTime(state.time);
+  }, [state.date, state.time]);
 
   return (
-    <div ref={modalRef} className="rounded-xl border p-4 shadow bg-white mt-[100px] ml-[40px] w-[300px]">
+    <div className="rounded-xl border p-4 shadow bg-white mt-[100px] ml-[40px] w-[300px]">
       <div className="mb-2">
         <span className="block text-black mb-1 text-2xl-bold">날짜</span>
         <div className="mt-4">
@@ -90,7 +68,7 @@ export default function TabletDateTimeModal({
           if (tempDate) onDateChange(tempDate);
           onTimeChange(tempTime);
           onReserve();
-          toggleModal();
+          closeModal();
         }}
       >
         예약하기
