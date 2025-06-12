@@ -3,6 +3,7 @@
 import DropdownSelect from '@/components/common/DropDownSelect';
 import { useState, useRef } from 'react';
 import Image from 'next/image';
+import { useDaumPostcodePopup } from 'react-daum-postcode';
 
 type TimeForm = {
   id: number;
@@ -11,12 +12,24 @@ type TimeForm = {
   endTime: string;
 };
 
+interface AddressData {
+  address: string;
+  addressType: 'R' | 'J';
+  bname: string;
+  buildingName: string;
+  zonecode: string;
+  userSelectedType: 'R' | 'J';
+  jibunAddress: string;
+  roadAddress: string;
+}
+
 export default function NewAndEditActivityPage() {
   const [title, setTitle] = useState('');
   const [category, setCategory] = useState('');
   const [detail, setDetail] = useState('');
   const [price, setPrice] = useState('');
-  const [post, setPost] = useState('');
+  const [address, setAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
   const [selecteDate, setSelectedDate] = useState('');
   const [startTime, setStartTime] = useState('');
   const [endTime, setEndTime] = useState('');
@@ -35,8 +48,15 @@ export default function NewAndEditActivityPage() {
   const handleDetailChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setDetail(event.target.value);
   };
+  const handleAddressDetailChange = (event: React.ChangeEvent<HTMLInputElement>) =>
+    setDetailAddress(event.target.value);
+
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => setPrice(event.target.value);
-  const handlePostChange = (event: React.ChangeEvent<HTMLInputElement>) => setPost(event.target.value);
+  const openAddress = useDaumPostcodePopup();
+  const handleAddressChange = (data: AddressData) => setAddress(data.address);
+  const handleAddressClick = () => {
+    openAddress({ onComplete: handleAddressChange });
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -57,6 +77,33 @@ export default function NewAndEditActivityPage() {
       startTime,
       endTime,
     };
+
+    const newFormTime = (time: string): number => {
+      const [h, m] = time.split(':').map(Number);
+      return h * 60 + m;
+    };
+
+    if (forms.length > 0) {
+      const newStart = newFormTime(newForm.startTime);
+      const newEnd = newFormTime(newForm.endTime);
+
+      for (let i = 0; i < forms.length; i++) {
+        const formNowIndex = forms[i];
+        const formStartTime = newFormTime(formNowIndex.startTime);
+        const formEndTime = newFormTime(formNowIndex.endTime);
+        console.log(formNowIndex.date, newForm.date);
+        if (formNowIndex.date === newForm.date) {
+          if (
+            (newStart >= formStartTime && newStart < formEndTime) ||
+            (newEnd > formStartTime && newEnd <= formEndTime) ||
+            (newStart <= formStartTime && newEnd >= formEndTime)
+          ) {
+            alert('겹치는 시간에는 예약할 수 없습니다!');
+            return;
+          }
+        }
+      }
+    }
 
     setForms([...forms, newForm]);
     setStartTime('');
@@ -89,17 +136,19 @@ export default function NewAndEditActivityPage() {
           onChange={handleTitleChange}
           className="w-full border border-gray-300 rounded px-4 py-2"
           placeholder="제목"
+          required
         />
 
         <select
           value={category}
           onChange={e => setCategory(e.target.value)}
           className="w-full border border-gray-300 rounded px-4 py-2"
+          required
         >
           <option value="" disabled hidden>
             카테고리 선택
           </option>
-          <option value="음식">문화 예술</option>
+          <option value="문화 예술">문화 예술</option>
           <option value="식음료">식음료</option>
           <option value="스포츠">스포츠</option>
           <option value="투어">투어</option>
@@ -112,6 +161,7 @@ export default function NewAndEditActivityPage() {
           onChange={handleDetailChange}
           className="w-full border border-gray-300 rounded px-4 py-2 h-96 resize-none"
           placeholder="설명"
+          required
         />
         <h1 className="text-2xl font-bold">가격</h1>
 
@@ -121,16 +171,27 @@ export default function NewAndEditActivityPage() {
           onChange={handlePriceChange}
           className="w-full border border-gray-300 rounded px-4 py-2"
           placeholder="가격"
+          required
         />
 
         <h1 className="text-2xl font-bold">주소</h1>
 
         <input
           type="text"
-          value={post}
-          onChange={handlePostChange}
+          value={address}
+          readOnly
+          onClick={handleAddressClick}
+          className="w-full border border-gray-300 rounded px-4 py-2 cursor-pointer bg-white"
+          placeholder="주소를 검색하려면 클릭하세요"
+          required
+        />
+
+        <input
+          type="text"
+          value={detailAddress}
+          onChange={handleAddressDetailChange}
           className="w-full border border-gray-300 rounded px-4 py-2"
-          placeholder="주소를 입력하세요"
+          placeholder="상세 주소를 입력하세요"
         />
         <h1 className="text-2xl font-bold mb-2">예약 가능한 시간대</h1>
 
@@ -148,6 +209,7 @@ export default function NewAndEditActivityPage() {
             value={startTime}
             onChange={e => setStartTime(e.target.value)}
             className="h-[50px] w-40 px-3 text-base border border-gray-300 rounded-md text-gray-900 text-center"
+            required
           >
             <option value="">시간 선택</option>
             {startHours.map(h =>
@@ -169,6 +231,7 @@ export default function NewAndEditActivityPage() {
             value={endTime}
             onChange={e => setEndTime(e.target.value)}
             className="h-[50px] w-40 px-3 text-base border border-gray-300 rounded-md text-gray-900 text-center"
+            required
           >
             <option value="">시간 선택</option>
             {endHours.map(h =>
@@ -235,7 +298,13 @@ export default function NewAndEditActivityPage() {
 
         <h1 className="text-2xl font-bold">배너 이미지</h1>
         <>
-          <input type="file" ref={bannerInputRef} onChange={e => handleImageUpload(e, 'banner')} className="hidden" />
+          <input
+            type="file"
+            ref={bannerInputRef}
+            onChange={e => handleImageUpload(e, 'banner')}
+            className="hidden"
+            required
+          />
 
           <div className="flex gap-4 mt-4 flex-wrap">
             <button
