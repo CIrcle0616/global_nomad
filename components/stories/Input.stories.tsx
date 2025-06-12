@@ -13,8 +13,7 @@ const meta: Meta<typeof Input> = {
   argTypes: {
     value: { control: 'text' },
     placeholder: { control: 'text' },
-    error: { control: 'text' },
-    hint: { control: 'text' },
+    status: { control: 'text' },
     readOnly: { control: 'boolean' },
     icon: { control: false }, // 아이콘은 실제로 Storybook에 표시하기 어려우므로 제외
     onChange: { action: 'onChange' },
@@ -41,14 +40,14 @@ export const WithPlaceholder: Story = {
 export const WithError: Story = {
   args: {
     value: '잘못된 입력',
-    error: '이 필드는 필수입니다.',
+    status: { error: '이 필드는 필수입니다.' },
   },
 };
 
 export const WithHint: Story = {
   args: {
     value: '정상 입력',
-    hint: '올바른 입력입니다.',
+    status: { hint: '올바른 입력입니다.' },
   },
 };
 
