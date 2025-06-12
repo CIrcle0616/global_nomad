@@ -1,13 +1,17 @@
 'use client';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { getUserMe, patchUserMe } from '@/services/users';
 import { UpdateUserBodyDto } from '@/types';
 import { GetMyInfoSuccessResponse } from '@/types/domain/user/types';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useModalStore } from '@/store/modalStore';
 import Input from '@/components/common/Input';
 import CommonButton from '@/components/common/CommonButton';
 import ProfileImageUploader from '@/components/common/ProfileImageUploader';
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
+import { useProfileImageUpload } from '@/hooks/useProfileImageUpload';
 
 type userInfoInputs = UpdateUserBodyDto & {
   passwordConfirm: string;
@@ -15,8 +19,11 @@ type userInfoInputs = UpdateUserBodyDto & {
 
 export default function MyInfoPage() {
   const queryClient = useQueryClient();
+  const { openModal } = useModalStore();
 
   const [email, setEmail] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const { data, isSuccess, isError, error } = useQuery({
     queryKey: ['myInfo'],
@@ -45,8 +52,11 @@ export default function MyInfoPage() {
       return patchUserMe(profileInfo);
     },
     onSuccess: () => {
-      alert('내정보가 수정되었습니다.');
       queryClient.invalidateQueries({ queryKey: ['myInfo'] });
+      openModal(OneButtonModal, {
+        content: '내정보가 수정되었습니다.',
+        onConfirm: () => {},
+      });
     },
     onError: error => {
       console.log(error);
@@ -77,10 +87,25 @@ export default function MyInfoPage() {
     console.error('에러 내용:', error);
   }
 
+  const profileImageMutation = useProfileImageUpload(
+    () => {
+      openModal(OneButtonModal, {
+        content: '프로필 이미지가 변경되었습니다.',
+        onConfirm: () => {},
+      });
+    },
+    error => {
+      openModal(OneButtonModal, {
+        content: `이미지 업로드 실패: ${error.message}`,
+        onConfirm: () => {},
+      });
+    },
+  );
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="px-6 mb-[120px]">
-        <div className="flex justify-between items-center mb-4">
+        <div className="flex justify-between content-center">
           <h1 className="text-3xl-bold text-black">내 정보</h1>
           <CommonButton size="M" type="submit" width="w-[120px]">
             저장하기
@@ -89,7 +114,11 @@ export default function MyInfoPage() {
 
         <section className="space-y-6">
           <div className="md:hidden">
-            <ProfileImageUploader />
+            <ProfileImageUploader
+              onFileSelected={(file: File) => {
+                profileImageMutation.mutate(file);
+              }}
+            />
           </div>
           <div>
             <label className="block mb-4 text-2xl-bold text-black" htmlFor="nickname">
@@ -134,10 +163,22 @@ export default function MyInfoPage() {
               render={({ field }) => (
                 <Input
                   {...field}
+                  type={showPassword ? 'text' : 'password'}
                   value={field.value ?? ''}
                   onChange={field.onChange}
                   placeholder="8자 이상 입력해 주세요."
                   status={{ error: errors.newPassword?.message }}
+                  icon={{
+                    element: (
+                      <Image
+                        src={showPassword ? '/ic_passwordOn.svg' : '/ic_passwordOff.svg'}
+                        width={24}
+                        height={24}
+                        alt="비밀번호 보기"
+                      />
+                    ),
+                    onClick: () => setShowPassword(prev => !prev),
+                  }}
                 />
               )}
             />
@@ -156,8 +197,20 @@ export default function MyInfoPage() {
               render={({ field }) => (
                 <Input
                   {...field}
+                  type={showConfirmPassword ? 'text' : 'password'}
                   placeholder="비밀번호를 한번 더 입력해 주세요."
                   status={{ error: errors.passwordConfirm?.message }}
+                  icon={{
+                    element: (
+                      <Image
+                        src={showConfirmPassword ? '/ic_passwordOn.svg' : '/ic_passwordOff.svg'}
+                        width={24}
+                        height={24}
+                        alt="비밀번호 보기"
+                      />
+                    ),
+                    onClick: () => setShowConfirmPassword(prev => !prev),
+                  }}
                 />
               )}
             />
