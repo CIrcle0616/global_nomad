@@ -64,9 +64,6 @@ export function postActivities(
   },
   accessToken?: string, // ★ 1. 선택적 accessToken 인자 추가
 ): Promise<CreateActivitySuccessResponse> {
-  console.log('🔥 postActivities 호출됨'); // ← 이 줄 추가
-  console.log('보내는 데이터', body); // ← 이 줄도 추가하면 확인 쉬움
-
   return fetchWrapper<CreateActivitySuccessResponse>('/activities', 'POST', body, {
     // ★ 2. 헤더 주입 로직 추가
     ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
