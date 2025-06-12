@@ -11,7 +11,6 @@ export async function fetchWrapper<T>(
   const baseUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
     : process.env.APP_URL || 'http://localhost:3000';
-
   const isFormData = body instanceof FormData;
 
   const headers: Record<string, string> = {
