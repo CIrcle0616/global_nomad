@@ -53,6 +53,10 @@ export default function MyInfoPage() {
     },
   });
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
   const onSubmit: SubmitHandler<userInfoInputs> = data => {
     const { nickname, newPassword } = data;
     profileInfoMutation.mutate({ nickname, newPassword });
@@ -103,7 +107,7 @@ export default function MyInfoPage() {
                   value={field.value ?? ''}
                   onChange={field.onChange}
                   placeholder="닉네임을 입력해주세요."
-                  error={errors.nickname?.message}
+                  status={{ error: errors.nickname?.message }}
                 />
               )}
             />
@@ -113,12 +117,7 @@ export default function MyInfoPage() {
             <label className="block mb-4 text-2xl-bold text-black" htmlFor="email">
               이메일
             </label>
-            <Input
-              value={email || ''}
-              onChange={e => setEmail(e.target.value)}
-              placeholder="이메일을 입력해주세요."
-              readOnly
-            />
+            <Input value={email || ''} onChange={handleEmailChange} placeholder="이메일을 입력해주세요." readOnly />
           </div>
 
           <div>
@@ -138,7 +137,7 @@ export default function MyInfoPage() {
                   value={field.value ?? ''}
                   onChange={field.onChange}
                   placeholder="8자 이상 입력해 주세요."
-                  error={errors.newPassword?.message}
+                  status={{ error: errors.newPassword?.message }}
                 />
               )}
             />
@@ -158,7 +157,7 @@ export default function MyInfoPage() {
                 <Input
                   {...field}
                   placeholder="비밀번호를 한번 더 입력해 주세요."
-                  error={errors.passwordConfirm?.message}
+                  status={{ error: errors.passwordConfirm?.message }}
                 />
               )}
             />

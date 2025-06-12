@@ -33,7 +33,7 @@ export default function ReservationSection() {
 
   const { data: scheduleData } = useQuery({
     queryKey: ['availableSchedule', id, year, month],
-    queryFn: () => getAvailableSchedule(id, year, month),
+    queryFn: () => getAvailableSchedule({ activityId: id, year, month }),
     enabled: !!id && !!date,
   });
 
@@ -53,9 +53,12 @@ export default function ReservationSection() {
 
       if (!matchedSchedule) throw new Error('해당 시간에 예약 가능한 스케줄이 없습니다');
 
-      await postActivityReservation(id, {
-        scheduleId: matchedSchedule.id,
-        headCount: count,
+      await postActivityReservation({
+        activityId: id,
+        body: {
+          scheduleId: matchedSchedule.id,
+          headCount: count,
+        },
       });
       openModal(OneButtonModal, {
         content: '예약이 완료되었습니다.',
