@@ -28,7 +28,9 @@ export default function NewAndEditActivityPage() {
   const [category, setCategory] = useState('');
   const [detail, setDetail] = useState('');
   const [price, setPrice] = useState('');
+
   const [address, setAddress] = useState('');
+
   const [detailAddress, setDetailAddress] = useState('');
   const [selecteDate, setSelectedDate] = useState('');
   const [startTime, setStartTime] = useState('');
@@ -51,11 +53,20 @@ export default function NewAndEditActivityPage() {
   const handleAddressDetailChange = (event: React.ChangeEvent<HTMLInputElement>) =>
     setDetailAddress(event.target.value);
 
+  const [address, setAddress] = useState('');
+  const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => setPrice(event.target.value);
+  const open = useDaumPostcodePopup();
+  const handleAddressChange = (data: AddressData) => setAddress(data.address);
+  const handleAddressClick = () => {
+    open({ onComplete: handleAddressChange });
+
+
   const handlePriceChange = (event: React.ChangeEvent<HTMLInputElement>) => setPrice(event.target.value);
   const openAddress = useDaumPostcodePopup();
   const handleAddressChange = (data: AddressData) => setAddress(data.address);
   const handleAddressClick = () => {
     openAddress({ onComplete: handleAddressChange });
+
   };
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -183,7 +194,9 @@ export default function NewAndEditActivityPage() {
           onClick={handleAddressClick}
           className="w-full border border-gray-300 rounded px-4 py-2 cursor-pointer bg-white"
           placeholder="주소를 검색하려면 클릭하세요"
+
           required
+
         />
 
         <input
