@@ -28,7 +28,7 @@ export default function ReviewForm({
 
     setIsSubmitting(true);
     try {
-      await postMyReservations(reservation.id, { rating, content: reviewText });
+      await postMyReservations({ reservationId: reservation.id, body: { rating, content: reviewText } });
       console.log('후기 작성 완료');
 
       onReviewSubmit?.();

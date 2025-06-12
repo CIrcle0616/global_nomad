@@ -1,38 +1,143 @@
-# 💻 Global Nomad
+# 🌐 Global Nomad
 
-> **" 이 프로젝트는 캘린더 뷰 SDK와 지도 뷰 SDK를 활용해 예약 가능한 날짜를 설정하고, 체험 상품을 예약하는 기능을 구현하는 것을 목표로 합니다. "**
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/73e78043-9516-4c5e-a3fc-9de78ee0f5ee" alt="메인 페이지" width="600" />
+</p>
 
----
-
-## 👤 팀원 소개 & 역할
-
-| 프로필 | 이름 | GitHub | 주요 담당 기능 |
-|--------|------|--------|----------------|
-| <img src="https://avatars.githubusercontent.com/u/81224667?v=4" width="60" /> | **나예진** | [@JjinJjin](https://github.com/NaYejin94) | 역할1(추후 수정) |
-| <img src="https://avatars.githubusercontent.com/u/81631735?v=4" width="60" /> | **박원현** | [@CIrcle0616](https://github.com/CIrcle0616) | 역할2(추후 수정) | 
-| <img src="https://avatars.githubusercontent.com/u/120624055?v=4" width="60" /> | **박찬영** | [@Parkchanyoung0710](https://github.com/Parkchanyoung0710) | 역할3(추후 수정) | 
-| <img src="https://avatars.githubusercontent.com/u/61350224?v=4" width="60" /> | **오종택** | [@ohjongteak](https://github.com/ohjongteak) | 역할4(추후 수정) |
-| <img src="https://avatars.githubusercontent.com/u/16948775?v=4" width="60" /> | **전수영** | [@daonJeon](https://github.com/daonJeon) | 역할5(추후 수정) |
-| <img src="https://avatars.githubusercontent.com/u/192935871?v=4" width="60" /> | **조지현** | [@zeon0xx0](https://github.com/zeon0xx0) | 역할6(추후 수정) |
+> **" Global Nomad는 캘린더 뷰 SDK와 지도 뷰 SDK를 활용해 예약 가능한 날짜를 설정하고, 체험 상품을 예약하는 기능을 제공하는 웹 애플리케이션입니다."**
 
 ---
 
-## 🔗 배포 주소
-- [Global Nomad](배포 후 주소 업데이트 하겠습니다 )
-
-## 🚀 배포 환경
-- vercel
-
-## 🗓 개발 기간
-- **2025.05.27 ~ 2025.06.26**
+### 📚 목차
+- [👤 팀원 소개 & 역할]
+- [🔗 배포 환경 및 기간]
+- [✨ 주요 기능 요약]
+- [⚙️ 설치 및 실행 방법]
+- [🛠 Tech Stack]
+- [⭐ 사용된 주요 라이브러리]
+- [📂 폴더 및 파일 구조]
+- [🧾 네이밍 규칙]
+- [🌿 Git Branch 전략]
+- [💬 커밋 메시지 컨벤션]
 
 ---
 
-## ✨ 주요 기능 요약
+### 👤 팀원 소개 & 역할
+<table>
+  <tr>
+    <th>프로필</th>
+    <th>이름</th>
+    <th>GitHub</th>
+    <th>주요 담당 기능</th>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/81224667?v=4" width="140" /></td>
+    <td align="center"><strong>나예진</strong><br>(NaYejin)</td>
+    <td align="center"><a href="https://github.com/NaYejin94">@JjinJjin</a></td>
+    <td>
+      <ul>
+        <li>API 작성</li>
+        <li>datepicker 구현</li>
+        <li>체험 상세페이지</li>
+        <li>페이지네이션</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/81631735?v=4" width="140" /></td>
+    <td align="center"><strong>박원현</strong><br>(ParkWonHyun)</td>
+    <td align="center"><a href="https://github.com/CIrcle0616">@CIrcle0616</a></td>
+    <td>
+      <ul>
+        <li>App 라우터 폴더구조</li>
+        <li>가이드 문서 작성 (라우팅, API 반환값 Type)</li>
+        <li>Vercel 배포</li>
+        <li>로그인/회원가입 페이지</li>
+        <li>메인 페이지</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/120624055?v=4" width="140" /></td>
+    <td align="center"><strong>박찬영</strong><br>(ParkChanYoung)</td>
+    <td align="center"><a href="https://github.com/Parkchanyoung0710">@Parkchanyoung0710</a></td>
+    <td>
+      <ul>
+        <li>global.css</li>
+        <li>Search 컴포넌트</li>
+        <li>사이드 프로필</li>
+        <li>빈 화면 페이지</li>
+        <li>예약 내역 페이지</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/61350224?v=4" width="140" /></td>
+    <td align="center"><strong>오종택</strong><br>(OhJongTaek)</td>
+    <td align="center"><a href="https://github.com/ohjongteak">@ohjongteak</a></td>
+    <td>
+      <ul>
+        <li>포맷팅 (prettier, eslint, husky)</li>
+        <li>공통 모달</li>
+        <li>내 체험 관리페이지</li>
+        <li>내 체험 등록</li>
+        <li>수정 페이지</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/16948775?v=4" width="140" /></td>
+    <td align="center"><strong>전수영</strong><br>(JeonSuYeong)</td>
+    <td align="center"><a href="https://github.com/daonJeon">@daonJeon</a></td>
+    <td>
+      <ul>
+        <li>스토리북</li>
+        <li>공통 버튼 컴포넌트</li>
+        <li>레포 문서 템플릿</li>
+        <li>내정보 관리페이지</li>
+        <li>메인 페이지</li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td align="center"><img src="https://avatars.githubusercontent.com/u/192935871?v=4" width="140" /></td>
+    <td align="center"><strong>조지현</strong><br>(JoJiHyeon)</td>
+    <td align="center"><a href="https://github.com/zeon0xx0">@zeon0xx0</a></td>
+    <td>
+      <ul>
+        <li>gnb</li>
+        <li>footer</li>
+        <li>공통 드롭다운</li>
+        <li>input 컴포넌트</li>
+        <li>예약 현황 페이지</li>
+        <li>예약 컴포넌트</li>
+        <li>알림</li>
+      </ul>
+    </td>
+  </tr>
+</table>
+
+
+
+### 🔗 배포 환경 및 기간
+- **배포 주소**: [Global Nomad](배포 후 주소 업데이트 하겠습니다 )
+- **배포 환경**: vercel
+- **개발 기간**: 2025.05.27 ~ 2025.06.26
 
 ---
 
-## ⚙️ 설치 및 실행 방법
+### ✨ 주요 기능 요약
+- 예약 가능한 날짜/시간 확인 및 선택 (캘린더 뷰 SDK)
+- 체험 상품 예약 및 참여 인원 설정
+- 카테고리/가격/검색 필터로 체험 탐색
+- 무한 스크롤 (인기 체험 탐색)
+- 내 정보 관리 (프로필, 닉네임, 비밀번호)
+- 내 체험 관리 (등록, 수정, 삭제, 예약 현황 확인)
+- 예약 상태별 관리 (대기/승인/거절/완료)
+- 알림 기능 (예약 상태 변경 알림)
+
+
+### ⚙️ 설치 및 실행 방법
 
 ```bash
 # 1. 저장소 클론
@@ -48,60 +153,97 @@ $ npm run dev
 
 ---
 
-## 🛠 Tech Stack
-
+### 🛠 Tech Stack
 > 본 프로젝트는 아래 기술 스택을 기반으로 구성되었습니다.
+---
+
+<table>
+  <tr>
+    <th>역할</th>
+    <th>사용 기술</th>
+    <th>도입한 이유</th>
+  </tr>
+  <tr>
+    <td>언어 & 프레임워크</td>
+    <td>
+      <img src="https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white" />
+      <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black" />
+      <img src="https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white" />
+      <img src="https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white" />
+    </td>
+    <td>파일 기반 라우팅과 서버 컴포넌트 지원으로 빠른 렌더링과 유지보수가 용이하기 때문입니다.</td>
+  </tr>
+  <tr>
+    <td>UI & 스타일링</td>
+    <td>
+      <img src="https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white" />
+    </td>
+    <td>빠른 스타일링과 일관성 있는 디자인 시스템 구성을 위해 선택했습니다.</td>
+  </tr>
+  <tr>
+    <td>라우팅 & 상태 관리</td>
+    <td>
+      <img src="https://img.shields.io/badge/App_Router-000000?style=flat-square&logo=nextdotjs&logoColor=white" />
+      <img src="https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white" />
+      <img src="https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=Zustand&logoColor=white" />
+    </td>
+    <td>서버와 클라이언트 상태를 명확히 분리해 코드 관리와 성능을 개선하기 위해 사용했습니다.</td>
+  </tr>
+  <tr>
+    <td>API & 인증</td>
+    <td>
+      <img src="https://img.shields.io/badge/Fetch_API-native?style=flat-square&logo=javascript&logoColor=white" />
+    </td>
+    <td>간단하고 직관적인 네이티브 API로 데이터 요청을 처리하기 위해 사용했습니다.</td>
+  </tr>
+  <tr>
+    <td>빌드 & 배포</td>
+    <td>
+      <img src="https://img.shields.io/badge/Webpack-8DD6F9?style=flat-square&logo=webpack&logoColor=black" />
+      <img src="https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white" />
+    </td>
+    <td>빠른 빌드 및 배포 환경을 구성하고, 최적화된 정적 파일 서비스를 위해 사용했습니다.</td>
+  </tr>
+  <tr>
+    <td>코드 품질</td>
+    <td>
+      <img src="https://img.shields.io/badge/ESLint-4B32C3?style=flat-square&logo=eslint&logoColor=white" />
+      <img src="https://img.shields.io/badge/Prettier-F7B93E?style=flat-square&logo=prettier&logoColor=black" />
+      <img src="https://img.shields.io/badge/Husky-000000?style=flat-square&logo=git&logoColor=white" />
+    </td>
+    <td>팀 전체의 코드 스타일을 통일하고 협업 중 충돌을 줄이기 위해 도입했습니다.</td>
+  </tr>
+  <tr>
+    <td>UI 협업</td>
+    <td>
+      <img src="https://img.shields.io/badge/Storybook-FF4785?style=flat-square&logo=storybook&logoColor=white" />
+    </td>
+    <td>독립적인 UI 컴포넌트 개발과 문서화를 위해 사용했습니다.</td>
+  </tr>
+</table>
+
 
 ---
 
-### 📚 Language & Framework
-![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
-![React](https://img.shields.io/badge/React-61DAFB?style=flat-square&logo=react&logoColor=white)
-![Next.js](https://img.shields.io/badge/Next.js-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-
----
-
-### 🎨 UI & Styling
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
-
----
-
-### 🔁 Routing & State
-![App Router](https://img.shields.io/badge/App_Router-000000?style=flat-square&logo=nextdotjs&logoColor=white)
-![React Query](https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white)
-![Zustand](https://img.shields.io/badge/Zustand-000000?style=flat-square&logo=Zustand&logoColor=white)
-
----
-
-### 🔌 API & Auth
-![Fetch API](https://img.shields.io/badge/Fetch_API-native?style=flat-square&logo=javascript&logoColor=white)
-
----
-
-### ⚙️ Build & Deploy
-![Webpack](https://img.shields.io/badge/Webpack-8DD6F9?style=flat-square&logo=webpack&logoColor=black)
-![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
-
----
-
-### 🧹 Code Quality
-![ESLint](https://img.shields.io/badge/ESLint-4B32C3?style=flat-square&logo=eslint&logoColor=white)
-![Prettier](https://img.shields.io/badge/Prettier-F7B93E?style=flat-square&logo=prettier&logoColor=black)
-
----
-
-## 🤔 Why These Tools?
-
-- **Next.js (App Router)**: 파일 기반 라우팅과 서버 컴포넌트 지원으로 빠른 렌더링 성능
-- **React Query & Zustand**: 서버와 클라이언트 상태를 분리해 성능과 코드 유지보수 향상
-- **Tailwind CSS**: 빠른 스타일링과 일관성 있는 디자인 시스템 구성
-- **ESLint & Prettier**: 코드 품질 유지 및 팀 간 협업을 위한 포맷 통일
+### ⭐ 사용된 주요 라이브러리
+<table>
+  <tr>
+    <th>라이브러리</th>
+    <th>로고</th>
+    <th>도입한 이유</th>
+  </tr>
+    <td>React Query (useInfiniteQuery)</td>
+    <td>
+     <img src="https://img.shields.io/badge/React_Query-FF4154?style=flat-square&logo=react-query&logoColor=white" style="vertical-align: middle;" />
+    </td>
+    <td>useInfiniteQuery를 사용하면 무한 스크롤 또는 페이지네이션 기능을 손쉽게 구현할 수 있어 사용자 경험을 향상시킵니다</td>
+  </tr>
+</table>
 
 ---
 
  
-## 📂 폴더 및 파일 구조 (Folder Structure)
+### 📂 폴더 및 파일 구조 (Folder Structure)
 
 ```
 /
@@ -154,7 +296,7 @@ $ npm run dev
 ```
 ---
 
-## 🧾 네이밍 규칙
+### 🧾 네이밍 규칙
 
 | 항목 | 방식 | 예시 |
 |------|------|------|
@@ -167,7 +309,7 @@ $ npm run dev
 ---
 
 
-## 🌿 Git Branch 전략
+### 🌿 Git Branch 전략
 
 | 브랜치명 | 목적 |
 |----------|------|
@@ -179,7 +321,7 @@ $ npm run dev
 
 ---
 
-## 💬 커밋 메시지 컨벤션
+### 💬 커밋 메시지 컨벤션
 
 | 태그 | 의미 |
 |------|------|
