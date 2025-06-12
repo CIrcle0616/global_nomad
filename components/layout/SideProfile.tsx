@@ -3,7 +3,10 @@
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useProfileImageUpload } from '@/hooks/useProfileImageUpload';
+import { useModalStore } from '@/store/modalStore';
 import ProfileImageUploader from '@/components/common/ProfileImageUploader';
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
 
 const menuItems = [
   {
@@ -34,10 +37,20 @@ const menuItems = [
 
 export default function SideProfile() {
   const pathname = usePathname();
+  const { openModal } = useModalStore();
+
+  const imageUploadMutation = useProfileImageUpload(
+    () => openModal(OneButtonModal, { content: '프로필 이미지가 수정되었습니다.', onConfirm: () => {} }),
+    () => openModal(OneButtonModal, { content: '업로드 실패했습니다.', onConfirm: () => {} }),
+  );
 
   return (
     <div className="bg-white border border-gray-300 rounded-xl shadow-md p-6 w-full h-fit shrink-0">
-      <ProfileImageUploader />
+      <ProfileImageUploader
+        onFileSelected={file => {
+          imageUploadMutation.mutate(file);
+        }}
+      />
 
       <ul className="space-y-2 w-full">
         {menuItems.map(({ name, path, icon, iconGray }) => {

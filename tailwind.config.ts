@@ -13,6 +13,7 @@ const config: Config = {
         black: '#1B1B1B', // 일반 블랙
         nomad: {
           black: '#112211', // 노마드 전용 포인트 브랙
+          gray: '#333236',
         },
         gray: {
           900: '#4B4B4B',
@@ -102,9 +103,7 @@ const config: Config = {
     },
   },
 
-
   plugins: [scrollbarHide],
-
 };
 
 export default config;
