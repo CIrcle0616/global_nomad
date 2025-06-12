@@ -9,7 +9,7 @@ type InputProps = {
   placeholder?: string;
   readOnly?: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onBlur?: (e: React.FocusEvent) => void;
+  onBlur?: (e: React.FocusEvent<HTMLInputElement>) => void;
   status?: {
     error?: string;
     hint?: string;

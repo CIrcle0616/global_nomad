@@ -1,47 +1,60 @@
-import { getUserMe } from '@/services/users';
-import Link from 'next/link';
-import { cookies } from 'next/headers';
-import LogoutBtn from '@/components/domain/auth/LogoutBtn';
+import Container from '@/components/common/Container';
+import MainPageActivityListSection from '@/components/domain/mainPage/MainPageActivityListSection';
+import MainPageBanner from '@/components/domain/mainPage/mainBanner/MainPageBanner';
+import SearchBar from '@/components/domain/mainPage/SearchBar';
+import { getActivities } from '@/services/activities';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import PopularActivitySection from '@/components/domain/mainPage/PopularActivitySection';
+import SearchHeader from '@/components/domain/mainPage/SearchHeader';
+import { SizeByDeviceType } from '@/hooks/useMainActivityList';
 
-export default async function MainPage() {
-  const cookieStore = await cookies();
-  const accessToken = cookieStore.get('accessToken')?.value;
+export interface ActivitySearchParams {
+  method: 'offset' | 'cursor';
+  cursorId?: number;
+  category?: string;
+  keyword?: string;
+  sort?: string;
+  page?: number;
+  size?: number;
+}
 
-  let data = null;
-  if (accessToken) {
-    try {
-      data = await getUserMe(accessToken);
-    } catch (error) {
-      console.error('MainPage에서 사용자 정보 로딩 실패:', error);
-    }
+interface MainPageProps {
+  searchParams: Promise<ActivitySearchParams>;
+}
+
+export default async function MainPage({ searchParams }: MainPageProps) {
+  const queryClient = new QueryClient();
+
+  const { keyword, category, sort, page } = await searchParams;
+
+  let pageSize = SizeByDeviceType.desktop;
+  if (keyword) {
+    pageSize = pageSize * 2;
   }
+
+  const mainListParams: ActivitySearchParams = { method: 'offset', keyword, category, sort, page, size: pageSize };
+
+  const [popularData, mainListData] = await Promise.all([
+    getActivities({ method: 'offset', sort: 'most_reviewed', size: 9 }),
+    getActivities(mainListParams),
+  ]);
+
+  queryClient.setQueryData(['activities', 'popularList'], popularData);
+  queryClient.setQueryData(['activities', mainListParams], mainListData);
+
+  const reviewCount = mainListData.totalCount;
+
   return (
-    <main>
-      <button>
-        <Link href={'/login'} className="inline-block border bg-slate-400">
-          로그인하기
-        </Link>
-      </button>
-      <LogoutBtn />
-      <button>
-        <Link href={'/signup'} className="inline-block border bg-blue-400">
-          회원가입하기
-        </Link>
-      </button>
-      <button>
-        <Link href={'/profile/info'} className="inline-block border bg-green-400">
-          {'내 프로필 내정보 페이지 이동하기(로그인이 필요합니다)'}
-        </Link>
-      </button>
-      {data && (
-        <ul>
-          {Object.entries(data).map(([key, value]) => (
-            <li key={key}>
-              <strong>{key}:</strong> {String(value)}
-            </li>
-          ))}
-        </ul>
-      )}
+    <main className="w-full h-auto min-h-screen bg-gray-100">
+      <MainPageBanner />
+      <Container>
+        <SearchBar />
+        {/* 서버에서 패칭한 데이터를 HydrationBoundary 안에  */}
+        <HydrationBoundary state={dehydrate(queryClient)}>
+          {keyword ? <SearchHeader keyword={keyword} reviewCount={reviewCount} /> : <PopularActivitySection />}
+          <MainPageActivityListSection keyword={keyword} category={category} />
+        </HydrationBoundary>
+      </Container>
     </main>
   );
 }

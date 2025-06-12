@@ -31,9 +31,9 @@ const SIZE_MAP: {
   M: string;
   S: string;
 } = {
-  L: 'p-[11px] h-[56px] lg-bold',
-  M: 'p-[11px] h-[48px] lg-bold',
-  S: 'p-[8px] h-[38px] md-bold',
+  L: 'p-[11px] h-[56px] text-lg-bold rounded-md',
+  M: 'p-[11px] h-[48px] text-lg-bold rounded-md',
+  S: 'p-[7px] h-[38px] text-md-bold rounded-md',
 };
 const VARIANT_MAP: {
   primary: string;

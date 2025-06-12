@@ -1,26 +1,42 @@
 'use client';
 
 import ScheduleName from '@/components/domain/schedule/ScheduleName';
-import { useState } from 'react';
+import { getMyActivities } from '@/services/myActivities';
+import { useQuery } from '@tanstack/react-query';
+import { useEffect, useMemo, useState } from 'react';
 import MyReservationCalendar from './calendar/MyReservationCalendar';
+import EmptyState from '@/components/empty/EmptyState';
 
-interface Schedule {
-  id: number;
-  title: string;
-}
+export default function ScheduleClientInner() {
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const { data: activities, isLoading } = useQuery({
+    queryKey: ['activities'],
+    queryFn: () => getMyActivities({}),
+  });
 
-interface ScheduleClientInnerProps {
-  activityList: Schedule[];
-}
-
-export default function ScheduleClientInner({ activityList }: ScheduleClientInnerProps) {
-  const [selectedId, setSelectedId] = useState(activityList[0].id);
+  const activityList = useMemo(() => activities?.activities ?? [], [activities]);
+  useEffect(() => {
+    if (activityList.length > 0 && selectedId === null) {
+      setSelectedId(activityList[0].id);
+    }
+  }, [activityList, selectedId]);
 
   return (
-    <div className="p-6 space-y-6">
-      <h1 className="text-3xl-bold mb-6 ml-4">예약 현황</h1>
-      <ScheduleName activityList={activityList} selectedId={selectedId} onSelectedId={setSelectedId} />
-      <MyReservationCalendar activityId={selectedId} />
+    <div className="mb-6 ml-4">
+      <div className="flex items-center justify-between mb-4 max-w-full md:max-w-[600px] lg:max-w-[792px]">
+        <h1 className="text-3xl-bold">예약 현황</h1>
+      </div>
+
+      {isLoading ? (
+        <div>불러오는 중...</div>
+      ) : activityList.length === 0 ? (
+        <EmptyState />
+      ) : selectedId !== null ? (
+        <>
+          <ScheduleName activityList={activityList} selectedId={selectedId} onSelectedId={setSelectedId} />
+          <MyReservationCalendar activityId={selectedId} />
+        </>
+      ) : null}
     </div>
   );
 }

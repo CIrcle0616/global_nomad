@@ -4,6 +4,7 @@ import DropdownSelect from '@/components/common/DropDownSelect';
 import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
+import { postActivities, postActivityImg } from '@/services/activities';
 
 type TimeForm = {
   id: number;
@@ -58,9 +59,39 @@ export default function NewAndEditActivityPage() {
     openAddress({ onComplete: handleAddressChange });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    //console.log({ title, category, detail, price, post });
+
+    const { activityImageUrl: bannerImageUrl } = await postActivityImg(bannerImages[0]);
+
+    const subImageUrls: string[] = [];
+    for (const file of introImages) {
+      const { activityImageUrl } = await postActivityImg(file);
+      subImageUrls.push(activityImageUrl);
+    }
+
+    const formatDate = (raw: string) => {
+      const matched = raw.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\./);
+      if (!matched) throw new Error('날짜 형식이 잘못되었습니다');
+      const [, year, month, day] = matched;
+      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+    };
+    const schedules = forms.map(form => ({
+      date: formatDate(form.date),
+      startTime: form.startTime,
+      endTime: form.endTime,
+    }));
+
+    await postActivities({
+      title,
+      category,
+      description: detail,
+      address: `${address} ${detailAddress}`,
+      price: Number(price),
+      schedules,
+      bannerImageUrl,
+      subImageUrls,
+    });
   };
 
   const handleAddForm = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -209,7 +240,6 @@ export default function NewAndEditActivityPage() {
             value={startTime}
             onChange={e => setStartTime(e.target.value)}
             className="h-[50px] w-40 px-3 text-base border border-gray-300 rounded-md text-gray-900 text-center"
-            required
           >
             <option value="">시간 선택</option>
             {startHours.map(h =>
@@ -231,7 +261,6 @@ export default function NewAndEditActivityPage() {
             value={endTime}
             onChange={e => setEndTime(e.target.value)}
             className="h-[50px] w-40 px-3 text-base border border-gray-300 rounded-md text-gray-900 text-center"
-            required
           >
             <option value="">시간 선택</option>
             {endHours.map(h =>
