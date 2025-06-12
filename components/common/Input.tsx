@@ -8,8 +8,7 @@ type InputProps = {
   value: string;
   placeholder?: string;
   readOnly?: boolean;
-
-  onChange: (e: React.ChangeEvent) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onBlur?: (e: React.FocusEvent) => void;
   status?: {
     error?: string;
@@ -25,7 +24,6 @@ export default function Input({
   type = 'text',
   value,
   placeholder = '',
-
   readOnly = false,
   onChange,
   onBlur,

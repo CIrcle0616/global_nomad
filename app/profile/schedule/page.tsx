@@ -2,14 +2,18 @@ import { getMyActivities, getMyReservationBoard } from '@/services/myActivities'
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import ScheduleClientInner from './ScheduleClientInner';
+import { cookies } from 'next/headers';
 
 export default async function SchedulePage() {
-  const { activities } = await getMyActivities({});
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('accessToken')?.value;
+
+  const { activities } = await getMyActivities({}, accessToken);
 
   const today = new Date();
   const year = format(today, 'yyyy');
   const month = format(today, 'MM');
-  const firstActivityId = activities[0]?.id;
+  const firstActivityId = activities[0].id;
 
   const queryClient = new QueryClient();
 
