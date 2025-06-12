@@ -20,7 +20,6 @@ interface ReservationBoxProps {
   onTimeChange: (time: string) => void;
   onCountChange: (count: number) => void;
   onReserve: () => void;
-
   pricePerPerson: number;
   availableTimes: { startTime: string; endTime: string }[];
   loading?: boolean;
@@ -32,7 +31,6 @@ export default function ReservationBox({
   onTimeChange,
   onCountChange,
   onReserve,
-
   pricePerPerson,
   availableTimes,
   loading = false,

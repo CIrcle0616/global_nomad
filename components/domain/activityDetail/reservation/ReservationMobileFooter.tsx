@@ -36,8 +36,14 @@ export default function ReservationMobileFooter({
             <span className="text-2xl-bold text-black">₩ {totalPrice.toLocaleString()}</span>
             <span className="text-lg-regular text-gray-900">/ 총 {state.count}인</span>
           </div>
-          {isComplete && <p className="text-sm text-primary-300 font-semibold">{formattedDateTime}</p>}
-          {!isComplete && (
+          {isComplete ? (
+            <button
+              onClick={onClickDateSelect}
+              className="underline text-sm text-black hover:text-black cursor-pointer"
+            >
+              {formattedDateTime}
+            </button>
+          ) : (
             <button
               className="underline text-sm text-gray-800 hover:text-black cursor-pointer"
               onClick={onClickDateSelect}

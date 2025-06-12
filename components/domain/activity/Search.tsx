@@ -17,8 +17,8 @@ function Search({ value, onChange, onSubmit }: SearchProps) {
     e.preventDefault();
     if (value.trim() !== '') {
       setIsSubmitted(true); // 라벨을 위로 고정시키기 위해 상태 변경
-      onSubmit(); // 상위 컴포넌트의 검색 함수 호출
     }
+    onSubmit(); // 상위 컴포넌트의 검색 함수 호출
   };
 
   // 입력값이 비워질 경우 라벨 위치를 초기화
@@ -37,7 +37,7 @@ function Search({ value, onChange, onSubmit }: SearchProps) {
   const labelPosition = isSubmitted ? 'top-[-10px] text-[14px] font-medium' : 'top-1/2 -translate-y-1/2 text-[16px]';
 
   return (
-    <div className="w-full flex flex-col items-start px-4">
+    <div className="w-full flex flex-col items-start px-6 py-4">
       <h2 className="text-[16px] md:text-[20px] lg:text-[20px] font-bold text-black mb-3 md:mb-5 lg:mb-8">
         무엇을 체험하고 싶으신가요?
       </h2>
@@ -51,7 +51,7 @@ function Search({ value, onChange, onSubmit }: SearchProps) {
 
           {showLabel && (
             <label
-              className={`absolute left-[48px] px-1 bg-white z-10 transition-all duration-200 text-gray-600 pointer-events-none ${labelPosition}`}
+              className={`absolute left-[48px] px-1 text-[14px] bg-white z-10 transition-all duration-200 text-gray-600 pointer-events-none ${labelPosition}`}
             >
               내가 원하는 체험은
             </label>

@@ -32,7 +32,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
   //해당 날짜 시간대 목록 가져오기
   const { data: scheduleData } = useQuery({
     queryKey: ['reservedSchedule', activityId, date, statusTab],
-    queryFn: () => getMyReservedSchedule(activityId, date),
+    queryFn: () => getMyReservedSchedule({ activityId, date }),
     enabled: !!date,
   });
 
@@ -50,14 +50,15 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
     refetch,
   } = useQuery({
     queryKey: ['activityReservations', activityId, selectedScheduleId, statusTab],
-    queryFn: () => getMyActivityReservations(activityId, selectedScheduleId as number, statusTab),
+    queryFn: () =>
+      getMyActivityReservations({ activityId, scheduleId: selectedScheduleId as number, status: statusTab }),
     enabled: !!selectedScheduleId,
   });
 
   //상태 변경
   const mutation = useMutation({
     mutationFn: ({ reservationId, status }: { reservationId: number; status: 'APPROVED' | 'REJECTED' }) =>
-      patchMyActivityReservations(activityId, reservationId, { status }),
+      patchMyActivityReservations({ activityId, reservationId, body: { status } }),
     onSuccess: () => {
       refetch();
     },

@@ -63,6 +63,10 @@ export default function MyInfoPage() {
     },
   });
 
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
   const onSubmit: SubmitHandler<userInfoInputs> = data => {
     const { nickname, newPassword } = data;
     profileInfoMutation.mutate({ nickname, newPassword });
@@ -142,14 +146,7 @@ export default function MyInfoPage() {
             <label className="block mb-4 text-2xl-bold text-black" htmlFor="email">
               이메일
             </label>
-            <Input
-              value={email || ''}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                return setEmail(e.target.value);
-              }}
-              placeholder="이메일을 입력해주세요."
-              readOnly
-            />
+            <Input value={email || ''} onChange={handleEmailChange} placeholder="이메일을 입력해주세요." readOnly />
           </div>
 
           <div>

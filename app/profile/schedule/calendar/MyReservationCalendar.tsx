@@ -24,7 +24,7 @@ export default function MyReservationCalendar({ activityId }: { activityId: numb
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['reservationBoard', activityId, year, month],
-    queryFn: () => getMyReservationBoard(activityId, year, month),
+    queryFn: () => getMyReservationBoard({ activityId, year, month }),
     enabled: !!activityId,
   });
 
