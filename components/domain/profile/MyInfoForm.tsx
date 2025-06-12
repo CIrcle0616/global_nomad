@@ -1,17 +1,17 @@
 'use client';
+import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { useQueryClient, useMutation, useQuery } from '@tanstack/react-query';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { getUserMe, patchUserMe } from '@/services/users';
 import { UpdateUserBodyDto } from '@/types';
 import { GetMyInfoSuccessResponse } from '@/types/domain/user/types';
-import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { useModalStore } from '@/store/modalStore';
 import Input from '@/components/common/Input';
 import CommonButton from '@/components/common/CommonButton';
 import ProfileImageUploader from '@/components/common/ProfileImageUploader';
 import OneButtonModal from '@/components/common/modal/OneButtonModal';
-
-import { useModalStore } from '@/store/modalStore';
-import Image from 'next/image';
+import { useProfileImageUpload } from '@/hooks/useProfileImageUpload';
 
 type userInfoInputs = UpdateUserBodyDto & {
   passwordConfirm: string;
@@ -83,6 +83,21 @@ export default function MyInfoPage() {
     console.error('에러 내용:', error);
   }
 
+  const profileImageMutation = useProfileImageUpload(
+    () => {
+      openModal(OneButtonModal, {
+        content: '프로필 이미지가 변경되었습니다.',
+        onConfirm: () => {},
+      });
+    },
+    error => {
+      openModal(OneButtonModal, {
+        content: `이미지 업로드 실패: ${error.message}`,
+        onConfirm: () => {},
+      });
+    },
+  );
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="px-6 mb-[120px]">
@@ -95,7 +110,11 @@ export default function MyInfoPage() {
 
         <section className="space-y-6">
           <div className="md:hidden">
-            <ProfileImageUploader />
+            <ProfileImageUploader
+              onFileSelected={(file: File) => {
+                profileImageMutation.mutate(file);
+              }}
+            />
           </div>
           <div>
             <label className="block mb-4 text-2xl-bold text-black" htmlFor="nickname">

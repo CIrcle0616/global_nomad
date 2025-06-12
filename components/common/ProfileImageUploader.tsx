@@ -2,16 +2,16 @@
 
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { postProfileIm, getUserMe, patchUserMe } from '@/services/users';
-import OneButtonModal from './modal/OneButtonModal';
-import { useModalStore } from '@/store/modalStore';
+import { useQuery } from '@tanstack/react-query';
+import { getUserMe } from '@/services/users';
 
-export default function ProfileImageUploader() {
-  const queryClient = useQueryClient();
+type ProfileImageUploaderProps = {
+  onFileSelected?: (file: File) => void;
+};
+
+export default function ProfileImageUploader({ onFileSelected }: ProfileImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profileUrl, setProfileUrl] = useState('/ic_profile.svg');
-  const { openModal } = useModalStore();
 
   const { data: myInfoData } = useQuery({
     queryKey: ['myInfo'],
@@ -27,29 +27,12 @@ export default function ProfileImageUploader() {
     }
   }, [myInfoData]);
 
-  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const previewUrl = URL.createObjectURL(file);
       setProfileUrl(previewUrl);
-
-      try {
-        const uploadResult = await postProfileIm(file);
-        const uploadImageUrl = uploadResult.profileImageUrl;
-        await patchUserMe({ profileImageUrl: uploadImageUrl });
-        await queryClient.invalidateQueries({ queryKey: ['myInfo'] });
-
-        openModal(OneButtonModal, {
-          content: '프로필 이미지가 수정되었습니다.',
-          onConfirm: () => {},
-        });
-      } catch (error) {
-        console.error(error);
-        openModal(OneButtonModal, {
-          content: '업로드 중 오류가 발생했습니다.',
-          onConfirm: () => {},
-        });
-      }
+      if (onFileSelected) onFileSelected(file);
     }
   };
 
