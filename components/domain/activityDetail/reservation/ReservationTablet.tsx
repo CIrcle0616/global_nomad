@@ -3,10 +3,9 @@
 import CommonButton from '@/components/common/CommonButton';
 import ParticipantSelector from './parts/ParticipantSelector';
 import PriceTotal from './parts/PriceTotal';
-import { useTabletModalStore } from '@/store/useReservationTabletStore';
 import TabletDateTimeModal from './parts/TabletDateTimeModal';
 import { formatSelectedDateTime } from '@/lib/format';
-import clsx from 'clsx';
+import { useModalStore } from '@/store/modalStore';
 
 interface ReservationTabletProps {
   state: {
@@ -34,9 +33,8 @@ export default function ReservationTablet({
   loading = false,
   availableTimes,
 }: ReservationTabletProps) {
+  const { openModal } = useModalStore();
   const isReservable = !!state.date && state.time;
-
-  const { isOpen, toggleModal } = useTabletModalStore();
 
   const handleConfirm = () => {
     if (state.date && state.time) {
@@ -47,22 +45,6 @@ export default function ReservationTablet({
   return (
     <>
       <div className="relative items-start flex">
-        <div
-          className={clsx(
-            'absolute right-full top-[-100px] ease-in-out transition-all mr-5 duration-300',
-            isOpen ? 'translate-x-0 opacity-100' : 'translate-x-[-100%] opacity-0',
-          )}
-        >
-          <TabletDateTimeModal
-            state={state}
-            onDateChange={onDateChange}
-            onTimeChange={onTimeChange}
-            onReserve={onReserve}
-            availableTimes={availableTimes}
-            loading={loading}
-          />
-        </div>
-
         <div className="rounded-xl border p-4 shadow bg-white w-[251px]">
           <div className="flex items-end gap-2 mb-3">
             <span className="text-2xl-bold text-black">₩ {pricePerPerson.toLocaleString()}</span>
@@ -73,7 +55,19 @@ export default function ReservationTablet({
           <div className="mb-5">
             <span className="block text-black text-xl-bold">날짜</span>
 
-            <div onClick={toggleModal} className="text-black hover:underline cursor-pointer text-sm">
+            <div
+              onClick={() =>
+                openModal(TabletDateTimeModal, {
+                  state,
+                  onDateChange,
+                  onTimeChange,
+                  onReserve,
+                  availableTimes,
+                  loading,
+                })
+              }
+              className="text-black hover:underline cursor-pointer text-sm"
+            >
               {state.date && state.time ? (
                 formatSelectedDateTime(state.date, state.time, availableTimes)
               ) : (

@@ -5,7 +5,7 @@ import ActivityDescription from '@/components/domain/activityDetail/ActivityDesc
 import { getActivitiesId } from '@/services/activities';
 import React from 'react';
 
-export default async function ActivityDetailPage({ params }: { params: { activityId: string } }) {
+export default async function ActivityDetailPage({ params }: { params: Promise<{ activityId: string }> }) {
   const { activityId } = await params;
 
   const data = await getActivitiesId(Number(activityId));

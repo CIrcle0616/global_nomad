@@ -1,17 +1,38 @@
 'use client';
 
 import Image from 'next/image';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
+import { getUserMe } from '@/services/users';
 
-export default function ProfileImageUploader() {
+type ProfileImageUploaderProps = {
+  onFileSelected?: (file: File) => void;
+};
+
+export default function ProfileImageUploader({ onFileSelected }: ProfileImageUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [profileUrl, setProfileUrl] = useState('/ic_profile.svg');
+
+  const { data: myInfoData } = useQuery({
+    queryKey: ['myInfo'],
+    queryFn: () => {
+      return getUserMe();
+    },
+  });
+
+  useEffect(() => {
+    if (!myInfoData) return;
+    if (myInfoData.profileImageUrl) {
+      setProfileUrl(myInfoData.profileImageUrl);
+    }
+  }, [myInfoData]);
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
-      const url = URL.createObjectURL(file);
-      setProfileUrl(url);
+      const previewUrl = URL.createObjectURL(file);
+      setProfileUrl(previewUrl);
+      if (onFileSelected) onFileSelected(file);
     }
   };
 

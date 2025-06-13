@@ -54,7 +54,11 @@ export function postActivities(
     description: string;
     address: string;
     price: number;
-    schedules: [{ date: string; startTime: string; endTime: string }];
+    schedules: {
+      date: string;
+      startTime: string;
+      endTime: string;
+    }[];
     bannerImageUrl: string;
     subImageUrls: string[];
   },
