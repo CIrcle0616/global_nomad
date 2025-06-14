@@ -2,6 +2,7 @@ import ActivityDetailInfo from '@/components/domain/activityDetail/ActivityDetai
 import ActivityDetailReview from '@/components/domain/activityDetail/ActivityDetailReview';
 import ActivityMap from '@/components/domain/activityDetail/ActivityMap';
 import ActivityDescription from '@/components/domain/activityDetail/ActivityDescription';
+import ReservationSection from './ReservationSection';
 import { getActivitiesId } from '@/services/activities';
 import React from 'react';
 
@@ -19,7 +20,9 @@ export default async function ActivityDetailPage({ params }: { params: Promise<{
           <ActivityMap address={data.address} />
           <ActivityDetailReview activityId={Number(activityId)} />
         </div>
-        <div className="md:w-[251px] lg:w-[384px]">floating-box</div>
+        <div className="md:w-[251px] lg:w-[384px]">
+          <ReservationSection />
+        </div>
       </div>
     </div>
   );
