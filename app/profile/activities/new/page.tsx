@@ -5,6 +5,9 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { postActivities, postActivityImg } from '@/services/activities';
+import { useModalStore } from '@/store/modalStore';
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
+import { useRouter } from 'next/navigation';
 
 type TimeForm = {
   id: number;
@@ -43,6 +46,8 @@ export default function NewAndEditActivityPage() {
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const introInputRef = useRef<HTMLInputElement>(null);
+  const { openModal } = useModalStore();
+  const router = useRouter();
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value);
 
@@ -103,6 +108,12 @@ export default function NewAndEditActivityPage() {
         schedules,
         bannerImageUrl,
         subImageUrls,
+      });
+
+      openModal(OneButtonModal, {
+        content: '체험 등록이 완료되었습니다.',
+        buttonText: '확인',
+        onConfirm: () => router.push('/profile/activities'),
       });
     } catch (err) {
       console.error('폼 제출 중 오류 발생:', err);
