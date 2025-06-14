@@ -62,36 +62,52 @@ export default function NewAndEditActivityPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { activityImageUrl: bannerImageUrl } = await postActivityImg(bannerImages[0]);
-
-    const subImageUrls: string[] = [];
-    for (const file of introImages) {
-      const { activityImageUrl } = await postActivityImg(file);
-      subImageUrls.push(activityImageUrl);
+    if (!bannerImages.length) {
+      alert('배너 이미지를 업로드하세요.');
+      return;
     }
 
-    const formatDate = (raw: string) => {
-      const matched = raw.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\./);
-      if (!matched) throw new Error('날짜 형식이 잘못되었습니다');
-      const [, year, month, day] = matched;
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    };
-    const schedules = forms.map(form => ({
-      date: formatDate(form.date),
-      startTime: form.startTime,
-      endTime: form.endTime,
-    }));
+    if (!introImages.length) {
+      alert('소개 이미지를 하나 이상 업로드하세요.');
+      return;
+    }
 
-    await postActivities({
-      title,
-      category,
-      description: detail,
-      address: `${address} ${detailAddress}`,
-      price: Number(price),
-      schedules,
-      bannerImageUrl,
-      subImageUrls,
-    });
+    try {
+      const { activityImageUrl: bannerImageUrl } = await postActivityImg(bannerImages[0]);
+
+      const subImageUrls: string[] = [];
+      for (const file of introImages) {
+        const { activityImageUrl } = await postActivityImg(file);
+        subImageUrls.push(activityImageUrl);
+      }
+
+      const formatDate = (raw: string) => {
+        const matched = raw.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\./);
+        if (!matched) throw new Error('날짜 형식이 잘못되었습니다');
+        const [, year, month, day] = matched;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      };
+
+      const schedules = forms.map(form => ({
+        date: formatDate(form.date),
+        startTime: form.startTime,
+        endTime: form.endTime,
+      }));
+
+      await postActivities({
+        title,
+        category,
+        description: detail,
+        address: `${address} ${detailAddress}`,
+        price: Number(price),
+        schedules,
+        bannerImageUrl,
+        subImageUrls,
+      });
+    } catch (err) {
+      console.error('폼 제출 중 오류 발생:', err);
+      alert('오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   const handleAddForm = (e: React.MouseEvent<HTMLButtonElement>) => {
