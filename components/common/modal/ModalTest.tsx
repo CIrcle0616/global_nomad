@@ -33,7 +33,7 @@ export default function ModalTest() {
 
       <button
         onClick={() =>
-          openModal(TwoButtonModal, {
+          openModal(OneButtonModal, {
             content: '정말 삭제할까요?',
             rightButtonText: '삭제',
             leftButtonText: '취소',

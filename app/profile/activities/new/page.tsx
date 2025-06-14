@@ -5,6 +5,9 @@ import { useState, useRef } from 'react';
 import Image from 'next/image';
 import { useDaumPostcodePopup } from 'react-daum-postcode';
 import { postActivities, postActivityImg } from '@/services/activities';
+import { useModalStore } from '@/store/modalStore';
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
+import { useRouter } from 'next/navigation';
 
 type TimeForm = {
   id: number;
@@ -43,6 +46,8 @@ export default function NewAndEditActivityPage() {
 
   const bannerInputRef = useRef<HTMLInputElement>(null);
   const introInputRef = useRef<HTMLInputElement>(null);
+  const { openModal } = useModalStore();
+  const router = useRouter();
 
   const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => setTitle(event.target.value);
 
@@ -62,36 +67,58 @@ export default function NewAndEditActivityPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const { activityImageUrl: bannerImageUrl } = await postActivityImg(bannerImages[0]);
-
-    const subImageUrls: string[] = [];
-    for (const file of introImages) {
-      const { activityImageUrl } = await postActivityImg(file);
-      subImageUrls.push(activityImageUrl);
+    if (!bannerImages.length) {
+      alert('배너 이미지를 업로드하세요.');
+      return;
     }
 
-    const formatDate = (raw: string) => {
-      const matched = raw.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\./);
-      if (!matched) throw new Error('날짜 형식이 잘못되었습니다');
-      const [, year, month, day] = matched;
-      return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-    };
-    const schedules = forms.map(form => ({
-      date: formatDate(form.date),
-      startTime: form.startTime,
-      endTime: form.endTime,
-    }));
+    if (!introImages.length) {
+      alert('소개 이미지를 하나 이상 업로드하세요.');
+      return;
+    }
 
-    await postActivities({
-      title,
-      category,
-      description: detail,
-      address: `${address} ${detailAddress}`,
-      price: Number(price),
-      schedules,
-      bannerImageUrl,
-      subImageUrls,
-    });
+    try {
+      const { activityImageUrl: bannerImageUrl } = await postActivityImg(bannerImages[0]);
+
+      const subImageUrls: string[] = [];
+      for (const file of introImages) {
+        const { activityImageUrl } = await postActivityImg(file);
+        subImageUrls.push(activityImageUrl);
+      }
+
+      const formatDate = (raw: string) => {
+        const matched = raw.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\./);
+        if (!matched) throw new Error('날짜 형식이 잘못되었습니다');
+        const [, year, month, day] = matched;
+        return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+      };
+
+      const schedules = forms.map(form => ({
+        date: formatDate(form.date),
+        startTime: form.startTime,
+        endTime: form.endTime,
+      }));
+
+      await postActivities({
+        title,
+        category,
+        description: detail,
+        address: `${address} ${detailAddress}`,
+        price: Number(price),
+        schedules,
+        bannerImageUrl,
+        subImageUrls,
+      });
+
+      openModal(OneButtonModal, {
+        content: '체험 등록이 완료되었습니다.',
+        buttonText: '확인',
+        onConfirm: () => router.push('/profile/activities'),
+      });
+    } catch (err) {
+      console.error('폼 제출 중 오류 발생:', err);
+      alert('오류가 발생했습니다. 다시 시도해주세요.');
+    }
   };
 
   const handleAddForm = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -118,18 +145,23 @@ export default function NewAndEditActivityPage() {
       const newStart = newFormTime(newForm.startTime);
       const newEnd = newFormTime(newForm.endTime);
 
+      if (newStart >= newEnd) {
+        alert('시작 시간은 종료 시간보다 빨라야 합니다.'); //모달 쓸수있음
+        return;
+      }
+
       for (let i = 0; i < forms.length; i++) {
         const formNowIndex = forms[i];
         const formStartTime = newFormTime(formNowIndex.startTime);
         const formEndTime = newFormTime(formNowIndex.endTime);
-        console.log(formNowIndex.date, newForm.date);
+
         if (formNowIndex.date === newForm.date) {
           if (
             (newStart >= formStartTime && newStart < formEndTime) ||
             (newEnd > formStartTime && newEnd <= formEndTime) ||
             (newStart <= formStartTime && newEnd >= formEndTime)
           ) {
-            alert('겹치는 시간에는 예약할 수 없습니다!');
+            alert('겹치는 시간에는 예약할 수 없습니다!'); //모달 쓸수있음
             return;
           }
         }
