@@ -12,7 +12,7 @@ export default async function ActivityDetailPage({ params }: { params: Promise<{
   const data = await getActivitiesId(Number(activityId));
 
   return (
-    <div className="w-[375px] md:w-[696px] lg:w-[1200px] mx-auto">
+    <div className="w-[375px] md:w-[696px] lg:w-[1200px] mx-auto mb-[133px] md:mb-[145px] lg:mb-[293px]">
       <ActivityDetailInfo data={data} />
       <div className="md:flex md:w-full">
         <div>
