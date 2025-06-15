@@ -15,6 +15,7 @@ import OneButtonModal from '@/components/common/modal/OneButtonModal';
 import { useProfileImageUpload } from '@/hooks/useProfileImageUpload';
 
 type userInfoInputs = UpdateUserBodyDto & {
+  email: string;
   passwordConfirm: string;
 };
 
@@ -26,11 +27,15 @@ export default function MyInfoPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { data, isSuccess, isError, error } = useQuery({
+  const {
+    data: myInfoData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['myInfo'],
-    queryFn: () => {
-      return getUserMe();
-    },
+    queryFn: () => getUserMe(),
   });
 
   const {
@@ -74,15 +79,15 @@ export default function MyInfoPage() {
   };
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (isSuccess && myInfoData) {
       reset({
-        nickname: data.nickname,
+        nickname: myInfoData.nickname,
         newPassword: '',
         passwordConfirm: '',
       });
-      setEmail(data.email);
+      setEmail(myInfoData.email);
     }
-  }, [data, isSuccess, reset]);
+  }, [myInfoData, isSuccess, reset]);
 
   if (isError) {
     console.error('에러 내용:', error);
@@ -102,6 +107,14 @@ export default function MyInfoPage() {
       });
     },
   );
+
+  if (isLoading) {
+    return <p className="text-center text-gray-500">로딩 중입니다...</p>;
+  }
+
+  if (isError || !myInfoData) {
+    return <p className="text-center text-red-500">새로고침 해주세요.</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
