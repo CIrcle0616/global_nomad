@@ -68,7 +68,9 @@ export default function ActivityManagePage() {
       <div className="flex justify-between items-center w-full max-w-[768px] mx-auto px-4 mb-6">
         <h1 className="text-xl font-bold md:text-2xl lg:text-3xl">내 정보</h1>
         <Link href="/profile/activities/new">
-          <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">체험 등록하기</button>
+          <button className="relative left-[-3px] bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">
+            체험 등록하기
+          </button>
         </Link>
       </div>
 
