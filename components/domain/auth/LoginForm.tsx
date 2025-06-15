@@ -7,7 +7,7 @@ import { useModalStore } from '@/store/modalStore';
 import { LoginSuccessResponse } from '@/types/domain/auth/types';
 import { useMutation } from '@tanstack/react-query';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import useUserStore from '@/store/useUserStore';
@@ -21,6 +21,7 @@ export default function LoginForm() {
   const { setUser } = useUserStore();
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { openModal } = useModalStore();
 
   const {
@@ -41,6 +42,13 @@ export default function LoginForm() {
         teamId: 14 - 3,
         accessToken: data.accessToken,
       });
+      const redirectUrl = searchParams.get('redirect_url');
+
+      if (redirectUrl) {
+        router.push(redirectUrl);
+      } else {
+        router.push('/');
+      }
       router.push('/');
     },
     onError: error => {
@@ -48,7 +56,7 @@ export default function LoginForm() {
       if (status === 404) {
         openModal(OneButtonModal, {
           content: '존재하지 않는 유저입니다.',
-          onConfirm: () => router.push('/'),
+          onConfirm: () => router.push('/signup'),
         });
       } else {
         openModal(OneButtonModal, {
