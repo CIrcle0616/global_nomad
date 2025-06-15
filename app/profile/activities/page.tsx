@@ -1,14 +1,31 @@
 'use client';
 
 import ActivityCard from '@/components/domain/activity/ActivityCard';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { InfiniteData, UseInfiniteQueryResult, useInfiniteQuery } from '@tanstack/react-query';
 import { ActivityBasicDto } from '@/types';
 import Link from 'next/link';
 import { getMyActivities } from '@/services/myActivities';
 import { GetMyActivitiesSuccessResponse } from '@/types/domain/myActivities/types';
+import { getUserMe } from '@/services/users';
+import EmptyState from '@/components/empty/EmptyState';
 
 export default function ActivityManagePage() {
+  const [userId, setUserId] = useState<number | null>(null);
+
+  useEffect(() => {
+    const fetchUserId = async () => {
+      try {
+        const user = await getUserMe();
+        setUserId(user.id);
+      } catch (err) {
+        console.error('내 ID 불러오기 실패:', err);
+      }
+    };
+
+    fetchUserId();
+  }, []);
+
   type PageType = GetMyActivitiesSuccessResponse;
 
   const {
@@ -29,13 +46,8 @@ export default function ActivityManagePage() {
     initialPageParam: undefined,
   });
 
-  useEffect(() => {
-    if (data) {
-      console.log('불러온 activity 데이터:', data);
-    }
-  }, [data]);
-
   const observerRef = useRef<HTMLDivElement>(null);
+  const emptyScreen = !data || data.pages.every(page => page.activities.length === 0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
@@ -53,31 +65,35 @@ export default function ActivityManagePage() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6 ml-4 mr-4">
-        <h1 className="text-3xl-bold mb-6 ml-4">내 체험 관리</h1>
+      <div className="flex justify-between items-center w-full max-w-[768px] mx-auto px-4 mb-6">
+        <h1 className="text-xl font-bold md:text-2xl lg:text-3xl">내 정보</h1>
         <Link href="/profile/activities/new">
-          <button className="absolute cursor-pointer top-[180px] right-[280px] bg-green-500 hover:bg-green-300 text-white text-md-medium px-4 py-2 shadow">
-            체험 등록하기
-          </button>
+          <button className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded shadow">체험 등록하기</button>
         </Link>
       </div>
-      <div className="grid gap-6">
-        {data?.pages.map(page =>
-          page.activities.map((activity: ActivityBasicDto) => (
-            <ActivityCard
-              key={activity.id}
-              title={activity.title}
-              img={activity.bannerImageUrl}
-              price={activity.price}
-              rating={activity.rating}
-              reviewCount={activity.reviewCount}
-              userId={1929}
-              id={activity.id}
-            />
-          )),
-        )}
-      </div>
 
+      {emptyScreen ? (
+        <EmptyState />
+      ) : (
+        <div className="w-full max-w-[1000px] mx-auto px-4">
+          <div className="grid gap-6">
+            {data.pages.map(page =>
+              page.activities.map((activity: ActivityBasicDto) => (
+                <ActivityCard
+                  key={activity.id}
+                  title={activity.title}
+                  img={activity.bannerImageUrl}
+                  price={activity.price}
+                  rating={activity.rating}
+                  reviewCount={activity.reviewCount}
+                  userId={userId}
+                  id={activity.id}
+                />
+              )),
+            )}
+          </div>
+        </div>
+      )}
       <div ref={observerRef} style={{ height: 1 }} />
       {isFetchingNextPage && <div>로딩 중...</div>}
     </div>
