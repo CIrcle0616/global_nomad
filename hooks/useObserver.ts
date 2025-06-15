@@ -1,25 +1,61 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-type UseObserverOptions = IntersectionObserverInit;
+interface UseObserverOptions extends IntersectionObserverInit {
+  hasNextPage: boolean;
+  isLoading: boolean;
+  onIntersect: () => Promise<unknown>;
+  delay?: number;
+}
 
 export default function useObserver(
   targetRef: React.RefObject<HTMLElement>,
-  onIntersect: () => void,
-  options?: UseObserverOptions,
-) {
+  {
+    hasNextPage,
+    isLoading,
+    onIntersect,
+    root = null,
+    rootMargin = '500px',
+    threshold = 0,
+    delay = 300,
+  }: UseObserverOptions,
+): void {
+  const isFetchingRef = useRef(false);
+
   useEffect(() => {
-    if (!targetRef.current) {
-      return undefined; // consistent-return 규칙에 맞게 undefined 반환
+    const target = targetRef.current;
+
+    if (!target || !hasNextPage || isLoading) {
+      return undefined; // consistent-return 룰에 맞게 명시적으로 undefined 반환
     }
 
-    const observer = new IntersectionObserver(([entry]) => {
-      if (entry.isIntersecting) {
-        onIntersect();
+    const handleIntersect = (entries: IntersectionObserverEntry[]): void => {
+      const entry = entries[0];
+
+      if (entry?.isIntersecting && !isFetchingRef.current) {
+        isFetchingRef.current = true;
+
+        onIntersect()
+          .catch(err => {
+            console.error('onIntersect error:', err);
+          })
+          .finally(() => {
+            setTimeout(() => {
+              isFetchingRef.current = false;
+            }, delay);
+          });
       }
-    }, options);
+    };
 
-    observer.observe(targetRef.current);
+    const observer = new IntersectionObserver(handleIntersect, {
+      root,
+      rootMargin,
+      threshold,
+    });
 
-    return () => observer.disconnect();
-  }, [targetRef, onIntersect, options]);
+    observer.observe(target);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [targetRef, hasNextPage, isLoading, onIntersect, root, rootMargin, threshold, delay]);
 }
