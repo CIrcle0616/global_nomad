@@ -3,6 +3,7 @@ import HrWithText from '@/components/domain/auth/HrWithText';
 import AuthLogo from '@/components/domain/auth/AuthLogo';
 import KakaoOauthLink from '@/components/domain/auth/KakaoOauthLink';
 import LinkToAuth from '@/components/domain/auth/LinkToSign';
+import { Suspense } from 'react';
 
 export default function LoginPage() {
   return (
@@ -12,7 +13,9 @@ export default function LoginPage() {
       </div>
 
       <div className="mx-auto mb-6">
-        <LoginForm />
+        <Suspense fallback={<div className="h-[288px]">로딩중...</div>}>
+          <LoginForm />
+        </Suspense>
       </div>
 
       <div className="flex justify-center text-gray-900 mb-10">
