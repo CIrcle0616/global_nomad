@@ -29,7 +29,13 @@ export default function LoginForm() {
         label="이메일"
         type="email"
         placeholder="이메일을 입력해 주세요"
-        register={register}
+        register={register('email', {
+          required: '이메일을 입력해주세요.',
+          pattern: {
+            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            message: '유효한 이메일 주소를 입력해주세요.',
+          },
+        })}
         error={errors.email}
       />
 
@@ -38,7 +44,9 @@ export default function LoginForm() {
         label="비밀번호"
         type="password"
         placeholder="비밀번호를 입력해 주세요"
-        register={register}
+        register={register('password', {
+          required: '비밀번호를 입력해 주세요.',
+        })}
         error={errors.password}
       />
 
