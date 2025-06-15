@@ -53,25 +53,27 @@ export default function DropDownActivityDetail({ userId, activityId }: DropDownA
   };
 
   return (
-    <DropdownMenu
-      onSelect={value => {
-        if (value === 'edit') {
-          router.push(`/profile/activities/${activityId}/edit`);
-        } else if (value === 'delete') {
-          openDeleteModal();
-        }
-      }}
-      options={['edit', 'delete']}
-      trigger={<Image src="/ic_kebab_menu.svg" width={40} height={40} alt="케밥메뉴" />}
-    >
-      {option => {
-        if (option === 'edit') {
-          return '수정하기';
-        } else if (option === 'delete') {
-          return '삭제하기';
-        }
-        return null;
-      }}
-    </DropdownMenu>
+    <div className="mt-2 left-0 w-full min-w-[160px]">
+      <DropdownMenu
+        onSelect={value => {
+          if (value === 'edit') {
+            router.push(`/profile/activities/${activityId}/edit`);
+          } else if (value === 'delete') {
+            openDeleteModal();
+          }
+        }}
+        options={['edit', 'delete']}
+        trigger={<Image src="/ic_kebab_menu.svg" width={40} height={40} alt="케밥메뉴" />}
+      >
+        {option => {
+          if (option === 'edit') {
+            return '수정하기';
+          } else if (option === 'delete') {
+            return '삭제하기';
+          }
+          return null;
+        }}
+      </DropdownMenu>
+    </div>
   );
 }
