@@ -25,7 +25,7 @@ export default function NotificationPopover({ children, onClose }: NotificationP
   return (
     <div
       ref={popoverRef}
-      className={`z-50 overflow-y-auto fixed top-0 left-0 w-screen h-screen bg-white sm:absolute sm:top-full sm:right-0 sm:translate-x-[-120px] lg:translate-x-[-60px] sm:w-[360px] sm:h-auto sm:rounded-md sm:shadow-md sm:border sm:border-gray-200 sm:bg-white`}
+      className={`z-50 overflow-y-auto fixed top-0 left-0 w-screen h-screen bg-white sm:absolute sm:top-full sm:right-0 sm:translate-x-[-120px] lg:translate-x-[-60px] sm:w-[360px] sm:h-auto sm:rounded-md sm:shadow-md sm:border sm:border-gray-200 sm:bg-white mt-[7px]`}
     >
       <button className="absolute top-4 right-4 sm:hidden" onClick={onClose}>
         <Image src={closeIcon} alt="닫기" width={24} height={24} />
