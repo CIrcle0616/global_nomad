@@ -9,6 +9,7 @@ import { UpdateUserBodyDto } from '@/types';
 import { GetMyInfoSuccessResponse } from '@/types/domain/user/types';
 import { useModalStore } from '@/store/modalStore';
 import Input from '@/components/common/Input';
+import SkeletonMyInfoForm from '@/components/skeleton/SkeletonMyInfoForm';
 import CommonButton from '@/components/common/CommonButton';
 import ProfileImageUploader from '@/components/common/ProfileImageUploader';
 import OneButtonModal from '@/components/common/modal/OneButtonModal';
@@ -109,7 +110,7 @@ export default function MyInfoPage() {
   );
 
   if (isLoading) {
-    return <p className="text-center text-gray-500">로딩 중입니다...</p>;
+    return <SkeletonMyInfoForm />;
   }
 
   if (isError || !myInfoData) {
