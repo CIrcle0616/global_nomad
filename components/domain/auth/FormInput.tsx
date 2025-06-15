@@ -2,7 +2,7 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import { FieldError, FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { FieldError, FieldValues, Path, UseFormRegisterReturn } from 'react-hook-form';
 
 const inputStyle = 'w-full px-5 py-4 rounded-md border border-gray-800';
 const normalBorder = 'border-gray-800';
@@ -14,7 +14,7 @@ interface FormInputProps<T extends FieldValues> {
   label: string;
   type?: 'text' | 'email' | 'password';
   placeholder: string;
-  register: UseFormRegister<T>;
+  register: UseFormRegisterReturn;
   error?: FieldError;
 }
 
@@ -44,7 +44,7 @@ export default function FormInput<T extends FieldValues>({
           className={`${inputStyle} ${error ? errorBorder : normalBorder} ${isPassword ? 'pr-12' : ''}`}
           type={isPassword ? (showPassword ? 'text' : 'password') : type}
           placeholder={placeholder}
-          {...register(id, {})}
+          {...register}
         />
         {isPassword && (
           <button
