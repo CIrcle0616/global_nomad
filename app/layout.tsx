@@ -6,6 +6,7 @@ import Script from 'next/script';
 import GNB from '@/components/common/gnb/Gnb';
 import Footer from '@/components/common/Footer';
 
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">

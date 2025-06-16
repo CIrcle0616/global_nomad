@@ -1,4 +1,5 @@
 'use client';
+
 import Image from 'next/image';
 import closeIcon from '@/public/ic_close.svg';
 import { formatDistanceToNow } from 'date-fns';
@@ -40,6 +41,7 @@ export default function NotificationCard({ id, content, createdAt, type, onDelet
     return <span>{content}</span>;
   };
 
+
   let timeAgo = '';
   try {
     const parsed = parseKoreanDateString(createdAt);
@@ -65,7 +67,6 @@ export default function NotificationCard({ id, content, createdAt, type, onDelet
           <Image src={closeIcon} alt="닫기" width={20} height={20} />
         </button>
       </div>
-
       <div className="mt-2 text-xs text-gray-400">{timeAgo}</div>
     </div>
   );

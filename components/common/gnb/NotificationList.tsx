@@ -1,4 +1,5 @@
 'use client';
+
 import { delMyNotifications, getMyNotifications } from '@/services/myNotifications';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
