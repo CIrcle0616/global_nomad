@@ -1,6 +1,6 @@
 'use client';
 import { useAuthStore } from '@/store/useAuthStore';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import DropdownMenu from '@/components/common/DropDown';
 import Image from 'next/image';
 import { delMyActivities } from '@/services/myActivities';
@@ -14,21 +14,26 @@ type DropDownActivityDetailProps = {
 };
 
 export default function DropDownActivityDetail({ userId, activityId }: DropDownActivityDetailProps) {
-  const loginUserId = useAuthStore(state => state.user?.id);
-  const [hydrated, setHydrated] = useState(false);
+  const { user, setUser } = useAuthStore();
   const router = useRouter();
   const { openModal } = useModalStore();
 
   useEffect(() => {
-    setHydrated(true); // 클라이언트 사이드에서만 true
-  }, []);
+    if (!user) {
+      const loginId = localStorage.getItem('auth-storage'); // 로컬스토리지에서 유저 정보 가져옴
+      if (loginId) {
+        try {
+          const parsed = JSON.parse(loginId);
+          const storedUser = parsed.state?.user; // 문자열을 객체로 변환하고 유저 정보만 꺼냄
+          setUser(storedUser);
+        } catch (err) {
+          console.error('auth-storage 파싱 실패:', err);
+        }
+      }
+    }
+  }, [user, setUser]);
 
-  // Hydration 끝날 때까지 아무것도 안 보여주기
-  if (!hydrated) {
-    return null;
-  }
-
-  const isAuthor = loginUserId === userId;
+  const isAuthor = user?.id === userId;
 
   if (!isAuthor) {
     return null;
