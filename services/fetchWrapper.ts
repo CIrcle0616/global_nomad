@@ -25,6 +25,7 @@ export async function fetchWrapper<T>(
     method,
     headers,
     body: isFormData ? body : body ? JSON.stringify(body) : undefined,
+    credentials: 'include',
   });
 
   if (response.status === 204) {

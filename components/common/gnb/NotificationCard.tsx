@@ -1,8 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 import closeIcon from '@/public/ic_close.svg';
 import { formatDistanceToNow } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import useReadNotificaitonStore from '@/store/useNotificationStore';
+import { parseKoreanDateString } from '@/lib/parseKoreanDate';
 
 interface NotificationCardProps {
   id: number;
@@ -38,10 +41,14 @@ export default function NotificationCard({ id, content, createdAt, type, onDelet
     return <span>{content}</span>;
   };
 
-  const timeAgo = formatDistanceToNow(new Date(createdAt), {
-    addSuffix: true,
-    locale: ko,
-  });
+
+  let timeAgo = '';
+  try {
+    const parsed = parseKoreanDateString(createdAt);
+    if (parsed) {
+      timeAgo = formatDistanceToNow(parsed, { addSuffix: true, locale: ko });
+    }
+  } catch {}
 
   const handleClick = () => {
     if (!isRead) markAsRead(id);
@@ -50,7 +57,7 @@ export default function NotificationCard({ id, content, createdAt, type, onDelet
   return (
     <div
       onClick={handleClick}
-      className={`border border-gray-200 rounded-md bg-white px-4 py-3 mx-auto max-w-[320px] ${
+      className={`border cursor-pointer border-gray-200 rounded-md bg-white px-4 py-3 mx-auto max-w-[320px] ${
         isRead ? 'bg-gray-100 border-gray-100 text-gray-400' : 'bg-white'
       }`}
     >
@@ -60,7 +67,7 @@ export default function NotificationCard({ id, content, createdAt, type, onDelet
           <Image src={closeIcon} alt="닫기" width={20} height={20} />
         </button>
       </div>
-      <div className="mt-2 text-xs text-gray-400">{timeAgo}분 전</div>
+      <div className="mt-2 text-xs text-gray-400">{timeAgo}</div>
     </div>
   );
 }

@@ -6,6 +6,7 @@ import { ReservationWithActivityResponseDto } from '@/types/index';
 
 import StarRating from './StarRating';
 import CommonButton from '@/components/common/CommonButton';
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
 
 export default function ReviewForm({
   reservation,
@@ -16,7 +17,7 @@ export default function ReviewForm({
   onClose: () => void;
   onReviewSubmit?: () => void;
 }) {
-  const { closeModal: storeCloseModal } = useModalStore();
+  const { openModal, closeModal: storeCloseModal } = useModalStore();
   const [rating, setRating] = useState(0);
   const [reviewText, setReviewText] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,11 +29,23 @@ export default function ReviewForm({
 
     setIsSubmitting(true);
     try {
-      await postMyReservations({ reservationId: reservation.id, body: { rating, content: reviewText } });
+      await postMyReservations({
+        reservationId: reservation.id,
+        body: { rating, content: reviewText },
+      });
+
       console.log('후기 작성 완료');
 
       onReviewSubmit?.();
-      handleClose();
+
+      openModal(OneButtonModal, {
+        content: '후기가 성공적으로 등록되었습니다.',
+        buttonText: '확인',
+        onConfirm: () => {
+          storeCloseModal();
+          onClose();
+        },
+      });
     } catch (error) {
       console.error('후기 작성 실패', error);
     } finally {
@@ -40,13 +53,8 @@ export default function ReviewForm({
     }
   };
 
-  const handleClose = () => {
-    storeCloseModal();
-    onClose();
-  };
-
   return (
-    <>
+    <div>
       <StarRating rating={rating} setRating={setRating} isDisabled={isSubmitting} />
 
       <textarea
@@ -72,8 +80,8 @@ export default function ReviewForm({
           ${isDisabled || isSubmitting ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-nomad-black text-white'}
         `}
       >
-        {isSubmitting ? '작성 중...' : '작성하기'}
+        작성하기
       </CommonButton>
-    </>
+    </div>
   );
 }
