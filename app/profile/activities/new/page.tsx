@@ -118,6 +118,11 @@ export default function NewAndEditActivityPage() {
       const newStart = newFormTime(newForm.startTime);
       const newEnd = newFormTime(newForm.endTime);
 
+      if (newStart >= newEnd) {
+        alert('시작 시간은 종료 시간보다 빨라야 합니다.'); //모달 쓸수있음
+        return;
+      }
+
       for (let i = 0; i < forms.length; i++) {
         const formNowIndex = forms[i];
         const formStartTime = newFormTime(formNowIndex.startTime);
