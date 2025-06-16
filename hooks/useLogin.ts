@@ -40,7 +40,6 @@ export default function LoginForm() {
     mutationFn: loginUser,
     onSuccess: data => {
       setIsRedirecting(true);
-      router.push(redirectUrl || '/');
       setUser({
         id: data.user.id,
         name: data.user.nickname,
@@ -48,6 +47,7 @@ export default function LoginForm() {
         teamId: 14 - 3,
         accessToken: data.accessToken,
       });
+      router.push(redirectUrl || '/');
     },
     onError: error => {
       if (error.status === 404) {
