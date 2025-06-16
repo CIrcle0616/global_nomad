@@ -8,7 +8,6 @@ export async function fetchWrapper<T>(
   body?: unknown,
   customHeaders: Record<string, string> = {},
 ): Promise<T> {
-
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
   const isFormData = body instanceof FormData;
@@ -25,6 +24,7 @@ export async function fetchWrapper<T>(
     method,
     headers,
     body: isFormData ? body : body ? JSON.stringify(body) : undefined,
+    credentials: 'include',
   });
 
   if (response.status === 204) {

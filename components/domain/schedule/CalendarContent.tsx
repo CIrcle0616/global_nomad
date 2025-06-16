@@ -11,7 +11,7 @@ export default function CalendarContent({ eventInfo }: CalendarContentProps) {
 
   return (
     <div
-      className="text-white text-xs px-2  py-[2px] rounded md-1 w-fit max-w-full- break-keep"
+      className="text-white text-xs px-2  py-[2px] rounded md-1 w-fit max-w-full- break-keep cursor-pointer"
       style={{ backgroundColor: bgColor }}
     >
       {title}

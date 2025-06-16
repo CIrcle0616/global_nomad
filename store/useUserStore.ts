@@ -6,6 +6,7 @@ interface User {
   name: string;
   profileImage?: string;
   teamId: number;
+  accessToken: string;
 }
 
 interface UserStore {
