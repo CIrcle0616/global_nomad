@@ -32,7 +32,11 @@ export default function DropdownMenu({ onSelect, options, trigger, children }: D
     <div ref={dropdownRef} className="relative block">
       <div onClick={toggle}>{trigger}</div>
       {isOpen && (
-        <ul className="absolute w-full min-w-[130px] whitespace-nowrap right-0 top-full border border-gray-200 shadow-md rounded-md bg-white z-50">
+        <ul
+          className={`absolute w-full mt-2 min-w-[130px] whitespace-nowrap right-0 top-full border border-gray-200 shadow-md rounded-md bg-white z-50 ${
+            options.length > 8 ? 'max-h-[400px] overflow-y-auto' : ''
+          }`}
+        >
           {options.map(option => (
             <li
               key={option}
