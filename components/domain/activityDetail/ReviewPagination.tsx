@@ -69,7 +69,7 @@ export default function ReviewPagination({
             width={65}
             height={88}
           />
-          <div className="text-xl-medium text-gray-800">아직 등록된 댓글이 없어요</div>
+          <div className="text-xl-medium text-gray-800">아직 등록된 후기가 없어요</div>
         </div>
       )}
     </>
