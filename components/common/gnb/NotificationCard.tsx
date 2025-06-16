@@ -41,7 +41,6 @@ export default function NotificationCard({ id, content, createdAt, type, onDelet
     return <span>{content}</span>;
   };
 
-
   let timeAgo = '';
   try {
     const parsed = parseKoreanDateString(createdAt);
