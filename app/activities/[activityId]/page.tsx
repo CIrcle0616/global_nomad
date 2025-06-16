@@ -12,7 +12,7 @@ export default async function ActivityDetailPage({ params }: { params: Promise<{
   const data = await getActivitiesId(Number(activityId));
 
   return (
-    <div className="w-[375px] md:w-[696px] lg:w-[1024px] mx-auto mb-[133px] md:mb-[145px] lg:mb-[293px] relative">
+    <div className="w-[375px] md:w-[696px] lg:w-[900px] mx-auto mb-[133px] md:mb-[145px] lg:mb-[293px] relative">
       <ActivityDetailInfo data={data} />
       <div className="md:flex md:w-full">
         <div>
@@ -20,7 +20,7 @@ export default async function ActivityDetailPage({ params }: { params: Promise<{
           <ActivityMap address={data.address} />
           <ActivityDetailReview activityId={Number(activityId)} />
         </div>
-        <div className="md:w-[251px] lg:w-[384px] ml-6">
+        <div className="ml-6">
           <div
             className="
           fixed bottom-0 left-0 w-full z-10 bg-white border-t shadow-[0_-4px_10px_rgba(0,0,0,0.1)]
