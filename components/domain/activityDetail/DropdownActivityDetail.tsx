@@ -1,12 +1,11 @@
 'use client';
-import { useAuthStore } from '@/store/useAuthStore';
-import { useEffect } from 'react';
 import DropdownMenu from '@/components/common/DropDown';
 import Image from 'next/image';
 import { delMyActivities } from '@/services/myActivities';
 import { useRouter } from 'next/navigation';
 import TwoButtonModal from '@/components/common/modal/TwoButtonModal';
 import { useModalStore } from '@/store/modalStore';
+import useUserStore from '@/store/useUserStore';
 
 type DropDownActivityDetailProps = {
   userId: number;
@@ -14,24 +13,9 @@ type DropDownActivityDetailProps = {
 };
 
 export default function DropDownActivityDetail({ userId, activityId }: DropDownActivityDetailProps) {
-  const { user, setUser } = useAuthStore();
+  const { user } = useUserStore();
   const router = useRouter();
   const { openModal } = useModalStore();
-
-  useEffect(() => {
-    if (!user) {
-      const loginId = localStorage.getItem('auth-storage'); // 로컬스토리지에서 유저 정보 가져옴
-      if (loginId) {
-        try {
-          const parsed = JSON.parse(loginId);
-          const storedUser = parsed.state?.user; // 문자열을 객체로 변환하고 유저 정보만 꺼냄
-          setUser(storedUser);
-        } catch (err) {
-          console.error('auth-storage 파싱 실패:', err);
-        }
-      }
-    }
-  }, [user, setUser]);
 
   const isAuthor = user?.id === userId;
 
