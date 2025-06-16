@@ -1,10 +1,7 @@
 'use client';
 
-import { SizeByDeviceType } from '@/hooks/useMainActivityList';
-import useMediaQuery from '@/store/useMediaQuery';
+import usePagination from '@/hooks/usePagination';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
-import { useState } from 'react';
 
 interface MainPaginationProps {
   totalCount: number | undefined;
@@ -14,44 +11,11 @@ const arrowClasses =
   'inline-flex w-10 md:w-[55px] h-10 md:h-[55px] border border-gray-300 rounded-2xl items-center justify-center';
 
 export default function MainPagination({ totalCount }: MainPaginationProps) {
-  const deviceType = useMediaQuery();
-  const searchParams = useSearchParams();
-  const currentPage = Number(searchParams.get('page') || 1);
-  const keyword = searchParams.get('keyword');
-  const [itemsPerPage, setItemsPerPage] = useState<SizeByDeviceType | 16>(SizeByDeviceType[deviceType]);
+  const pagination = usePagination(totalCount);
+  //타입가드
+  if (pagination === null) return null;
 
-  if (keyword && deviceType === 'desktop') {
-    setItemsPerPage(16);
-  }
-
-  if (!totalCount || totalCount === 0) {
-    return null;
-  }
-
-  const totalPages = Math.ceil(totalCount / itemsPerPage);
-
-  const pagesToShow = 5;
-
-  const halfPagesToShow = Math.floor(pagesToShow / 2);
-
-  let startPage = currentPage - halfPagesToShow;
-  let endPage = currentPage + halfPagesToShow;
-
-  if (startPage < 1) {
-    startPage = 1;
-    endPage = Math.min(totalPages, pagesToShow);
-  }
-
-  if (endPage > totalPages) {
-    endPage = totalPages;
-    startPage = Math.max(1, totalPages - pagesToShow + 1);
-  }
-
-  const createPageUrl = (pageNumber: number) => {
-    const params = new URLSearchParams(searchParams);
-    params.set('page', String(pageNumber));
-    return `?${params.toString()}`;
-  };
+  const { startPage, endPage, currentPage, totalPages, createPageUrl } = pagination;
 
   const pageNumbers = Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i);
 
