@@ -42,7 +42,7 @@ export default async function MainPage({ searchParams }: MainPageProps) {
   queryClient.setQueryData(['activities', 'popularList'], popularData);
   queryClient.setQueryData(['activities', mainListParams], mainListData);
 
-  const reviewCount = mainListData.totalCount;
+  const searchResultCount = mainListData.totalCount;
 
   return (
     <main className="w-full h-auto min-h-screen bg-gray-100">
@@ -51,7 +51,11 @@ export default async function MainPage({ searchParams }: MainPageProps) {
         <SearchBar />
         {/* 서버에서 패칭한 데이터를 HydrationBoundary 안에  */}
         <HydrationBoundary state={dehydrate(queryClient)}>
-          {keyword ? <SearchHeader keyword={keyword} reviewCount={reviewCount} /> : <PopularActivitySection />}
+          {keyword ? (
+            <SearchHeader keyword={keyword} searchResultCount={searchResultCount} />
+          ) : (
+            <PopularActivitySection />
+          )}
           <MainPageActivityListSection keyword={keyword} category={category} />
         </HydrationBoundary>
       </Container>
