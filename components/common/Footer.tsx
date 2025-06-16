@@ -7,7 +7,7 @@ import Youtube from '@/public/ic_youtube.svg';
 
 export default function Footer() {
   return (
-    <footer className="w-full px-4 py-[40px] bg-black text-gray-800 text-lg-regular">
+    <footer className="w-full px-4 py-[30px] bg-black text-gray-800 text-lg-regular">
       <div className="max-w-screen-xl mx-auto flex flex-col items-center gap-4 md:flex-row md:justify-between md:items-center md:gap-0 relative">
         <div className="flex flex-row md:gap-0 md:flex-none md:static md:w-auto gap-6">
           <p className="whitespace-nowrap md:mr-12">@codeit - 2025</p>
