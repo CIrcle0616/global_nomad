@@ -10,6 +10,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import useUserStore from '@/store/useUserStore';
 
 interface LoginInputs {
   email: string;
@@ -17,6 +18,7 @@ interface LoginInputs {
 }
 
 export default function LoginForm() {
+  const { setUser } = useUserStore();
   const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
   const { openModal } = useModalStore();
@@ -31,7 +33,14 @@ export default function LoginForm() {
     mutationFn: credentials => {
       return loginUser(credentials);
     },
-    onSuccess: () => {
+    onSuccess: data => {
+      setUser({
+        id: data.user.id,
+        name: data.user.nickname,
+        profileImage: data.user.profileImageUrl ?? undefined,
+        teamId: 14 - 3,
+        accessToken: data.accessToken,
+      });
       router.push('/');
     },
     onError: error => {

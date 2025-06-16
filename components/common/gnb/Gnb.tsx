@@ -14,7 +14,7 @@ export default function GNB() {
   const goToMain = () => router.push('/');
 
   return (
-    <header className="w-full px-2 py-2 border-b">
+    <header className="w-full px-2 py-2 border-b py-[20px]">
       <div className="mx-auto flex justify-between items-center px-1 sm:px-6 lg:px-[100px] max-w-[1440px]">
         <button onClick={goToMain} className="flex items-center gap-2">
           <Image src={Logo} alt="로고" width={130} className="sm:w-[172px]" />
