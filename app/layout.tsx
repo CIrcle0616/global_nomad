@@ -4,6 +4,7 @@ import { ReactNode } from 'react';
 import { Providers } from '../lib/provider';
 import GNB from '@/components/common/gnb/Gnb';
 import Footer from '@/components/common/Footer';
+import { Toaster } from 'react-hot-toast';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -15,6 +16,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {/* 전역 모달 컴포넌트 위치 */}
           <GlobalModal />
           <Footer />
+          <Toaster position="top-center" reverseOrder={false} />
         </Providers>
       </body>
     </html>
