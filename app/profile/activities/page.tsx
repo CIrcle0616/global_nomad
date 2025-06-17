@@ -9,6 +9,7 @@ import { getMyActivities } from '@/services/myActivities';
 import { GetMyActivitiesSuccessResponse } from '@/types/domain/myActivities/types';
 import { getUserMe } from '@/services/users';
 import EmptyState from '@/components/empty/EmptyState';
+import SkeletonCard from '@/components/skeleton/SkeletonCard';
 
 export default function ActivityManagePage() {
   const [userId, setUserId] = useState<number | null>(null);
@@ -74,7 +75,9 @@ export default function ActivityManagePage() {
         </Link>
       </div>
 
-      {emptyScreen ? (
+      {!data ? (
+        <SkeletonCard />
+      ) : emptyScreen ? (
         <EmptyState />
       ) : (
         <div className="w-full max-w-[1000px] mx-auto px-4">
@@ -96,6 +99,7 @@ export default function ActivityManagePage() {
           </div>
         </div>
       )}
+
       <div ref={observerRef} style={{ height: 1 }} />
       {isFetchingNextPage && <div>로딩 중...</div>}
     </div>
