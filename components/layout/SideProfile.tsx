@@ -45,14 +45,17 @@ export default function SideProfile() {
   );
 
   return (
-    <div className="bg-white border border-gray-300 rounded-xl shadow-md p-6 w-full h-fit shrink-0">
+    <div
+      className="fixed top-40 left-100 z-30 bg-white border border-gray-300 rounded-xl shadow-md p-6 h-fit
+w-full max-w-[251px] lg:max-w-[384px]"
+    >
       <ProfileImageUploader
         onFileSelected={file => {
           imageUploadMutation.mutate(file);
         }}
       />
 
-      <ul className="space-y-2 w-full">
+      <ul className="space-y-2 w-full mt-4">
         {menuItems.map(({ name, path, icon, iconGray }) => {
           const isActive = pathname.startsWith(path);
           const iconToUse = isActive ? icon : iconGray;
