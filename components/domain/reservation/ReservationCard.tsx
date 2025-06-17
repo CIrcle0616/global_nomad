@@ -9,6 +9,7 @@ import { patchMyReservations } from '@/services/myReservations';
 import CommonButton from '@/components/common/CommonButton';
 import TwoButtonModal from '@/components/common/modal/TwoButtonModal';
 import ReviewModal from '@/components/domain/reservation/ReviewModal';
+import OneButtonModal from '@/components/common/modal/OneButtonModal';
 
 import { ReservationWithActivityResponseDto } from '@/types/index';
 
@@ -26,11 +27,17 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
       onConfirm: async ({ closeModal }: { closeModal: () => void }) => {
         try {
           await patchMyReservations({ reservationId: reservation.id, body: { status: 'canceled' } });
-          console.log('예약 취소 성공');
-
           await queryClient.invalidateQueries({ queryKey: ['myReservations'] });
-
           closeModal();
+
+          openModal(OneButtonModal, {
+            content: '예약이 취소되었습니다.',
+            buttonText: '확인',
+            onConfirm: () => {
+              const { closeModal } = useModalStore.getState();
+              closeModal();
+            },
+          });
         } catch (error) {
           console.error('예약 취소 실패', error);
         }
@@ -45,7 +52,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
     text: reservation.status,
     color: '',
   };
-  // 상태별 텍스트 색상 클래스명 조건부 렌더링
+
   const statusTextColorClass =
     reservation.status === 'pending'
       ? 'text-blue-300'
@@ -58,11 +65,9 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
             : reservation.status === 'completed'
               ? 'text-gray-800'
               : '';
-
   // 버튼과 placeholder의 공통 클래스
   const buttonPlaceholderClass =
     'h-[32px] md:h-[40px] lg:h-[43px] min-w-[80px] md:min-w-[112px] lg:min-w-[144px] text-[14px] rounded-[6px]';
-
   // 공통 버튼 클래스
   const buttonClass =
     '!h-[32px] md:!h-[40px] lg:!h-[43px] !min-w-[80px] md:!min-w-[112px] lg:!min-w-[144px] text-[14px] md:text-[16px] lg:text-[18px] rounded-[6px] !p-[6px] md:!p-[8px]';
@@ -96,15 +101,15 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
             ₩{reservation.totalPrice.toLocaleString()}원
           </p>
 
-          {reservation.status === 'pending' && (
-            <CommonButton size="S" variant="secondary" onClick={handleCancelReservation} className={buttonClass}>
-              예약 취소
-            </CommonButton>
-          )}
+          <div>
+            {reservation.status === 'pending' && (
+              <CommonButton size="S" variant="secondary" onClick={handleCancelReservation} className={buttonClass}>
+                예약 취소
+              </CommonButton>
+            )}
 
-          {reservation.status === 'completed' && (
-            <>
-              {reviewSubmitted ? (
+            {reservation.status === 'completed' &&
+              (reviewSubmitted ? (
                 <CommonButton
                   size="S"
                   variant="secondary"
@@ -125,20 +130,29 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
                         const { closeModal } = useModalStore.getState();
                         closeModal();
                       },
-                      onReviewSubmit: () => setReviewSubmitted(true),
+                      onReviewSubmit: () => {
+                        setReviewSubmitted(true);
+                        openModal(OneButtonModal, {
+                          content: '후기가 성공적으로 등록되었습니다.',
+                          buttonText: '확인',
+                          onConfirm: () => {
+                            const { closeModal } = useModalStore.getState();
+                            closeModal();
+                          },
+                        });
+                      },
                     })
                   }
                   className={buttonClass}
                 >
                   후기 작성
                 </CommonButton>
-              )}
-            </>
-          )}
+              ))}
 
-          {reservation.status !== 'pending' && reservation.status !== 'completed' && (
-            <div className={buttonPlaceholderClass} />
-          )}
+            {!['pending', 'confirmed', 'completed'].includes(reservation.status) && (
+              <div className={buttonPlaceholderClass} />
+            )}
+          </div>
         </div>
       </div>
     </div>

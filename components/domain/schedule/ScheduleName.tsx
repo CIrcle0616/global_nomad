@@ -14,7 +14,7 @@ export default function ScheduleName({ activityList, selectedId, onSelectedId }:
   const selectedName = activityList.find(a => a.id === selectedId)?.title ?? '';
 
   return (
-    <div className="w-full">
+    <div className="w-full mb-[20px]">
       <DropdownSelect
         type="list"
         selected={selectedName}

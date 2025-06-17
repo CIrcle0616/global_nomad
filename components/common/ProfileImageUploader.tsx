@@ -15,14 +15,11 @@ export default function ProfileImageUploader({ onFileSelected }: ProfileImageUpl
 
   const { data: myInfoData } = useQuery({
     queryKey: ['myInfo'],
-    queryFn: () => {
-      return getUserMe();
-    },
+    queryFn: () => getUserMe(),
   });
 
   useEffect(() => {
-    if (!myInfoData) return;
-    if (myInfoData.profileImageUrl) {
+    if (myInfoData?.profileImageUrl) {
       setProfileUrl(myInfoData.profileImageUrl);
     }
   }, [myInfoData]);
