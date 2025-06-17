@@ -2,7 +2,7 @@ import { getKoreanJosa } from '@/lib/getKoreanJosa';
 
 interface SearchHeaderProps {
   keyword: string;
-  searchResultCount: number;
+  searchResultCount: number | undefined;
 }
 
 export default function SearchHeader({ keyword, searchResultCount }: SearchHeaderProps) {
