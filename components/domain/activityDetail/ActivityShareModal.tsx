@@ -1,99 +1,56 @@
-'use client';
-
 import { useModalStore } from '@/store/modalStore';
 import Image from 'next/image';
 
+interface ActivityShareModalProps {
+  title: string;
+  description: string;
+  imageUrl: string;
+  url: string;
+}
+
 export default function ActivityShareModal() {
-  const { closeModal } = useModalStore();
-  // const imageUrl = 'https://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png';
-  // 활동 ID 추출
-  // const activityId = url.split('/').pop();
-
-  // // 개발환경에서도 배포 도메인 기준으로 공유 링크 생성
-  // const baseUrl =
-  //   process.env.NODE_ENV === 'development' ? 'https://global-nomad-black.vercel.app' : window.location.origin;
-
-  // const shareLink = `${baseUrl}/activities/${activityId}`;
-
-  // Kakao SDK 초기화
-  // useEffect(() => {
-  //   if (typeof window !== 'undefined' && window.Kakao && !window.Kakao.isInitialized()) {
-  //     window.Kakao.init('1d0b99e50b29c799009a5eac4306aaf7');
-  //   }
-  // }, []);
-
-  // 모바일 판별
-  // const isMobile = () =>
-  //   typeof navigator !== 'undefined' && /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent);
+  const { closeModal, modalProps } = useModalStore();
+  const { title, description, imageUrl, url } = modalProps as ActivityShareModalProps;
 
   const handleKakaoShare = () => {
-    // if (isMobile()) {
-    //   // 모바일 환경 → Kakao JS SDK
-    //   if (!window.Kakao) return;
-    //   window.Kakao.Share.sendDefault({
-    //     objectType: 'feed',
-    //     content: {
-    //       title,
-    //       description,
-    //       imageUrl,
-    //       link: {
-    //         mobileWebUrl: shareLink,
-    //         webUrl: shareLink,
-    //       },
-    //     },
-    //     buttons: [
-    //       {
-    //         title: '웹에서 보기',
-    //         link: {
-    //           mobileWebUrl: shareLink,
-    //           webUrl: shareLink,
-    //         },
-    //       },
-    //     ],
-    //   });
-    // } else {
-    //   // PC 환경 → sharer.kakao.com
-    //   const appKey = '1d0b99e50b29c799009a5eac4306aaf7';
-    //   const kakaoShareUrl = `https://sharer.kakao.com/picker/link?app_key=${appKey}&template_json=${encodeURIComponent(
-    //     JSON.stringify({
-    //       objectType: 'feed',
-    //       content: {
-    //         title,
-    //         description,
-    //         imageUrl,
-    //         link: {
-    //           webUrl: shareLink,
-    //           mobileWebUrl: shareLink,
-    //         },
-    //       },
-    //       buttons: [
-    //         {
-    //           title: '웹에서 보기',
-    //           link: {
-    //             webUrl: shareLink,
-    //             mobileWebUrl: shareLink,
-    //           },
-    //         },
-    //       ],
-    //     }),
-    //   )}`;
-    // console.log(kakaoShareUrl);
+    if (!window.Kakao || !window.Kakao.isInitialized()) {
+      alert('카카오 공유 기능이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.');
+      console.error('Kakao SDK is not initialized. Check layout and script loader.');
+      return;
+    }
 
-    // window.open(kakaoShareUrl, '_blank', 'width=600,height=700');
-    alert('카카오 공유하기!');
-    closeModal();
+    // 공유될 링크 생성
+    window.Kakao.Share.sendDefault({
+      objectType: 'feed',
+      content: {
+        title: title,
+        description: description,
+        imageUrl: imageUrl,
+        link: {
+          mobileWebUrl: url,
+          webUrl: url,
+        },
+      },
+      buttons: [
+        {
+          title: '체험 보러가기',
+          link: {
+            mobileWebUrl: url,
+            webUrl: url,
+          },
+        },
+      ],
+    });
   };
-
-  // };
 
   const handleCopyLink = async () => {
     try {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(url); // 전달받은 url을 복사
       alert('링크가 복사되었습니다!');
       closeModal();
     } catch (err) {
       alert('복사에 실패했어요 😢');
-      console.log(err);
+      console.error(err);
     }
   };
 
