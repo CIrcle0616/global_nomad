@@ -1,15 +1,20 @@
 import '@/app/globals.css';
 import GlobalModal from '@/components/common/modal/GlobalModal';
+import { Providers } from '@/lib/provider';
+import Script from 'next/script';
 import { ReactNode } from 'react';
 import { Providers } from '../lib/provider';
 import GNB from '@/components/common/gnb/Gnb';
 import Footer from '@/components/common/Footer';
 import { Toaster } from 'react-hot-toast';
 
+
+
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="ko">
       <body>
+
         <Providers>
           <GNB />
           {children}
@@ -18,6 +23,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           <Footer />
           <Toaster position="top-center" reverseOrder={false} />
         </Providers>
+
       </body>
     </html>
   );

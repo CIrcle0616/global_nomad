@@ -47,8 +47,8 @@ export default function ActivityDetailReview({ activityId }: { activityId: numbe
   if (isError) return <div>Error loading data</div>;
 
   return (
-    <div className="w-[327px] mt-10 md:w-[469px] md:mt-0 lg:w-[800px] mx-auto">
-      <div className="border-t border-gray-400 my-4 md:my-10 md:w-[469px] lg:w-[790px]" />
+    <div className="w-[327px] mt-10 md:w-[469px] md:mt-0 lg:w-[500px] mx-auto">
+      <div className="md:border-t md:border-gray-400 my-4 md:my-10 md:w-[469px] lg:w-[489px]" />
       <ReviewHeader data={data} filter={filter} setFilter={setFilter} />
       <ReviewList reviews={currentReviews} />
       <ReviewPagination
