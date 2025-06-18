@@ -9,6 +9,7 @@ import { useModalStore } from '@/store/modalStore';
 import OneButtonModal from '@/components/common/modal/OneButtonModal';
 import { useParams, useRouter } from 'next/navigation';
 import { patchMyActivities } from '@/services/myActivities';
+import { format } from 'date-fns';
 
 type TimeForm = {
   id: number;
@@ -63,6 +64,31 @@ export default function ActivityEditPage() {
   const handleAddressChange = (data: AddressData) => setAddress(data.address);
   const handleAddressClick = () => {
     openAddress({ onComplete: handleAddressChange });
+  };
+  const dateCheck = (): boolean => {
+    const today = new Date();
+    const todayDate = format(today, 'yyyy-MM-dd'); // 예시
+
+    const parseDate = (raw: string): Date => {
+      if (raw.includes('.')) {
+        const matched = raw.match(/(\d{4})\.\s*(\d{1,2})\.\s*(\d{1,2})\./);
+        if (!matched) throw new Error('날짜 형식이 잘못되었습니다');
+        const [, year, month, day] = matched;
+        return new Date(`${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`);
+      } else {
+        return new Date(raw);
+      }
+    };
+
+    const selectDay = parseDate(selecteDate);
+    const nowDay = parseDate(todayDate);
+
+    if (selectDay < nowDay) {
+      alert('선택 날짜는 오늘 날짜보다 전 일수 없습니다.'); //모달 쓸수있음
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -147,15 +173,19 @@ export default function ActivityEditPage() {
       return h * 60 + m;
     };
 
+    const newStart = newFormTime(newForm.startTime);
+    const newEnd = newFormTime(newForm.endTime);
+
+    if (newStart >= newEnd) {
+      alert('시작 시간은 종료 시간보다 빨라야 합니다.'); //모달 쓸수있음
+      return;
+    }
+
+    if (!dateCheck()) {
+      return;
+    }
+
     if (forms.length > 0) {
-      const newStart = newFormTime(newForm.startTime);
-      const newEnd = newFormTime(newForm.endTime);
-
-      if (newStart >= newEnd) {
-        alert('시작 시간은 종료 시간보다 빨라야 합니다.'); //모달 쓸수있음
-        return;
-      }
-
       for (let i = 0; i < forms.length; i++) {
         const formNowIndex = forms[i];
         const formStartTime = newFormTime(formNowIndex.startTime);
@@ -415,13 +445,7 @@ export default function ActivityEditPage() {
 
         <h1 className="text-2xl font-bold">배너 이미지</h1>
         <>
-          <input
-            type="file"
-            ref={bannerInputRef}
-            onChange={e => handleImageUpload(e, 'banner')}
-            className="hidden"
-            required
-          />
+          <input type="file" ref={bannerInputRef} onChange={e => handleImageUpload(e, 'banner')} className="hidden" />
 
           <div className="flex gap-4 mt-4 flex-wrap">
             <button
