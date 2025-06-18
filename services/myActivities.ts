@@ -132,10 +132,14 @@ export function patchMyActivities(
       price: number;
       address: string;
       bannerImageUrl: string;
-      subImageIdsToRemove: [];
-      subImageUrlsToAdd: [];
-      scheduleIdsToRemove: [];
-      schedulesToAdd: [];
+      subImageIdsToRemove: string[];
+      subImageUrlsToAdd: string[];
+      scheduleIdsToRemove: number[];
+      schedulesToAdd: {
+        date: string;
+        startTime: string;
+        endTime: string;
+      }[];
     };
   },
   accessToken?: string,

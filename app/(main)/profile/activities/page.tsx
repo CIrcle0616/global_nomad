@@ -38,10 +38,10 @@ export default function ActivityManagePage() {
     PageType,
     Error,
     InfiniteData<PageType>,
-    [string],
+    [string, string],
     number | undefined
   >({
-    queryKey: ['activities'],
+    queryKey: ['myActivities', 'infinite'],
     queryFn: ({ pageParam = undefined }) => getMyActivities({ cursorId: pageParam }),
     getNextPageParam: lastPage => lastPage.cursorId ?? undefined,
     initialPageParam: undefined,
