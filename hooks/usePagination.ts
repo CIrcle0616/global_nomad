@@ -1,8 +1,8 @@
 'use client';
 
+import { SizeByDeviceType } from '@/constants/sizeByDeviceType';
 import useMediaQuery from '@/store/useMediaQuery';
 import { useSearchParams } from 'next/navigation';
-import { SizeByDeviceType } from './useMainActivityList';
 
 export default function usePagination(totalCount: number | undefined) {
   const deviceType = useMediaQuery();
