@@ -21,6 +21,11 @@ interface ReservationTabletProps {
   pricePerPerson: number;
   availableTimes: { startTime: string; endTime: string }[];
   loading?: boolean;
+  availableDates: string[];
+  scheduleData?: {
+    date: string;
+    times: { startTime: string; endTime: string; id: number }[];
+  }[];
 }
 
 export default function ReservationTablet({
@@ -30,8 +35,10 @@ export default function ReservationTablet({
   onCountChange,
   onReserve,
   pricePerPerson,
+  availableDates,
   loading = false,
   availableTimes,
+  scheduleData,
 }: ReservationTabletProps) {
   const { openModal } = useModalStore();
   const isReservable = !!state.date && state.time;
@@ -41,6 +48,8 @@ export default function ReservationTablet({
       onReserve();
     }
   };
+  // console.log('[Tablet] scheduleData:', scheduleData);
+  console.log('[ReservationTablet] scheduleData 전달 전:', scheduleData);
 
   return (
     <>
@@ -63,7 +72,9 @@ export default function ReservationTablet({
                   onTimeChange,
                   onReserve,
                   availableTimes,
+                  availableDates,
                   loading,
+                  scheduleData,
                 })
               }
               className="text-black hover:underline cursor-pointer text-sm"
