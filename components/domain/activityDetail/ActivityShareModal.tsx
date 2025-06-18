@@ -1,5 +1,6 @@
 import { useModalStore } from '@/store/modalStore';
 import Image from 'next/image';
+import { toast } from 'react-hot-toast';
 
 interface ActivityShareModalProps {
   title: string;
@@ -14,7 +15,9 @@ export default function ActivityShareModal() {
 
   const handleKakaoShare = () => {
     if (!window.Kakao || !window.Kakao.isInitialized()) {
-      alert('카카오 공유 기능이 아직 준비되지 않았습니다. 잠시 후 다시 시도해주세요.');
+      toast.error('잠시 후 다시 시도해주세요.', {
+        duration: 3000,
+      });
       console.error('Kakao SDK is not initialized. Check layout and script loader.');
       return;
     }
@@ -46,10 +49,14 @@ export default function ActivityShareModal() {
   const handleCopyLink = async () => {
     try {
       await navigator.clipboard.writeText(url); // 전달받은 url을 복사
-      alert('링크가 복사되었습니다!');
+      toast.success('링크가 복사되었습니다!', {
+        duration: 3000,
+      });
       closeModal();
     } catch (err) {
-      alert('복사에 실패했어요 😢');
+      toast.error('복사에 실패했어요 😢', {
+        duration: 3000,
+      });
       console.error(err);
     }
   };
