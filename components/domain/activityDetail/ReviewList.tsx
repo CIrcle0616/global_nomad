@@ -17,13 +17,12 @@ export default function ReviewList({ reviews }: { reviews: Review[] }) {
           className={`flex flex-col gap-4 py-6 ${index !== reviews.length - 1 ? 'border-b border-gray-300' : ''}`}
         >
           <div className="flex gap-4">
-            <div>
+            <div className="w-[55px] h-[55px] relative shrink-0">
               <Image
                 src={review.user.profileImageUrl || '/ic_empty.svg'}
                 alt="Profile"
-                width={60}
-                height={60}
-                className="size-full object-cover rounded-full"
+                fill
+                className="object-cover rounded-full"
               />
             </div>
             <div className="flex flex-col gap-2 w-[266px] md:w-[368px] lg:w-[792px]">

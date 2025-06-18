@@ -1,11 +1,7 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function NotFoundPage() {
-  const router = useRouter();
-
   return (
     <div
       className="flex flex-col items-center justify-center min-h-screen px-4 text-center bg-bottom bg-no-repeat bg-cover"
@@ -29,12 +25,12 @@ export default function NotFoundPage() {
       </p>
 
       <div className="flex flex-col sm:flex-row gap-3 w-full max-w-[120px] md:max-w-[160px]">
-        <button
-          onClick={() => router.push('/')}
+        <Link
+          href={'/'}
           className="w-full py-2 px-4 bg-teal-600 text-white rounded hover:bg-teal-500 transition text-md-bold md:text-lg-bold"
         >
           홈으로 돌아가기
-        </button>
+        </Link>
       </div>
     </div>
   );
