@@ -13,6 +13,9 @@ import ComponentSpinner from '@/components/common/spinners/ComponentSpinner';
 import { filterOptions } from '@/constants/filterOption';
 import { getMyReservations } from '@/services/myReservations';
 import useObserver from '@/hooks/useObserver';
+import ScrollToTopButton from '@/components/common/ScrollTopButton';
+
+import { wait } from '@/constants/utils/wait';
 
 const PAGE_SIZE = 10;
 
@@ -30,12 +33,17 @@ export default function ClientReservations() {
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } = useInfiniteQuery({
     queryKey: ['myReservations', status],
-    queryFn: ({ pageParam }: { pageParam?: number }) =>
-      getMyReservations({
-        cursorId: pageParam,
-        size: PAGE_SIZE,
-        status,
-      }),
+    queryFn: async ({ pageParam }: { pageParam?: number }) => {
+      const [result] = await Promise.all([
+        getMyReservations({
+          cursorId: pageParam,
+          size: PAGE_SIZE,
+          status,
+        }),
+        wait(400),
+      ]);
+      return result;
+    },
     getNextPageParam: lastPage => {
       const reservations = lastPage?.reservations ?? [];
       return reservations.length < PAGE_SIZE ? undefined : reservations[reservations.length - 1].id;
@@ -126,6 +134,7 @@ export default function ClientReservations() {
         </DropdownMenu>
       </div>
       {renderContent()}
+      <ScrollToTopButton />
     </div>
   );
 }
