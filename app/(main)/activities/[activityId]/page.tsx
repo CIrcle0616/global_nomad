@@ -2,7 +2,7 @@ import ActivityDetailInfo from '@/components/domain/activityDetail/ActivityDetai
 import ActivityDetailReview from '@/components/domain/activityDetail/ActivityDetailReview';
 import ActivityMap from '@/components/domain/activityDetail/ActivityMap';
 import ActivityDescription from '@/components/domain/activityDetail/ActivityDescription';
-import ReservationSection from './ReservationSection';
+import ReservationClientWrapper from '@/components/domain/activityDetail/reservation/ReservationClientWrapper';
 import { getActivitiesId } from '@/services/activities';
 import React from 'react';
 
@@ -27,7 +27,7 @@ export default async function ActivityDetailPage({ params }: { params: Promise<{
           md:sticky md:top-0 md:left-auto md:w-auto md:shadow-none
         "
           >
-            <ReservationSection />
+            <ReservationClientWrapper activityUserId={data.userId} />
           </div>
         </div>
       </div>
