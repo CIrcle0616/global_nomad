@@ -8,7 +8,7 @@ import KakaoScriptLoader from '@/components/domain/activityDetail/KakaoScriptLoa
 
 export const metadata: Metadata = {
   title: 'Global Nomad',
-  description: '다양한 체험의 판매자와 체험자 모두 될 수 있는 플랫폼',
+  description: '여행 가이드 서비스 GlobalNomad',
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
