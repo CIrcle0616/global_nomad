@@ -99,11 +99,9 @@ export default function MyInfoPage() {
       setEmail(myInfoData.email);
     }
   }, [myInfoData, isSuccess, reset]);
-
   if (isError) {
     console.error('에러 내용:', error);
   }
-
   const profileImageMutation = useProfileImageUpload(
     () => {
       openModal(OneButtonModal, {
@@ -128,11 +126,16 @@ export default function MyInfoPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="px-6 mb-[120px]">
-        <div className="flex justify-between content-center">
-          <h1 className="text-3xl-bold text-black">내 정보</h1>
-          <CommonButton size="M" type="submit" width="w-[120px]">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full mx-auto max-w-[343px] md:max-w-[429px] lg:max-w-[792px]">
+      <div className="mb-[120px] ">
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-xl-bold md:text-3xl-bold text-black">내 정보</h1>
+          <CommonButton
+            size="M"
+            type="submit"
+            width="w-[100px] md:w-[120px]"
+            className="hover:bg-green-500 transition-colors duration-300"
+          >
             저장하기
           </CommonButton>
         </div>
@@ -145,6 +148,7 @@ export default function MyInfoPage() {
               }}
             />
           </div>
+
           <div>
             <label className="block mb-4 text-2xl-bold text-black" htmlFor="nickname">
               닉네임

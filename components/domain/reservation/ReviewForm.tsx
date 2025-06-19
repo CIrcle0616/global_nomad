@@ -76,9 +76,13 @@ export default function ReviewForm({
         onClick={handleSubmit}
         disabled={isDisabled || isSubmitting}
         className={`
-          w-full h-[56px] block rounded mb-4 transition-colors duration-300
-          ${isDisabled || isSubmitting ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-nomad-black text-white'}
-        `}
+    w-full h-[56px] block rounded mb-4 transition-colors duration-300
+    ${
+      isDisabled || isSubmitting
+        ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+        : 'bg-nomad-black text-white hover:bg-green-500'
+    }
+  `}
       >
         작성하기
       </CommonButton>
