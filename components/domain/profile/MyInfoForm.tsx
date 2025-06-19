@@ -127,7 +127,7 @@ export default function MyInfoPage() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full mx-auto max-w-[343px] md:max-w-[429px] lg:max-w-[792px]">
-      <div className="mb-[120px] ">
+      <div className="mb-[120px] px-2">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-xl-bold md:text-3xl-bold text-black">내 정보</h1>
           <CommonButton
