@@ -56,8 +56,8 @@ export default function ProfileButton() {
               <Image
                 src={user.profileImage ?? profileIcon}
                 alt="프로필"
-                width={1}
-                height={1}
+                width={32}
+                height={32}
                 className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
               />
               <span className="text-sm truncate whitespace-nowrap overflow-hidden min-w-0">{user.name}</span>

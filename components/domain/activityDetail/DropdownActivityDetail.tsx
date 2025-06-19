@@ -1,12 +1,11 @@
 'use client';
-import { useAuthStore } from '@/store/useAuthStore';
-import { useEffect } from 'react';
 import DropdownMenu from '@/components/common/DropDown';
 import Image from 'next/image';
 import { delMyActivities } from '@/services/myActivities';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import TwoButtonModal from '@/components/common/modal/TwoButtonModal';
 import { useModalStore } from '@/store/modalStore';
+import useUserStore from '@/store/useUserStore';
 
 type DropDownActivityDetailProps = {
   userId: number;
@@ -14,24 +13,10 @@ type DropDownActivityDetailProps = {
 };
 
 export default function DropDownActivityDetail({ userId, activityId }: DropDownActivityDetailProps) {
-  const { user, setUser } = useAuthStore();
+  const { user } = useUserStore();
   const router = useRouter();
+  const pathname = usePathname();
   const { openModal } = useModalStore();
-
-  useEffect(() => {
-    if (!user) {
-      const loginId = localStorage.getItem('auth-storage'); // 로컬스토리지에서 유저 정보 가져옴
-      if (loginId) {
-        try {
-          const parsed = JSON.parse(loginId);
-          const storedUser = parsed.state?.user; // 문자열을 객체로 변환하고 유저 정보만 꺼냄
-          setUser(storedUser);
-        } catch (err) {
-          console.error('auth-storage 파싱 실패:', err);
-        }
-      }
-    }
-  }, [user, setUser]);
 
   const isAuthor = user?.id === userId;
 
@@ -41,7 +26,12 @@ export default function DropDownActivityDetail({ userId, activityId }: DropDownA
 
   const handleDeleteActivity = async () => {
     await delMyActivities(activityId);
-    router.refresh(); // 삭제 후 새로고침
+    const isOnActivityDetailPage = /^\/activities\/\d+$/.test(pathname); //현재 경로가 '/activities/'로 시작하고, 그 뒤에 숫자가 오는 패턴인지 확인
+    if (isOnActivityDetailPage) {
+      router.back(); // 체험 상세 페이지에 있다면 뒤로 가기
+    } else {
+      router.refresh();
+    }
   };
 
   const openDeleteModal = () => {
@@ -58,27 +48,25 @@ export default function DropDownActivityDetail({ userId, activityId }: DropDownA
   };
 
   return (
-    <div className="mt-2 left-0 w-full min-w-[160px]">
-      <DropdownMenu
-        onSelect={value => {
-          if (value === 'edit') {
-            router.push(`/profile/activities/${activityId}/edit`);
-          } else if (value === 'delete') {
-            openDeleteModal();
-          }
-        }}
-        options={['edit', 'delete']}
-        trigger={<Image src="/ic_kebab_menu.svg" width={40} height={40} alt="케밥메뉴" />}
-      >
-        {option => {
-          if (option === 'edit') {
-            return '수정하기';
-          } else if (option === 'delete') {
-            return '삭제하기';
-          }
-          return null;
-        }}
-      </DropdownMenu>
-    </div>
+    <DropdownMenu
+      onSelect={value => {
+        if (value === 'edit') {
+          router.push(`/profile/activities/${activityId}/edit`);
+        } else if (value === 'delete') {
+          openDeleteModal();
+        }
+      }}
+      options={['edit', 'delete']}
+      trigger={<Image src="/ic_kebab_menu.svg" width={40} height={40} alt="케밥메뉴" />}
+    >
+      {option => {
+        if (option === 'edit') {
+          return '수정하기';
+        } else if (option === 'delete') {
+          return '삭제하기';
+        }
+        return null;
+      }}
+    </DropdownMenu>
   );
 }

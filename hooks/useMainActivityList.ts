@@ -1,36 +1,40 @@
 'use client';
 
-import useMediaQuery from '@/store/useMediaQuery';
+// import useMediaQuery from '@/store/useMediaQuery';
 import { useSearchParams } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
 import { getActivities } from '@/services/activities';
-
-export enum SizeByDeviceType {
-  mobile = 4,
-  tablet = 9,
-  desktop = 8,
-}
+import { ActivitySearchParams } from '@/app/(main)/page';
+import { activitiesKeys } from '@/lib/queryKeys';
+import useMediaQuery from '@/store/useMediaQuery';
+import { SizeByDeviceType } from '@/constants/sizeByDeviceType';
 
 export default function useMainActivityList() {
   const searchParams = useSearchParams();
   const deviceType = useMediaQuery();
+  let size = SizeByDeviceType[deviceType];
   const keyword = searchParams.get('keyword') || undefined;
   const page = Number(searchParams.get('page')) || undefined;
   const sort = searchParams.get('sort') || undefined;
   const category = searchParams.get('category') || undefined;
-  let pageSize = SizeByDeviceType[deviceType];
   const hasKeyword = !!keyword;
 
   if (keyword && deviceType !== 'tablet') {
-    pageSize = pageSize * 2;
+    size = size * 2;
   }
 
-  const queryParams = { keyword, page, sort, category, size: pageSize };
-
-  const { data, isPending } = useQuery({
-    queryKey: ['activities', queryParams],
-    queryFn: () => getActivities({ method: 'offset', ...queryParams }),
+  const queryKey = activitiesKeys.list({
+    keyword,
+    category,
+    sort,
+    page: page ? Number(page) : 1,
+    size,
   });
 
-  return { activities: data?.activities || [], hasKeyword, isPending };
+  const { data, isPending } = useQuery({
+    queryKey: queryKey,
+    queryFn: ({ queryKey }) => getActivities(queryKey[2] as ActivitySearchParams),
+  });
+
+  return { activities: data?.activities || [], hasKeyword, isPending, size };
 }

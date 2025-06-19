@@ -1,41 +1,23 @@
-'use client';
-
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import Image from 'next/image';
 
 export default function NotFoundPage() {
-  const router = useRouter();
-
   return (
-    <div
-      className="flex flex-col items-center justify-center min-h-screen px-4 text-center bg-bottom bg-no-repeat bg-cover"
-      style={{
-        backgroundImage: "url('/ic_error_sand.png')",
-      }}
-    >
-      <div className="flex items-center justify-center mb-6 text-white drop-shadow-md">
-        <span className="text-6xl md:text-8xl font-extrabold">4</span>
-
-        <div className="w-[60px] h-[60px] md:w-[80px] md:h-[80px] mx-3">
-          <Image src="/ic_tube.png" alt="튜브 아이콘" width={80} height={80} className="object-contain" />
-        </div>
-
-        <span className="text-6xl md:text-8xl font-extrabold">4</span>
+    <main className="flex flex-col items-center justify-center min-h-screen bg-white px-6 py-12 text-center">
+      <div className="mb-3">
+        <span className="text-[60px] md:text-[70px] font-extrabold text-gray-800 ">404</span>
       </div>
 
-      <h2 className="text-2xl-bold md:text-3xl-bold text-nomad-gray drop-shadow-sm mb-2">페이지를 찾을 수 없습니다</h2>
-      <p className="text-md-regular md:text-lg-regular text-gray-800 mb-6">
-        죄송합니다. 요청하신 페이지를 찾을 수 없습니다.
-      </p>
-
-      <div className="flex flex-col sm:flex-row gap-3 w-full max-w-[120px] md:max-w-[160px]">
-        <button
-          onClick={() => router.push('/')}
-          className="w-full py-2 px-4 bg-teal-600 text-white rounded hover:bg-teal-500 transition text-md-bold md:text-lg-bold"
-        >
-          홈으로 돌아가기
-        </button>
+      <div className="mb-8 w-[260px] h-[260px] relative">
+        <Image src="/img_trip.png" alt="비행기와 여권 일러스트" fill className="object-contain animate-float" />
       </div>
-    </div>
+
+      <h2 className="text-2xl md:text-3xl font-bold text-gray-800 mb-2">체험을 찾을 수 없습니다.</h2>
+      <p className="text-base md:text-lg text-gray-600 mb-6">입력한 주소가 잘못되었거나, 이미 사라진 체험이에요.</p>
+
+      <Link href="/" className="inline-block px-6 py-2 text-white bg-green-900 rounded-md hover:bg-green-700 shadow-md">
+        체험하러 가기
+      </Link>
+    </main>
   );
 }

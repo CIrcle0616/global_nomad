@@ -22,7 +22,12 @@ interface ReservationBoxProps {
   onReserve: () => void;
   pricePerPerson: number;
   availableTimes: { startTime: string; endTime: string }[];
+  availableDates: string[];
   loading?: boolean;
+  scheduleData?: {
+    date: string;
+    times: { startTime: string; endTime: string; id: number }[];
+  }[];
 }
 
 export default function ReservationBox({
@@ -33,6 +38,8 @@ export default function ReservationBox({
   onReserve,
   pricePerPerson,
   availableTimes,
+  availableDates,
+  scheduleData,
   loading = false,
 }: ReservationBoxProps) {
   const device = useMediaQuery();
@@ -49,6 +56,7 @@ export default function ReservationBox({
             onCountChange={onCountChange}
             onReserve={onReserve}
             availableTimes={availableTimes}
+            availableDates={availableDates}
             loading={loading}
             onClose={() => setIsMobileFormOpen(false)}
           />
@@ -77,7 +85,9 @@ export default function ReservationBox({
         onReserve={onReserve}
         pricePerPerson={pricePerPerson}
         availableTimes={availableTimes}
+        availableDates={availableDates}
         loading={loading}
+        scheduleData={scheduleData}
       />
     );
   }
@@ -90,6 +100,7 @@ export default function ReservationBox({
       onTimeChange={onTimeChange}
       onReserve={onReserve}
       pricePerPerson={pricePerPerson}
+      availableDates={availableDates}
       availableTimes={availableTimes}
       loading={loading}
     />
