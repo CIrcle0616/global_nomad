@@ -21,6 +21,7 @@ export default function AlarmButton() {
     staleTime: 0,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
+    enabled: !!user,
   });
 
   const notificationsArray = useMemo(() => {

@@ -84,7 +84,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       }),
     getNextPageParam: lastPage => (lastPage.reservations.length < 10 ? undefined : lastPage.cursorId),
     initialPageParam: undefined,
-    enabled: !!selectedScheduleId,
+    enabled: !!selectedScheduleId && !!statusTab,
   });
 
   useEffect(() => {
@@ -126,20 +126,26 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
   const handleApprove = async (targetId: number) => {
     const all = reservationPages?.pages.flatMap(p => p.reservations) ?? [];
 
-    //승인
-    await mutation.mutateAsync({ reservationId: targetId, status: 'confirmed' });
+    try {
+      //승인
+      await mutation.mutateAsync({ reservationId: targetId, status: 'confirmed' });
 
-    //나머지 거절
-    await Promise.all(
-      all
-        .filter(r => r.id !== targetId)
-        .map(res => mutation.mutateAsync({ reservationId: res.id, status: 'declined' })),
-    );
+      //나머지 거절
+      for (const res of all) {
+        if (res.id !== targetId && res.status === 'pending') {
+          try {
+            await mutation.mutateAsync({ reservationId: res.id, status: 'declined' });
+          } catch (error) {
+            console.warn(`예약 ID ${res.id} 거절 실패:`, error);
+          }
+        }
+      }
 
-    //탭 변경
-    setTimeout(() => {
+      //탭 이동
       setStatusTab('confirmed');
-    }, 0);
+    } catch (err) {
+      console.error('예약 승인 처리 중 에러 발생:', err);
+    }
   };
 
   const handleDecline = async (targetId: number) => {
