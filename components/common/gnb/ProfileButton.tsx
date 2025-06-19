@@ -4,11 +4,15 @@ import { useRouter } from 'next/navigation';
 import DropdownMenu from '../DropDown';
 import Image from 'next/image';
 import profileIcon from '@/public/ic_profile.svg';
-import useUserStore from '@/store/useUserStore';
+import { useMyInfoQuery } from '@/hooks/useMyInfoQuery';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function ProfileButton() {
   const router = useRouter();
-  const { user, logout } = useUserStore();
+  const { data: user, isLoading } = useMyInfoQuery();
+  const { setIsLoggedIn, setUser } = useAuthStore();
+  const queryClient = useQueryClient();
 
   const handleSelect = async (value: string) => {
     switch (value) {
@@ -30,7 +34,9 @@ export default function ProfileButton() {
         try {
           const response = await fetch('/api/auth/logout', { method: 'POST' });
           if (response.ok) {
-            logout();
+            setIsLoggedIn(false);
+            setUser(null);
+            queryClient.removeQueries({ queryKey: ['myInfo'] });
             router.push('/');
             router.refresh();
           } else {
@@ -45,24 +51,22 @@ export default function ProfileButton() {
     }
   };
 
-  if (!user) return null;
+  if (!user || isLoading) return null;
 
   return (
-    <div className="min-w-[110px] text-center">
+    <div className="text-center min-w-[50px]">
       <DropdownMenu
         trigger={
-          <div className="relative inline-block text-center">
-            <button className=" flex items-center gap-1 sm:gap-2 ml-[-10px] transition ease-in-out hover:font-bold hover:scale-105">
-              <Image
-                src={user.profileImage ?? profileIcon}
-                alt="프로필"
-                width={12}
-                height={12}
-                className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
-              />
-              <span className="text-sm truncate whitespace-nowrap overflow-hidden min-w-0">{user.name}</span>
-            </button>
-          </div>
+          <button className="lg:min-w-[90px]  flex items-center gap-2 transition ease-in-out hover:font-bold hover:scale-105">
+            <Image
+              src={user.profileImageUrl ?? profileIcon}
+              alt="프로필"
+              width={32}
+              height={32}
+              className="w-8 h-8 rounded-full object-cover"
+            />
+            <span className="text-sm truncate whitespace-nowrap overflow-hidden min-w-0">{user.nickname}</span>
+          </button>
         }
         options={['내 정보', '예약 내역', '내 체험 관리', '예약 현황', '로그아웃']}
         onSelect={handleSelect}
