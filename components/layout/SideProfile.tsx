@@ -4,9 +4,11 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useProfileImageUpload } from '@/hooks/useProfileImageUpload';
+import useUserStore from '@/store/useUserStore';
 import { useModalStore } from '@/store/modalStore';
 import ProfileImageUploader from '@/components/common/ProfileImageUploader';
 import OneButtonModal from '@/components/common/modal/OneButtonModal';
+import { getUserMe } from '@/services/users';
 
 const menuItems = [
   {
@@ -38,10 +40,34 @@ const menuItems = [
 export default function SideProfile() {
   const pathname = usePathname();
   const { openModal } = useModalStore();
+  const { setUser } = useUserStore();
 
   const imageUploadMutation = useProfileImageUpload(
-    () => openModal(OneButtonModal, { content: '프로필 이미지가 수정되었습니다.', onConfirm: () => {} }),
-    () => openModal(OneButtonModal, { content: '업로드 실패했습니다.', onConfirm: () => {} }),
+    async () => {
+      openModal(OneButtonModal, {
+        content: '프로필 이미지가 수정되었습니다.',
+        onConfirm: () => {},
+      });
+
+      try {
+        const updatedUser = await getUserMe();
+        setUser({
+          id: updatedUser.id,
+          name: updatedUser.nickname,
+          profileImage: updatedUser.profileImageUrl ?? undefined,
+          teamId: 14 - 3,
+          accessToken: '',
+        });
+      } catch (e) {
+        console.error('유저 정보 수정에 실패했습니다', e);
+      }
+    },
+    error => {
+      openModal(OneButtonModal, {
+        content: `프로필 이미지 업로드에 실패했습니다. ${error.message}`,
+        onConfirm: () => {},
+      });
+    },
   );
 
   return (
