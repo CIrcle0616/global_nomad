@@ -65,13 +65,17 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
 
     let body: BodyInit | null | undefined = undefined;
     if (req.method !== 'GET' && req.method !== 'HEAD') {
-      const contentType = req.headers.get('content-type');
-      if (contentType?.includes('application/json')) {
-        body = JSON.stringify(await req.json());
-      } else if (contentType?.includes('multipart/form-data')) {
-        body = await req.blob();
-      } else {
-        body = await req.text();
+      const contentLength = req.headers.get('content-length');
+      if (contentLength && parseInt(contentLength, 10) > 0) {
+        //본문이 실제로 있는 경우에만 본문을 읽도록 수정
+        const contentType = req.headers.get('content-type');
+        if (contentType?.includes('application/json')) {
+          body = JSON.stringify(await req.json());
+        } else if (contentType?.includes('multipart/form-data')) {
+          body = await req.blob();
+        } else {
+          body = await req.text();
+        }
       }
     }
 
@@ -99,6 +103,11 @@ async function handler(req: NextRequest, { params }: { params: Promise<{ path: s
         headers: { 'Content-Type': 'application/json' },
       });
     }
+  }
+
+  // 204의 경우, 본문 없이 바로 응답을 생성해서 반환
+  if (response.status === 204) {
+    return new NextResponse(null, { status: 204, statusText: response.statusText });
   }
 
   const responseBody = await response.text();
