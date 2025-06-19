@@ -18,6 +18,11 @@ export default function ReservationSection() {
   const [count, setCount] = useState(1);
   const { openModal, closeModal } = useModalStore();
 
+  const today = new Date();
+  const year = format(today, 'yyyy');
+  const month = format(today, 'MM');
+  const formattedDate = date ? format(date, 'yyyy-MM-dd') : '';
+
   //체험 상세 정보 불러오기 -> 가격 포함
   const { data: activityData } = useQuery({
     queryKey: ['activity', id],
@@ -25,22 +30,20 @@ export default function ReservationSection() {
     enabled: !!id,
   });
 
-  //날짜 바뀌었을 때 해당 날짜의 예약 시간 불러오기
-
-  const year = date ? format(date, 'yyyy') : '';
-  const month = date ? format(date, 'MM') : '';
-  const formattedDate = date ? format(date, 'yyyy-MM-dd') : '';
-
   const { data: scheduleData } = useQuery({
     queryKey: ['availableSchedule', id, year, month],
     queryFn: () => getAvailableSchedule({ activityId: id, year, month }),
-    enabled: !!id && !!date,
+    enabled: !!id,
   });
 
   const matchedDay = scheduleData?.find(d => d.date === formattedDate);
   console.log('matchedDay:', matchedDay);
 
-  const availableTimes = matchedDay?.times.map(t => ({ startTime: t.startTime, endTime: t.endTime })) ?? [];
+  const availableTimes =
+    matchedDay?.times.map(t => ({
+      startTime: t.startTime,
+      endTime: t.endTime,
+    })) ?? [];
   console.log('예약 가능한 시간:', availableTimes);
 
   //예약 요청
@@ -75,6 +78,8 @@ export default function ReservationSection() {
     return <p className="text-center py-10">가격 정보를 불러오는 중입니다...</p>;
   }
 
+  const availableDates = scheduleData?.map(d => d.date) ?? [];
+
   return (
     <ReservationBox
       state={{ date, time, count }}
@@ -84,6 +89,8 @@ export default function ReservationSection() {
       onReserve={handleReserve}
       pricePerPerson={pricePerPerson}
       availableTimes={availableTimes}
+      availableDates={availableDates}
+      scheduleData={scheduleData}
     />
   );
 }
