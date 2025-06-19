@@ -137,7 +137,9 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
     );
 
     //탭 변경
-    setStatusTab('confirmed');
+    setTimeout(() => {
+      setStatusTab('confirmed');
+    }, 0);
   };
 
   const handleDecline = async (targetId: number) => {
