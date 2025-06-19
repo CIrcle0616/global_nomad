@@ -20,6 +20,7 @@ interface ReservationMobileProps {
   onReserve: () => void;
   onClose: () => void;
   availableTimes: { startTime: string; endTime: string }[];
+  availableDates: string[];
   loading?: boolean;
 }
 
@@ -30,6 +31,7 @@ export default function ReservationMobile({
   onCountChange,
   onClose,
   availableTimes,
+  availableDates,
   loading = false,
 }: ReservationMobileProps) {
   const [step, setStep] = useState<1 | 2>(1);
@@ -65,7 +67,7 @@ export default function ReservationMobile({
       <div className="flex-1 overflow-hidden px-4">
         {step === 1 && (
           <>
-            <DateSelector date={state.date} onSelect={onDateChange} />
+            <DateSelector date={state.date} onSelect={onDateChange} availableDates={availableDates} />
 
             {state.date && (
               <div className="mt-6">
@@ -76,6 +78,7 @@ export default function ReservationMobile({
                     selected={state.time}
                     onChange={onTimeChange}
                     disabled={loading}
+                    date={state.date}
                   />
                 ) : (
                   <p className="text-sm text-gray-500">예약 가능한 시간이 없습니다.</p>
