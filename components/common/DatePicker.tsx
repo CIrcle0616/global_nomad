@@ -9,12 +9,13 @@ import 'react-day-picker/style.css';
 interface DatePickerProps {
   selected: Date | undefined;
   onSelect: (date: Date | undefined) => void;
-  availableDates: string[];
+  availableDates?: string[];
+
 }
 
 export default function DatePicker({ selected, onSelect, availableDates }: DatePickerProps) {
   const [month, setMonth] = useState(new Date());
-  const availableDateObjects = useMemo(() => availableDates.map(dateStr => parseISO(dateStr)), [availableDates]);
+  const availableDateObjects = useMemo(() => availableDates?.map(dateStr => parseISO(dateStr)), [availableDates]);
 
   return (
     <div className="z-[9999] bg-white space-y-2 rounded-lg border border-gray-200 py-2.5 w-[305px] h-[241px]">
