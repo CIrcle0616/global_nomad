@@ -19,6 +19,7 @@ interface ReservationPCProps {
   onReserve: () => void;
   pricePerPerson: number;
   availableTimes: { startTime: string; endTime: string }[];
+  availableDates: string[];
   loading?: boolean;
 }
 
@@ -31,6 +32,7 @@ export default function ReservationPC({
   pricePerPerson,
   loading = false,
   availableTimes,
+  availableDates,
 }: ReservationPCProps) {
   const isReservable = !!state.date && state.time;
 
@@ -50,14 +52,20 @@ export default function ReservationPC({
 
       <div className="mb-6">
         <span className="block text-black mb-3 text-2lg-bold">날짜</span>
-        <DateSelector date={state.date} onSelect={onDateChange} />
+        <DateSelector date={state.date} onSelect={onDateChange} availableDates={availableDates} />
       </div>
 
       {state.date && (
         <div className="mb-6">
           <span className="block text-black mb-2 text-2lg-bold">예약 가능한 시간</span>
           {availableTimes.length > 0 ? (
-            <TimeSelector times={availableTimes} selected={state.time} onChange={onTimeChange} disabled={loading} />
+            <TimeSelector
+              times={availableTimes}
+              selected={state.time}
+              onChange={onTimeChange}
+              disabled={loading}
+              date={state.date}
+            />
           ) : (
             <p className="text-sm text-gray-500">예약 가능한 시간이 없습니다.</p>
           )}

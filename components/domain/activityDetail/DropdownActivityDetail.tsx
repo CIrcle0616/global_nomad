@@ -1,12 +1,11 @@
 'use client';
-import { useAuthStore } from '@/store/useAuthStore';
-import { useEffect, useState } from 'react';
 import DropdownMenu from '@/components/common/DropDown';
 import Image from 'next/image';
 import { delMyActivities } from '@/services/myActivities';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import TwoButtonModal from '@/components/common/modal/TwoButtonModal';
 import { useModalStore } from '@/store/modalStore';
+import useUserStore from '@/store/useUserStore';
 
 type DropDownActivityDetailProps = {
   userId: number;
@@ -14,21 +13,12 @@ type DropDownActivityDetailProps = {
 };
 
 export default function DropDownActivityDetail({ userId, activityId }: DropDownActivityDetailProps) {
-  const loginUserId = useAuthStore(state => state.user?.id);
-  const [hydrated, setHydrated] = useState(false);
+  const { user } = useUserStore();
   const router = useRouter();
+  const pathname = usePathname();
   const { openModal } = useModalStore();
 
-  useEffect(() => {
-    setHydrated(true); // 클라이언트 사이드에서만 true
-  }, []);
-
-  // Hydration 끝날 때까지 아무것도 안 보여주기
-  if (!hydrated) {
-    return null;
-  }
-
-  const isAuthor = loginUserId === userId;
+  const isAuthor = user?.id === userId;
 
   if (!isAuthor) {
     return null;
@@ -36,7 +26,12 @@ export default function DropDownActivityDetail({ userId, activityId }: DropDownA
 
   const handleDeleteActivity = async () => {
     await delMyActivities(activityId);
-    router.refresh(); // 삭제 후 새로고침
+    const isOnActivityDetailPage = /^\/activities\/\d+$/.test(pathname); //현재 경로가 '/activities/'로 시작하고, 그 뒤에 숫자가 오는 패턴인지 확인
+    if (isOnActivityDetailPage) {
+      router.back(); // 체험 상세 페이지에 있다면 뒤로 가기
+    } else {
+      router.refresh();
+    }
   };
 
   const openDeleteModal = () => {

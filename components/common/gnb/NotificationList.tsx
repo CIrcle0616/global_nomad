@@ -1,4 +1,5 @@
 'use client';
+
 import { delMyNotifications, getMyNotifications } from '@/services/myNotifications';
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
@@ -11,7 +12,7 @@ export default function NotificationList() {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['myNotifications'],
     queryFn: ({ pageParam = undefined }: { pageParam?: number }) =>
-      getMyNotifications({ cursorId: pageParam, size: 10 }),
+      getMyNotifications({ cursorId: pageParam, size: 5 }),
     getNextPageParam: lastPage => lastPage.cursorId ?? undefined,
     initialPageParam: undefined,
   });
@@ -31,7 +32,6 @@ export default function NotificationList() {
         }
       });
       observer.observe(node);
-      observer.disconnect();
     },
     [hasNextPage, isFetchingNextPage, fetchNextPage],
   );
@@ -45,15 +45,15 @@ export default function NotificationList() {
   });
 
   return (
-    <div className="p-3 z-100 bg-[#CDE8D5] w-full h-full sm:w-full sm:h-auto sm:max-h-[400px] ">
+    <div className="p-3 z-100 bg-[#CDE8D5] w-full h-full sm:w-full sm:h-auto sm:max-h-[400px] overflow-y-auto">
       <div className="flex items-center px-3 py-x">
         <span className="text-xl-bold mt-[5px] mb-[5px]">알림 {filtered.length}개</span>
       </div>
-      <div className="flex gap-2 mx-2 mt-2">
+      <div className="flex gap-2 mx-2  mb-2">
         {(['all', 'approved', 'rejected'] as const).map(category => (
           <button
             key={category}
-            className={`px-3 py-1 rounded-full text-sm transition ${
+            className={`px-3 py-1 rounded-full text-sm transition  ${
               selectedCategory === category ? 'bg-black text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
             }
           `}

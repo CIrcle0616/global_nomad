@@ -8,57 +8,74 @@ import ReservationCard from '@/components/domain/reservation/ReservationCard';
 import SkeletonCard from '@/components/skeleton/SkeletonCard';
 import EmptyState from '@/components/empty/EmptyState';
 import DropdownMenu from '@/components/common/DropDown';
+import ComponentSpinner from '@/components/common/spinners/ComponentSpinner';
 
 import { filterOptions } from '@/constants/filterOption';
 import { getMyReservations } from '@/services/myReservations';
 import useObserver from '@/hooks/useObserver';
+import ScrollToTopButton from '@/components/common/ScrollTopButton';
+
+import { wait } from '@/constants/utils/wait';
 
 const PAGE_SIZE = 10;
 
 export default function ClientReservations() {
   const [status, setStatus] = useState<string>('');
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   const selectedLabel = filterOptions.find(option => option.value === status)?.label || '전체';
 
   const handleSelectStatus = (label: string) => {
     const selectedOption = filterOptions.find(option => option.label === label);
     setStatus(selectedOption ? selectedOption.value : '');
+    setIsInitialLoad(false);
   };
 
-  // 커서 기반 무한 스크롤 예약 데이터 불러오기
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, isError } = useInfiniteQuery({
     queryKey: ['myReservations', status],
-    queryFn: ({ pageParam }: { pageParam?: number }) =>
-      getMyReservations({ cursorId: pageParam, size: PAGE_SIZE, status }),
+    queryFn: async ({ pageParam }: { pageParam?: number }) => {
+      const [result] = await Promise.all([
+        getMyReservations({
+          cursorId: pageParam,
+          size: PAGE_SIZE,
+          status,
+        }),
+        wait(400),
+      ]);
+      return result;
+    },
     getNextPageParam: lastPage => {
       const reservations = lastPage?.reservations ?? [];
-      if (!reservations.length) return undefined;
-      return lastPage.cursorId ?? reservations[reservations.length - 1].id;
+      return reservations.length < PAGE_SIZE ? undefined : reservations[reservations.length - 1].id;
     },
     initialPageParam: undefined,
   });
 
   const observerRef = useRef<HTMLDivElement>(null);
 
-  useObserver(
-    observerRef,
-    () => {
-      if (hasNextPage && !isFetchingNextPage) {
-        fetchNextPage();
-      }
-    },
-    { rootMargin: '100px' },
-  );
+  useObserver(observerRef, {
+    hasNextPage,
+    isLoading,
+    onIntersect: () => fetchNextPage(),
+  });
 
   const allReservations = data?.pages.flatMap(page => page.reservations ?? []) ?? [];
 
   const renderContent = () => {
     if (isLoading) {
+      if (isInitialLoad) {
+        return (
+          <div className="flex flex-col gap-6 mb-40">
+            {Array.from({ length: 5 }).map((_, index) => (
+              <SkeletonCard key={index} />
+            ))}
+          </div>
+        );
+      }
+
       return (
-        <div className="flex flex-col gap-6 mb-40">
-          {Array.from({ length: 5 }).map((_, idx) => (
-            <SkeletonCard key={idx} />
-          ))}
+        <div className="flex justify-center py-8">
+          <ComponentSpinner message="데이터를 불러오는 중입니다..." />
         </div>
       );
     }
@@ -76,10 +93,19 @@ export default function ClientReservations() {
         {allReservations.map(reservation => (
           <ReservationCard key={reservation.id} reservation={reservation} />
         ))}
-        <div ref={observerRef} style={{ height: 1 }} />
-        {isFetchingNextPage && (
-          <div className="flex flex-col gap-4">
-            <SkeletonCard />
+        {hasNextPage && (
+          <div
+            ref={observerRef}
+            style={{
+              height: '1px',
+              marginTop: '40px',
+              background: 'transparent',
+            }}
+          />
+        )}
+        {!isLoading && isFetchingNextPage && (
+          <div className="flex justify-center py-2">
+            <ComponentSpinner message="추가 데이터를 불러오는 중입니다..." />
           </div>
         )}
       </div>
@@ -94,7 +120,7 @@ export default function ClientReservations() {
           options={filterOptions.map(option => option.label)}
           onSelect={handleSelectStatus}
           trigger={
-            <button className="w-[140px]  md:w-[158px]  lg:w-[158px] h-[53px] rounded-[15px] border border-green-500 bg-white flex items-center justify-between px-3 md:px-4 mb-2">
+            <button className="w-[140px] md:w-[158px] lg:w-[158px] h-[53px] rounded-[15px] border border-green-500 bg-white flex items-center justify-between px-3 md:px-4 mb-2">
               <span className="text-green-500 text-lg-bold md:text-lg-bold lg:text-2lg-bold">{selectedLabel}</span>
               <Image src="/ic_vector.svg" alt="드롭다운 아이콘" width={16} height={16} />
             </button>
@@ -108,6 +134,7 @@ export default function ClientReservations() {
         </DropdownMenu>
       </div>
       {renderContent()}
+      <ScrollToTopButton />
     </div>
   );
 }

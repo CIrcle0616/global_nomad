@@ -1,7 +1,6 @@
 import type { Config } from 'tailwindcss';
 import scrollbarHide from 'tailwind-scrollbar-hide';
 
-// content 경로가 프로젝트 구조와 일치하기!
 const config: Config = {
   content: ['./app/**/*.{js,ts,jsx,tsx}', './pages/**/*.{js,ts,jsx,tsx}', './components/**/*.{js,ts,jsx,tsx}'],
   theme: {
@@ -10,9 +9,9 @@ const config: Config = {
         sans: ['Pretendard', 'sans-serif'],
       },
       colors: {
-        black: '#1B1B1B', // 일반 블랙
+        black: '#1B1B1B',
         nomad: {
-          black: '#112211', // 노마드 전용 포인트 브랙
+          black: '#112211',
           gray: '#333236',
         },
         gray: {
@@ -85,24 +84,34 @@ const config: Config = {
         'xs-medium': ['12px', { lineHeight: '18px', fontWeight: '500' }],
         'xs-regular': ['12px', { lineHeight: '18px', fontWeight: '400' }],
       },
-    },
-    keyframes: {
-      'fade-slide-in': {
-        '0%': {
-          opacity: '0',
-          transform: 'translateY(16px)',
+      keyframes: {
+        'fade-slide-in': {
+          '0%': {
+            opacity: '0',
+            transform: 'translateY(16px)',
+          },
+          '100%': {
+            opacity: '1',
+            transform: 'translateY(0)',
+          },
         },
-        '100%': {
-          opacity: '1',
-          transform: 'translateY(0)',
+
+        float: {
+          '0%, 100%': {
+            transform: 'translateY(0)',
+          },
+          '50%': {
+            transform: 'translateY(-10px)',
+          },
         },
       },
-    },
-    animation: {
-      'fade-slide-in': 'fade-slide-in 0.4s ease-out',
+      animation: {
+        'fade-slide-in': 'fade-slide-in 0.4s ease-out',
+
+        float: 'float 3s ease-in-out infinite',
+      },
     },
   },
-
   plugins: [scrollbarHide],
 };
 

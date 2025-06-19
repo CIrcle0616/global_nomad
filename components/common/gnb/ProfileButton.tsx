@@ -1,4 +1,5 @@
 'use client';
+
 import { useRouter } from 'next/navigation';
 import DropdownMenu from '../DropDown';
 import Image from 'next/image';
@@ -9,7 +10,7 @@ export default function ProfileButton() {
   const router = useRouter();
   const { user, logout } = useUserStore();
 
-  const handleSelect = (value: string) => {
+  const handleSelect = async (value: string) => {
     switch (value) {
       case '내 정보':
         router.push('/profile/info');
@@ -25,9 +26,19 @@ export default function ProfileButton() {
       case '예약 현황':
         router.push('/profile/schedule');
         break;
-      case '로그아웃':
-        logout();
-        router.push('/');
+      case '로그아웃': //로그아웃 로직 추가 브라우저의 쿠키를 삭제하기 위한 api요청 /api/auth/logout/route.ts에서 처리됨
+        try {
+          const response = await fetch('/api/auth/logout', { method: 'POST' });
+          if (response.ok) {
+            logout();
+            router.push('/');
+            router.refresh();
+          } else {
+            console.error('로그아웃에 실패했습니다.');
+          }
+        } catch (error) {
+          console.error('로그아웃 요청 중 오류 발생:', error);
+        }
         break;
       default:
         break;
@@ -45,8 +56,8 @@ export default function ProfileButton() {
               <Image
                 src={user.profileImage ?? profileIcon}
                 alt="프로필"
-                width={1}
-                height={1}
+                width={32}
+                height={32}
                 className="w-6 h-6 sm:w-8 sm:h-8 rounded-full"
               />
               <span className="text-sm truncate whitespace-nowrap overflow-hidden min-w-0">{user.name}</span>

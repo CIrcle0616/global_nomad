@@ -7,30 +7,38 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { getUserMe, patchUserMe } from '@/services/users';
 import { UpdateUserBodyDto } from '@/types';
 import { GetMyInfoSuccessResponse } from '@/types/domain/user/types';
+import useUserStore from '@/store/useUserStore';
 import { useModalStore } from '@/store/modalStore';
 import Input from '@/components/common/Input';
+import SkeletonMyInfoForm from '@/components/skeleton/SkeletonMyInfoForm';
 import CommonButton from '@/components/common/CommonButton';
 import ProfileImageUploader from '@/components/common/ProfileImageUploader';
 import OneButtonModal from '@/components/common/modal/OneButtonModal';
 import { useProfileImageUpload } from '@/hooks/useProfileImageUpload';
 
 type userInfoInputs = UpdateUserBodyDto & {
+  email: string;
   passwordConfirm: string;
 };
 
 export default function MyInfoPage() {
   const queryClient = useQueryClient();
   const { openModal } = useModalStore();
+  const { setUser } = useUserStore();
 
   const [email, setEmail] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const { data, isSuccess, isError, error } = useQuery({
+  const {
+    data: myInfoData,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ['myInfo'],
-    queryFn: () => {
-      return getUserMe();
-    },
+    queryFn: () => getUserMe(),
   });
 
   const {
@@ -52,8 +60,16 @@ export default function MyInfoPage() {
     mutationFn: profileInfo => {
       return patchUserMe(profileInfo);
     },
-    onSuccess: () => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['myInfo'] });
+
+      setUser({
+        id: data.id,
+        name: data.nickname,
+        profileImage: data.profileImageUrl ?? undefined,
+        teamId: 14 - 3,
+        accessToken: '',
+      });
       openModal(OneButtonModal, {
         content: '내정보가 수정되었습니다.',
         onConfirm: () => {},
@@ -74,15 +90,15 @@ export default function MyInfoPage() {
   };
 
   useEffect(() => {
-    if (isSuccess && data) {
+    if (isSuccess && myInfoData) {
       reset({
-        nickname: data.nickname,
+        nickname: myInfoData.nickname,
         newPassword: '',
         passwordConfirm: '',
       });
-      setEmail(data.email);
+      setEmail(myInfoData.email);
     }
-  }, [data, isSuccess, reset]);
+  }, [myInfoData, isSuccess, reset]);
 
   if (isError) {
     console.error('에러 내용:', error);
@@ -102,6 +118,14 @@ export default function MyInfoPage() {
       });
     },
   );
+
+  if (isLoading) {
+    return <SkeletonMyInfoForm />;
+  }
+
+  if (isError || !myInfoData) {
+    return <p className="text-center text-red-500">새로고침 해주세요.</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
