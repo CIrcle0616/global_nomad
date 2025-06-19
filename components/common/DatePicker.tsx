@@ -10,6 +10,7 @@ interface DatePickerProps {
   selected: Date | undefined;
   onSelect: (date: Date | undefined) => void;
   availableDates?: string[];
+
 }
 
 export default function DatePicker({ selected, onSelect, availableDates }: DatePickerProps) {
