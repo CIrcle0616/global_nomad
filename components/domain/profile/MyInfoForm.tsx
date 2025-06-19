@@ -7,6 +7,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { getUserMe, patchUserMe } from '@/services/users';
 import { UpdateUserBodyDto } from '@/types';
 import { GetMyInfoSuccessResponse } from '@/types/domain/user/types';
+import useUserStore from '@/store/useUserStore';
 import { useModalStore } from '@/store/modalStore';
 import Input from '@/components/common/Input';
 import SkeletonMyInfoForm from '@/components/skeleton/SkeletonMyInfoForm';
@@ -23,6 +24,7 @@ type userInfoInputs = UpdateUserBodyDto & {
 export default function MyInfoPage() {
   const queryClient = useQueryClient();
   const { openModal } = useModalStore();
+  const { setUser } = useUserStore();
 
   const [email, setEmail] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -58,8 +60,16 @@ export default function MyInfoPage() {
     mutationFn: profileInfo => {
       return patchUserMe(profileInfo);
     },
-    onSuccess: () => {
+    onSuccess: data => {
       queryClient.invalidateQueries({ queryKey: ['myInfo'] });
+
+      setUser({
+        id: data.id,
+        name: data.nickname,
+        profileImage: data.profileImageUrl ?? undefined,
+        teamId: 14 - 3,
+        accessToken: '',
+      });
       openModal(OneButtonModal, {
         content: '내정보가 수정되었습니다.',
         onConfirm: () => {},
