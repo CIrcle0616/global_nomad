@@ -1,8 +1,6 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { toast } from 'react-hot-toast';
 
 export default function ActivityMapFooter({
   address,
@@ -11,21 +9,16 @@ export default function ActivityMapFooter({
   address: string;
   position: { lat: number; lng: number };
 }) {
-  const [showToast, setShowToast] = useState(false);
-
   const handleCopyAddress = async () => {
     try {
       await navigator.clipboard.writeText(address);
-      setShowToast(true);
+      toast.success('주소가 복사되었습니다!', {
+        duration: 3000,
+      });
     } catch (err) {
       alert('주소 복사에 실패했습니다.' + err);
     }
   };
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowToast(false), 2000);
-    return () => clearTimeout(timer);
-  }, [showToast]);
 
   return (
     <>
@@ -48,13 +41,6 @@ export default function ActivityMapFooter({
           </Link>
         </div>
       </div>
-
-      {/* 토스트 알림 */}
-      {showToast && (
-        <div className="fixed top-6 left-1/2 -translate-x-1/2 bg-nomad-black text-white text-sm px-4 py-2 rounded shadow-lg z-50">
-          주소가 복사되었습니다!
-        </div>
-      )}
     </>
   );
 }
