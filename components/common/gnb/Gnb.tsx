@@ -2,29 +2,38 @@
 
 import Image from 'next/image';
 import Logo from '@/public/ic_logo.svg';
-import useUserStore from '@/store/useUserStore';
 import AlarmButton from './AlarmButton';
 import ProfileButton from './ProfileButton';
 import Link from 'next/link';
+import { useHasHydrated } from '@/hooks/useHasHydrated';
+import { useMyInfoQuery } from '@/hooks/useMyInfoQuery';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function GNB() {
-  const { user } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const hasHydrated = useHasHydrated();
+  const { data: user, isLoading } = useMyInfoQuery();
+
+  if (!hasHydrated || isLoading) return null;
+
+  const isLoggedOut = !isLoggedIn && !user;
 
   return (
-    <header className="w-full px-2 border-b py-[10px]">
-      <div className="mx-auto flex justify-between items-center px-1 sm:px-6 lg:px-[100px] max-w-[1440px]">
+    <header className="fixed bg-white z-50 left-0 top-0 w-full px-2 border-b py-[10px]">
+      <div className="w-full max-w-[1200px] mx-auto px-4 md:px-6 lg:px-0 flex justify-between items-center h-[60px]">
         <Link href={'/'} className="flex items-center gap-2">
-          <Image src={Logo} alt="로고" width={130} className="sm:w-[172px]" />
+          <Image src={Logo} alt="로고" width={150} className="sm:w-[172px]" />
         </Link>
 
         {/* 알림 버튼 */}
-        {user ? (
-          <div className="flex items-center mt-2 mx-4 gap-1 sm:gap-2 ml-auto">
+        {!isLoggedOut ? (
+          <div className="flex gap-4 lg:gap-[30px] items-center">
             <AlarmButton />
+            <div className="h-4 w-px bg-gray-300" />
             <ProfileButton />
           </div>
         ) : (
-          <div className="flex gap-[30px] ml-auto">
+          <div className="flex gap-[30px] items-center">
             <Link
               href={'/login'}
               className="text-md-medium text-black transition ease-in-out hover:font-bold hover:scale-105"
