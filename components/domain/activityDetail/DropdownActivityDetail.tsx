@@ -31,6 +31,7 @@ export default function DropDownActivityDetail({ userId, activityId }: DropDownA
       router.back(); // 체험 상세 페이지에 있다면 뒤로 가기
     } else {
       router.refresh();
+      window.location.reload();
     }
   };
 
@@ -57,7 +58,7 @@ export default function DropDownActivityDetail({ userId, activityId }: DropDownA
         }
       }}
       options={['edit', 'delete']}
-      trigger={<Image src="/ic_kebab_menu.svg" width={40} height={40} alt="케밥메뉴" />}
+      trigger={<Image src="/ic_kebab_menu.svg" width={40} height={40} alt="케밥메뉴" loading="eager" />}
     >
       {option => {
         if (option === 'edit') {

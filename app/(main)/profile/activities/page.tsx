@@ -65,11 +65,11 @@ export default function ActivityManagePage() {
   }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   return (
-    <div>
-      <div className="flex justify-between items-center w-full max-w-[1000px] mx-auto px-4 mb-6">
-        <h1 className="text-xl font-bold md:text-2xl lg:text-3xl">내 체험 관리</h1>
+    <div className="mb-6 ml-6 mt-8">
+      <div className="flex items-center justify-between mb-4 max-w-full md:max-w-[600px] lg:max-w-[1000px]">
+        <h1 className="text-xl-bold md:text-2xl-bold lg:text-3xl-bold mb-2 mt-1">내 체험 관리</h1>
         <Link href="/profile/activities/new">
-          <button className=" bg-nomad-black hover:bg-green-500 transition-colors duration-200 text-white px-4 py-2 rounded shadow">
+          <button className="bg-nomad-black hover:bg-green-500 transition-colirs duration-200 text-white px-4 py-2 rounded shadow">
             체험 등록하기
           </button>
         </Link>
@@ -80,7 +80,7 @@ export default function ActivityManagePage() {
       ) : emptyScreen ? (
         <EmptyState />
       ) : (
-        <div className="w-full max-w-[1000px] mx-auto px-4">
+        <div className="w-full max-w-[1000px] mx-auto pl-100 mt-6">
           <div className="grid gap-6">
             {data.pages.map(page =>
               page.activities.map((activity: ActivityBasicDto) => (
