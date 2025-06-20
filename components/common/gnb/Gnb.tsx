@@ -2,13 +2,21 @@
 
 import Image from 'next/image';
 import Logo from '@/public/ic_logo.svg';
-import useUserStore from '@/store/useUserStore';
 import AlarmButton from './AlarmButton';
 import ProfileButton from './ProfileButton';
 import Link from 'next/link';
+import { useHasHydrated } from '@/hooks/useHasHydrated';
+import { useMyInfoQuery } from '@/hooks/useMyInfoQuery';
+import { useAuthStore } from '@/store/useAuthStore';
 
 export default function GNB() {
-  const { user } = useUserStore();
+  const { isLoggedIn } = useAuthStore();
+  const hasHydrated = useHasHydrated();
+  const { data: user, isLoading } = useMyInfoQuery();
+
+  if (!hasHydrated || isLoading) return null;
+
+  const isLoggedOut = !isLoggedIn && !user;
 
   return (
     <header className="fixed bg-white z-50 left-0 top-0 w-full px-2 border-b py-[10px]">
@@ -18,7 +26,7 @@ export default function GNB() {
         </Link>
 
         {/* 알림 버튼 */}
-        {user ? (
+        {!isLoggedOut ? (
           <div className="flex gap-4 lg:gap-[30px] items-center">
             <AlarmButton />
             <div className="h-4 w-px bg-gray-300" />
