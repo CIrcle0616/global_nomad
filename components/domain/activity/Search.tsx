@@ -72,7 +72,7 @@ function Search({ value, onChange, onSubmit }: SearchProps) {
 
         <button
           type="submit"
-          className="h-[56px] rounded-md bg-nomad-black text-white text-lg-bold w-[96px] sm:w-[136px] md:w-[136px] shrink-0"
+          className="h-[56px] rounded-md bg-nomad-black hover:bg-green-500 transition-colors duration-300 text-white text-lg-bold w-[96px] sm:w-[136px] md:w-[136px] shrink-0"
         >
           검색하기
         </button>

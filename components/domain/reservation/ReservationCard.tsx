@@ -102,7 +102,12 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
 
           <div>
             {reservation.status === 'pending' && (
-              <CommonButton size="S" variant="secondary" onClick={handleCancelReservation} className={buttonClass}>
+              <CommonButton
+                size="S"
+                variant="secondary"
+                onClick={handleCancelReservation}
+                className={`${buttonClass} hover:bg-gray-200 transition-colors duration-200`}
+              >
                 예약 취소
               </CommonButton>
             )}
@@ -113,7 +118,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
                   size="S"
                   variant="secondary"
                   disabled
-                  className={`${buttonClass} bg-gray-300 text-gray-500 cursor-not-allowed`}
+                  className={`${buttonClass} bg-gray-300 text-gray-500 cursor-not-allowed `}
                 >
                   작성 완료
                 </CommonButton>
@@ -142,7 +147,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
                       },
                     })
                   }
-                  className={buttonClass}
+                  className={`${buttonClass} hover:bg-green-500 transition-colors duration-200`}
                 >
                   후기 작성
                 </CommonButton>
