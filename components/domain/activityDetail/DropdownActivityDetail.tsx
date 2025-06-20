@@ -5,7 +5,7 @@ import { delMyActivities } from '@/services/myActivities';
 import { useRouter, usePathname } from 'next/navigation';
 import TwoButtonModal from '@/components/common/modal/TwoButtonModal';
 import { useModalStore } from '@/store/modalStore';
-import useUserStore from '@/store/useUserStore';
+import useIsAuthor from '@/hooks/useIsAuthor';
 
 type DropDownActivityDetailProps = {
   userId: number;
@@ -13,12 +13,11 @@ type DropDownActivityDetailProps = {
 };
 
 export default function DropDownActivityDetail({ userId, activityId }: DropDownActivityDetailProps) {
-  const { user } = useUserStore();
   const router = useRouter();
   const pathname = usePathname();
   const { openModal } = useModalStore();
 
-  const isAuthor = user?.id === userId;
+  const isAuthor = useIsAuthor(userId);
 
   if (!isAuthor) {
     return null;
@@ -30,7 +29,7 @@ export default function DropDownActivityDetail({ userId, activityId }: DropDownA
     if (isOnActivityDetailPage) {
       router.back(); // 체험 상세 페이지에 있다면 뒤로 가기
     } else {
-      router.refresh();
+      window.location.reload();
     }
   };
 
@@ -57,7 +56,7 @@ export default function DropDownActivityDetail({ userId, activityId }: DropDownA
         }
       }}
       options={['edit', 'delete']}
-      trigger={<Image src="/ic_kebab_menu.svg" width={40} height={40} alt="케밥메뉴" />}
+      trigger={<Image src="/ic_kebab_menu.svg" width={40} height={40} alt="케밥메뉴" loading="eager" />}
     >
       {option => {
         if (option === 'edit') {
