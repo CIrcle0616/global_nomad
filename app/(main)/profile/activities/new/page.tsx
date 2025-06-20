@@ -1,5 +1,5 @@
 'use client';
-
+//등록을 담당하는 페이지
 import DropdownSelect from '@/components/common/DropDownSelect';
 import { useState, useRef } from 'react';
 import Image from 'next/image';
@@ -9,6 +9,7 @@ import { useModalStore } from '@/store/modalStore';
 import OneButtonModal from '@/components/common/modal/OneButtonModal';
 import { useRouter } from 'next/navigation';
 import { format } from 'date-fns';
+import Select from 'react-select';
 
 type TimeForm = {
   id: number;
@@ -215,8 +216,40 @@ export default function NewAndEditActivityPage() {
     }
   };
 
+  const handleIntroImageRemove = (index: number) => {
+    setIntroImages(prevImages => prevImages.filter((_, i) => i !== index));
+  };
+
+  const handleBannerImageRemove = (index: number) => {
+    setBannerImages(prevImages => prevImages.filter((_, i) => i !== index));
+  };
+
+  const options = [
+    { value: 'culture', label: '문화 예술' },
+    { value: 'food', label: '식음료' },
+    { value: 'sports', label: '스포츠' },
+    { value: 'tour', label: '투어' },
+    { value: 'travel', label: '관광' },
+    { value: 'wellbeing', label: '웰빙' },
+  ];
+  const startTimeOptions = startHours.flatMap(h =>
+    minutes.map(m => {
+      const hh = h.toString().padStart(2, '0');
+      const mm = m.toString().padStart(2, '0');
+      return { value: `${hh}:${mm}`, label: `${hh}:${mm}` };
+    }),
+  );
+
+  const endTimeOptions = endHours.flatMap(h =>
+    minutes.map(m => {
+      const hh = h.toString().padStart(2, '0');
+      const mm = m.toString().padStart(2, '0');
+      return { value: `${hh}:${mm}`, label: `${hh}:${mm}` };
+    }),
+  );
+
   return (
-    <div className="max-w-2xl mx-auto px-6 py-8">
+    <div className="max-w-[792px] mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold">내 체험 등록</h1>
       </div>
@@ -231,23 +264,13 @@ export default function NewAndEditActivityPage() {
           required
         />
 
-        <select
-          value={category}
-          onChange={e => setCategory(e.target.value)}
-          className="w-full border border-gray-300 rounded px-4 py-2"
-          required
-        >
-          <option value="" disabled hidden>
-            카테고리 선택
-          </option>
-          <option value="문화 예술">문화 예술</option>
-          <option value="식음료">식음료</option>
-          <option value="스포츠">스포츠</option>
-          <option value="투어">투어</option>
-          <option value="관광">관광</option>
-          <option value="웰빙">웰빙</option>
-        </select>
-
+        <Select
+          options={options}
+          placeholder="카테고리 선택"
+          value={options.find(o => o.value === category)}
+          onChange={selected => setCategory(selected?.value ?? '')}
+          className="w-full"
+        />
         <textarea
           value={detail}
           onChange={handleDetailChange}
@@ -297,45 +320,45 @@ export default function NewAndEditActivityPage() {
               onSelect={dateStr => setSelectedDate(dateStr)}
             />
           </div>
-          <select
-            value={startTime}
-            onChange={e => setStartTime(e.target.value)}
-            className="h-[50px] w-40 px-3 text-base border border-gray-300 rounded-md text-gray-900 text-center"
-          >
-            <option value="">시간 선택</option>
-            {startHours.map(h =>
-              minutes.map(m => {
-                const hh = h.toString().padStart(2, '0');
-                const mm = m.toString().padStart(2, '0');
-                return (
-                  <option key={`${hh}:${mm}`} value={`${hh}:${mm}`}>
-                    {`${hh}:${mm}`}
-                  </option>
-                );
+          <Select
+            options={startTimeOptions}
+            placeholder="시간 선택"
+            value={startTimeOptions.find(o => o.value === startTime)}
+            onChange={selected => setStartTime(selected?.value ?? '')}
+            className="w-40"
+            styles={{
+              control: base => ({
+                ...base,
+                height: 50,
+                textAlign: 'center',
               }),
-            )}
-          </select>
+              singleValue: base => ({
+                ...base,
+                color: '#111827', // Tailwind text-gray-900
+              }),
+            }}
+          />
 
           <div className="text-lg h-[40px]">~</div>
 
-          <select
-            value={endTime}
-            onChange={e => setEndTime(e.target.value)}
-            className="h-[50px] w-40 px-3 text-base border border-gray-300 rounded-md text-gray-900 text-center"
-          >
-            <option value="">시간 선택</option>
-            {endHours.map(h =>
-              minutes.map(m => {
-                const hh = h.toString().padStart(2, '0');
-                const mm = m.toString().padStart(2, '0');
-                return (
-                  <option key={`${hh}:${mm}`} value={`${hh}:${mm}`}>
-                    {`${hh}:${mm}`}
-                  </option>
-                );
+          <Select
+            options={endTimeOptions}
+            placeholder="시간 선택"
+            value={endTimeOptions.find(o => o.value === endTime) ?? null}
+            onChange={selected => setEndTime(selected?.value ?? '')}
+            className="w-40"
+            styles={{
+              control: base => ({
+                ...base,
+                height: 50,
+                textAlign: 'center',
               }),
-            )}
-          </select>
+              singleValue: base => ({
+                ...base,
+                color: '#111827',
+              }),
+            }}
+          />
 
           <button
             type="button"
@@ -418,7 +441,7 @@ export default function NewAndEditActivityPage() {
             </button>
 
             {bannerImages.map((file, index) => (
-              <div key={index} className="w-36 h-36 border rounded overflow-hidden">
+              <div key={index} className="relative w-36 h-36 border rounded overflow-hidden">
                 <Image
                   src={URL.createObjectURL(file)}
                   alt={`preview-${index}`}
@@ -426,6 +449,12 @@ export default function NewAndEditActivityPage() {
                   height={144}
                   className="object-cover w-full h-full"
                 />
+                <button
+                  onClick={() => handleBannerImageRemove(index)}
+                  className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>
@@ -458,7 +487,7 @@ export default function NewAndEditActivityPage() {
             </button>
 
             {introImages.map((file, index) => (
-              <div key={index} className="w-36 h-36 border rounded overflow-hidden">
+              <div key={index} className="relative w-36 h-36 border rounded overflow-hidden">
                 <Image
                   src={URL.createObjectURL(file)}
                   alt="배너 이미지 미리보기"
@@ -466,6 +495,12 @@ export default function NewAndEditActivityPage() {
                   height={144}
                   className="object-cover w-full h-full"
                 />
+                <button
+                  onClick={() => handleIntroImageRemove(index)}
+                  className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>
