@@ -157,6 +157,8 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
 
   const handleTabChange = (status: TabStatus) => {
     setStatusTab(status);
+    setSelectedScheduleId(null);
+    setSelectedScheduleLabel('');
   };
 
   const handleTimeSelect = (label: string) => {
@@ -173,7 +175,7 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
 
   return (
-    <div className="p-5 w-[380px] max-h-[80vh] min-h-[500px] overflow-y-auto bg-white rounded-xl">
+    <div className="p-5 w-[380px] max-h-[80vh] min-h-[500px] flex flex-col bg-white rounded-xl">
       <div className="flex justify-between mb-4 items-center mb-[20px]">
         <h1 className="text-2xl-bold">예약 정보</h1>
         <button onClick={closeModal}>
@@ -199,64 +201,84 @@ export default function ReservationModal({ activityId, date }: ReservationModalP
       <p className="text-sm-medium ml-1 text-gray-900">{date}</p>
 
       {/* 시간 드롭다운  */}
-      <div className={`mb-6 mt-1 w-full ${ScheduleOptions.length === 0 ? 'pointer-events-none opacity-50' : ''}`}>
+      <div
+        className={`mb-6 mt-1 w-full ${availableScheduleOptions.length === 0 ? 'pointer-events-none opacity-50' : ''}`}
+      >
         <DropdownSelect
           type="list"
           selected={selectedScheduleLabel}
           onSelect={handleTimeSelect}
-          placeholder={ScheduleOptions.length === 0 ? '예약 가능한 시간이 없습니다.' : '예약 시간을 선택해주세요.'}
-          options={ScheduleOptions.map(s => `${s.startTime}~${s.endTime}`)}
+          placeholder={availableScheduleOptions.length === 0 ? '예약 가능한 시간이 없습니다.' : ''}
+          options={availableScheduleOptions.map(s => `${s.startTime}~${s.endTime}`)}
         />
       </div>
 
       {/* 예약 내역   */}
       <h2 className="text-xl-semibold mb-2">예약 내역</h2>
-      {currentReservations.length === 0 ? (
-        <p className="text-gray-400 text-center py-4">예약 내역이 없습니다.</p>
-      ) : (
-        <>
-          {currentReservations.map(res => (
-            <div key={res.id} className="border rounded-md mb-2 px-4 py-3">
-              <p className="mb-1">
-                <span className="text-gray-800 text-lg-semibold">닉네임 </span>
-                <span className="text-lg-medium"> {res.nickname}</span>
-              </p>
+      <div className="flex-1 overflow-y-auto pr-1">
+        {currentReservations.length === 0 ? (
+          <p className="text-gray-400 text-center py-4">예약 내역이 없습니다.</p>
+        ) : (
+          <>
+            {currentReservations.map(res => (
+              <div key={res.id} className="border rounded-md mb-2 px-4 py-3">
+                <p className="mb-1">
+                  <span className="text-gray-800 text-lg-semibold">닉네임 </span>
+                  <span className="text-lg-medium"> {res.nickname}</span>
+                </p>
 
-              <p className="mb-1">
-                <span className="text-gray-800 text-lg-semibold">인원 </span>
-                <span className="text-lg-medium"> {res.headCount}명</span>
-              </p>
+                <p className="mb-1">
+                  <span className="text-gray-800 text-lg-semibold">인원 </span>
+                  <span className="text-lg-medium"> {res.headCount}명</span>
+                </p>
 
-              {statusTab === 'pending' ? (
-                <div className="flex gap-2 justify-end  mt-2">
-                  <CommonButton size="S" className="px-3 rounded-md" onClick={() => handleApprove(res.id)}>
-                    승인하기
-                  </CommonButton>
-                  <CommonButton
-                    size="S"
-                    className=" px-3 rounded-md"
-                    variant="secondary"
-                    onClick={() => handleDecline(res.id)}
-                  >
-                    거절하기
-                  </CommonButton>
-                </div>
-              ) : (
-                <div className="flex justify-end mt-2">
-                  <span
-                    className={`px-3 py-[2px] text-sm rounded-full ${
-                      statusTab === 'confirmed' ? 'bg-orange-100 text-orange-600' : 'bg-red-100 text-red-600'
-                    }`}
-                  >
-                    {statusTab === 'confirmed' ? '예약 승인' : '예약 거절'}
-                  </span>
-                </div>
-              )}
-            </div>
-          ))}
-          <div ref={loadMoreRef} className="h-6" />
-        </>
-      )}
+                {statusTab === 'pending' ? (
+                  new Date(`${date}T${res.startTime}`) < new Date() ? (
+                    <div className="flex gap-2 justify-end  mt-2 opacity-50 pointer-events-none">
+                      <CommonButton size="S" className="px-3 rounded-md" onClick={() => handleApprove(res.id)}>
+                        승인하기
+                      </CommonButton>
+                      <CommonButton
+                        size="S"
+                        className=" px-3 rounded-md"
+                        variant="secondary"
+                        onClick={() => handleDecline(res.id)}
+                      >
+                        거절하기
+                      </CommonButton>
+                    </div>
+                  ) : (
+                    <div className="flex gap-2 justify-end  mt-2">
+                      <CommonButton size="S" className="px-3 rounded-md" onClick={() => handleApprove(res.id)}>
+                        승인하기
+                      </CommonButton>
+                      <CommonButton
+                        size="S"
+                        className=" px-3 rounded-md"
+                        variant="secondary"
+                        onClick={() => handleDecline(res.id)}
+                      >
+                        거절하기
+                      </CommonButton>
+                    </div>
+                  )
+                ) : (
+                  <div className="flex justify-end mt-2">
+                    <span
+                      className={`px-3 py-[2px] text-sm rounded-full ${
+                        statusTab === 'confirmed' ? 'bg-orange-100 text-orange-600' : 'bg-red-100 text-red-600'
+                      }`}
+                    >
+                      {statusTab === 'confirmed' ? '예약 승인' : '예약 거절'}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ))}
+            <div ref={loadMoreRef} className="h-6" />
+          </>
+        )}
+      </div>
     </div>
   );
 }
