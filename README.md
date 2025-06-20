@@ -101,7 +101,7 @@
   </tr>
   <tr>
     <td align="center"><img src="https://avatars.githubusercontent.com/u/192935871?v=4" width="140" /></td>
-    <td align="center"><strong>조지현</strong><br>(JoJiHyeon)</td>
+    <td align="center"><strong>조지현</strong><br>(ChoJiHyon)</td>
     <td align="center"><a href="https://github.com/zeon0xx0">@zeon0xx0</a></td>
     <td>
       <ul>
