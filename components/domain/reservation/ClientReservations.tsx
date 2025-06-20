@@ -113,7 +113,7 @@ export default function ClientReservations() {
   };
 
   return (
-    <div className="max-w-[792px] ml-6 py-8">
+    <div className="mb-6 ml-6">
       <div className="flex items-center justify-between mb-4 max-w-full md:max-w-[600px] lg:max-w-[792px]">
         <h1 className="text-xl-bold md:text-2xl-bold lg:text-3xl-bold mb-2">예약 내역</h1>
         <DropdownMenu

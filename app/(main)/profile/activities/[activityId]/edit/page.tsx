@@ -222,6 +222,14 @@ export default function ActivityEditPage() {
       setIntroImages(prev => [...prev, ...files].slice(0, 4));
     }
   };
+  const handleIntroImageRemove = (index: number) => {
+    setIntroImages(prevImages => prevImages.filter((_, i) => i !== index));
+  };
+
+  const handleBannerImageRemove = (index: number) => {
+    setBannerImages(prevImages => prevImages.filter((_, i) => i !== index));
+  };
+
   const options = [
     { value: 'culture', label: '문화 예술' },
     { value: 'food', label: '식음료' },
@@ -487,7 +495,7 @@ export default function ActivityEditPage() {
             </button>
 
             {bannerImages.map((file, index) => (
-              <div key={index} className="w-36 h-36 border rounded overflow-hidden">
+              <div key={index} className="relative w-36 h-36 border rounded overflow-hidden">
                 <Image
                   src={URL.createObjectURL(file)}
                   alt={`preview-${index}`}
@@ -495,6 +503,12 @@ export default function ActivityEditPage() {
                   height={144}
                   className="object-cover w-full h-full"
                 />
+                <button
+                  onClick={() => handleBannerImageRemove(index)}
+                  className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>
@@ -527,7 +541,7 @@ export default function ActivityEditPage() {
             </button>
 
             {introImages.map((file, index) => (
-              <div key={index} className="w-36 h-36 border rounded overflow-hidden">
+              <div key={index} className="relative w-36 h-36 border rounded overflow-hidden">
                 <Image
                   src={URL.createObjectURL(file)}
                   alt="배너 이미지 미리보기"
@@ -535,6 +549,12 @@ export default function ActivityEditPage() {
                   height={144}
                   className="object-cover w-full h-full"
                 />
+                <button
+                  onClick={() => handleIntroImageRemove(index)}
+                  className="absolute top-1 right-1 bg-black bg-opacity-50 text-white rounded-full w-6 h-6 flex items-center justify-center text-sm"
+                >
+                  ×
+                </button>
               </div>
             ))}
           </div>
