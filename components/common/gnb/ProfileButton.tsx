@@ -37,6 +37,7 @@ export default function ProfileButton() {
             setIsLoggedIn(false);
             setUser(null);
             queryClient.removeQueries({ queryKey: ['myInfo'] });
+            queryClient.removeQueries({ queryKey: ['myNotificationAlarm'] });
             router.push('/');
             router.refresh();
           } else {

@@ -14,7 +14,7 @@ export default function ActivityImgSection({ data }: { data: GetActivityDetailSu
   };
 
   return (
-    <div className="w-[375px] h-[310px] md:w-[696px] lg:w-[900px] lg:h-[412px] md:mt-4 md:mb-8 lg:mb-[65px]">
+    <div className="w-[375px] h-[310px] md:w-[696px] lg:w-[900px] lg:h-[412px] mt-4 md:mb-8 lg:mb-[65px]">
       <ActivityPcImgView images={allImages} onImageClick={handleImageClick} />
       <ActivityMobileImgView images={allImages} onImageClick={handleImageClick} />
     </div>
