@@ -1,6 +1,6 @@
 export default function SkeletonMyInfoForm() {
   return (
-    <div className="px-6 mb-[120px] animate-pulse">
+    <div className="px-4 mb-[120px] animate-pulse">
       <div className="flex justify-between items-center">
         <div className="w-36 h-10 bg-gray-300 rounded" />
         <div className="w-[120px] h-12  bg-gray-300 rounded" />

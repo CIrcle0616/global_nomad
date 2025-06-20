@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import closeIcon from '@/public/ic_close.svg';
 
@@ -10,24 +9,22 @@ type NotificationPopoverProps = {
 };
 
 export default function NotificationPopover({ children, onClose }: NotificationPopoverProps) {
-  const popoverRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (popoverRef.current && !popoverRef.current.contains(event.target as Node)) {
-        onClose();
-      }
-    };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, [onClose]);
-
   return (
     <div
-      ref={popoverRef}
-      className={`z-50 overflow-y-auto fixed top-0 left-0 w-screen h-screen bg-white sm:absolute sm:top-full sm:right-0 sm:translate-x-[-120px] lg:translate-x-[-60px] sm:w-[360px] sm:h-auto sm:rounded-md sm:shadow-md sm:border sm:border-gray-200 sm:bg-white mt-[7px]`}
+      className={`
+        
+        z-50
+        fixed inset-0
+        bg-white
+        overflow-y-auto
+        sm:absolute sm:inset-auto sm:top-full sm:right-0
+        sm:w-[360px] sm:max-h-[80vh]
+        sm:mt-[9px]
+        sm:rounded-md sm:shadow-lg sm:border sm:border-gray-200
+        lg:right-[-80px]
+        `}
     >
-      <button className="absolute top-4 right-4 sm:hidden" onClick={onClose}>
+      <button className="absolute top-4 right-4 sm:hidden z-[999]" onClick={onClose}>
         <Image src={closeIcon} alt="닫기" width={24} height={24} />
       </button>
       {children}
