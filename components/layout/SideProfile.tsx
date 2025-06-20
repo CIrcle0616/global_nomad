@@ -72,7 +72,7 @@ export default function SideProfile() {
 
   return (
     <div
-      className="fixed top-40 left-100 z-30 bg-white border border-gray-300 rounded-xl shadow-md p-6 h-fit
+      className="fixed z-30 bg-white border border-gray-300 rounded-xl shadow-md p-6 h-fit
 w-full max-w-[251px] lg:max-w-[384px]"
     >
       <ProfileImageUploader
