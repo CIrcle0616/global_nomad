@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import DropdownMenu from '../DropDown';
 import Image from 'next/image';
-import profileIcon from '@/public/ic_profile.svg';
 import { useMyInfoQuery } from '@/hooks/useMyInfoQuery';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useQueryClient } from '@tanstack/react-query';
@@ -60,7 +59,7 @@ export default function ProfileButton() {
         trigger={
           <button className="lg:min-w-[90px]  flex items-center gap-2 transition ease-in-out hover:font-bold hover:scale-105">
             <Image
-              src={user.profileImageUrl ?? profileIcon}
+              src={user.profileImageUrl ?? '/ic_profile.svg'}
               alt="프로필"
               width={32}
               height={32}
