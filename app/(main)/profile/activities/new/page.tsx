@@ -363,7 +363,7 @@ export default function NewAndEditActivityPage() {
           <button
             type="button"
             onClick={handleAddForm}
-            className="w-16 bg-green-500 text-white py-1 rounded hover:bg-green-600 text-[29px]"
+            className="w-16 bg-nomad-black hover:bg-green-500 transition-colors duration-200 text-white py-1 rounded  text-[29px]"
           >
             +
           </button>
@@ -376,7 +376,7 @@ export default function NewAndEditActivityPage() {
                 type="text"
                 value={form.date}
                 readOnly
-                className="h-[50px] w-full px-3 border border-gray-300 rounded-md text-gray-900"
+                className="h-[50px] w-full px-3 border border-gray-300 rounded-md text-gray-900 bg-gray-100"
               />
             </div>
 
@@ -385,7 +385,7 @@ export default function NewAndEditActivityPage() {
                 type="text"
                 value={form.startTime}
                 readOnly
-                className="h-[50px] w-full px-3 border border-gray-300 rounded-md text-center text-gray-900"
+                className="h-[50px] w-full px-3 border border-gray-300 rounded-md text-center text-gray-900 bg-gray-100"
               />
             </div>
 
@@ -396,7 +396,7 @@ export default function NewAndEditActivityPage() {
                 type="text"
                 value={form.endTime}
                 readOnly
-                className="h-[50px] w-full px-3 border border-gray-300 rounded-md text-center text-gray-900"
+                className="h-[50px] w-full px-3 border border-gray-300 rounded-md text-center text-gray-900 bg-gray-100"
               />
             </div>
             <button
@@ -506,7 +506,10 @@ export default function NewAndEditActivityPage() {
           </div>
         </>
 
-        <button type="submit" className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+        <button
+          type="submit"
+          className="w-full bg-nomad-black hover:bg-green-500 transition-colors duration-200 text-white py-2 rounded "
+        >
           저장
         </button>
       </form>
