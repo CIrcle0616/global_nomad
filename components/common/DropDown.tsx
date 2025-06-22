@@ -37,9 +37,9 @@ export default function DropdownMenu({ onSelect, options, trigger, children }: D
             options.length > 8 ? 'max-h-[400px] overflow-y-auto' : ''
           }`}
         >
-          {options.map(option => (
+          {options.map((option, index) => (
             <li
-              key={option}
+              key={`${option}-${index}`}
               onClick={() => handleSelect(option)}
               className="cursor-pointer py-3 px-4 border-b border-gray-300 last:border-b-0  hover:bg-gray-300"
             >
