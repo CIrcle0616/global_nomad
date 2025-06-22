@@ -5,9 +5,9 @@ export async function fetchFromServer(path: string, options: RequestInit = {}) {
   const cookieStore = await cookies();
   const accessToken = cookieStore.get('accessToken')?.value;
 
-  const BASE_URL = 'https://sp-globalnomad-api.vercel.app/14-2';
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
 
-  const res = await fetch(`${BASE_URL}${path}`, {
+  const res = await fetch(`${baseUrl}${path}`, {
     ...options,
     headers: {
       'Content-Type': 'application/json',
