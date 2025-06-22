@@ -1,18 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { DayPicker } from 'react-day-picker';
-import { format, addMonths, subMonths } from 'date-fns';
+import { format, addMonths, subMonths, parseISO } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import 'react-day-picker/style.css';
 
 interface DatePickerProps {
   selected: Date | undefined;
   onSelect: (date: Date | undefined) => void;
+  availableDates?: string[];
 }
 
-export default function DatePicker({ selected, onSelect }: DatePickerProps) {
+export default function DatePicker({ selected, onSelect, availableDates }: DatePickerProps) {
   const [month, setMonth] = useState(new Date());
+  const availableDateObjects = useMemo(() => availableDates?.map(dateStr => parseISO(dateStr)), [availableDates]);
 
   return (
     <div className="z-[9999] bg-white space-y-2 rounded-lg border border-gray-200 py-2.5 w-[305px] h-[241px]">
@@ -42,6 +44,7 @@ export default function DatePicker({ selected, onSelect }: DatePickerProps) {
         onSelect={onSelect}
         showOutsideDays
         locale={ko}
+        disabled={{ before: new Date() }}
         /* eslint-disable camelcase */
         classNames={{
           root: '',
@@ -54,10 +57,16 @@ export default function DatePicker({ selected, onSelect }: DatePickerProps) {
           weekday: 'text-sm font-bold text-[#4b4b4b]',
           month_grid: 'w-full',
         }}
+        modifiers={{
+          reservable: availableDateObjects,
+        }}
         modifiersClassNames={{
           selected: '!bg-[#0b3b2d] !text-white rounded-lg',
           today: 'bg-[#ced8d5] text-[#0b3b2d] rounded-lg',
           outside: 'text-[#A4A1AA]',
+          disabled: 'text-gray-400 line-through cursor-not-allwed',
+          reservable:
+            'after:block after:w-1.5 after:h-1.5 after:rounded-full after:bg-[#00b894] after:mt-1 after:mx-auto',
         }}
       />
     </div>

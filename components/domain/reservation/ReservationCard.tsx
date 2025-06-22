@@ -1,6 +1,9 @@
+'use client';
+
 import { useState } from 'react';
 import Image from 'next/image';
 import { useQueryClient } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 
 import { useModalStore } from '@/store/modalStore';
 import { statusMap } from '@/constants/statusMap';
@@ -24,27 +27,22 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
       content: '예약을 취소하시겠어요?',
       leftButtonText: '아니오',
       rightButtonText: '취소하기',
+      containerClassName: 'p-[20px] w-[300px] bg-white rounded-lg shadow-lg md:w-[360px]',
       onConfirm: async ({ closeModal }: { closeModal: () => void }) => {
         try {
           await patchMyReservations({ reservationId: reservation.id, body: { status: 'canceled' } });
           await queryClient.invalidateQueries({ queryKey: ['myReservations'] });
           closeModal();
 
-          openModal(OneButtonModal, {
-            content: '예약이 취소되었습니다.',
-            buttonText: '확인',
-            onConfirm: () => {
-              const { closeModal } = useModalStore.getState();
-              closeModal();
-            },
+          toast.success('예약이 취소되었습니다.', {
+            duration: 3000,
           });
         } catch (error) {
           console.error('예약 취소 실패', error);
+          toast.error('예약 취소에 실패했습니다.');
         }
       },
-      onCancel: () => {
-        console.log('취소 버튼 클릭');
-      },
+      onCancel: () => {},
     });
   };
 
@@ -65,10 +63,10 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
             : reservation.status === 'completed'
               ? 'text-gray-800'
               : '';
-  // 버튼과 placeholder의 공통 클래스
+
   const buttonPlaceholderClass =
     'h-[32px] md:h-[40px] lg:h-[43px] min-w-[80px] md:min-w-[112px] lg:min-w-[144px] text-[14px] rounded-[6px]';
-  // 공통 버튼 클래스
+
   const buttonClass =
     '!h-[32px] md:!h-[40px] lg:!h-[43px] !min-w-[80px] md:!min-w-[112px] lg:!min-w-[144px] text-[14px] md:text-[16px] lg:text-[18px] rounded-[6px] !p-[6px] md:!p-[8px]';
 
@@ -80,6 +78,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
           alt={reservation.activity.title}
           fill
           unoptimized
+          sizes="(max-width: 768px) 100vw, 204px"
           className="object-cover"
         />
       </div>
@@ -103,7 +102,12 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
 
           <div>
             {reservation.status === 'pending' && (
-              <CommonButton size="S" variant="secondary" onClick={handleCancelReservation} className={buttonClass}>
+              <CommonButton
+                size="S"
+                variant="secondary"
+                onClick={handleCancelReservation}
+                className={`${buttonClass} hover:bg-gray-200 transition-colors duration-200`}
+              >
                 예약 취소
               </CommonButton>
             )}
@@ -114,7 +118,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
                   size="S"
                   variant="secondary"
                   disabled
-                  className={`${buttonClass} bg-gray-300 text-gray-500 cursor-not-allowed`}
+                  className={`${buttonClass} bg-gray-300 text-gray-500 cursor-not-allowed `}
                 >
                   작성 완료
                 </CommonButton>
@@ -143,7 +147,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
                       },
                     })
                   }
-                  className={buttonClass}
+                  className={`${buttonClass} hover:bg-green-500 transition-colors duration-200`}
                 >
                   후기 작성
                 </CommonButton>

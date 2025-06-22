@@ -2,10 +2,10 @@ import { getKoreanJosa } from '@/lib/getKoreanJosa';
 
 interface SearchHeaderProps {
   keyword: string;
-  reviewCount: number;
+  searchResultCount: number | undefined;
 }
 
-export default function SearchHeader({ keyword, reviewCount }: SearchHeaderProps) {
+export default function SearchHeader({ keyword, searchResultCount }: SearchHeaderProps) {
   const josa = getKoreanJosa(keyword, '으로/로');
 
   return (
@@ -14,7 +14,7 @@ export default function SearchHeader({ keyword, reviewCount }: SearchHeaderProps
         <b>{keyword}</b>
         {josa} 검색한 결과입니다.
       </h1>
-      <p className="text-[16px]">총 {reviewCount}개의 결과</p>
+      <p className="text-[16px]">총 {searchResultCount}개의 결과</p>
     </header>
   );
 }

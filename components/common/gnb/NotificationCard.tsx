@@ -62,7 +62,13 @@ export default function NotificationCard({ id, content, createdAt, type, onDelet
     >
       <div className="flex items-start justify-between gap-2">
         <div className="flex-1 mt-1 pr-7 text-sm leading-relaxed">{highlightContent()}</div>
-        <button onClick={onDelete} className="flex-shrink-0 mt-1 ml-2">
+        <button
+          onClick={e => {
+            e.stopPropagation();
+            onDelete?.();
+          }}
+          className="flex-shrink-0 mt-1 ml-2"
+        >
           <Image src={closeIcon} alt="닫기" width={20} height={20} />
         </button>
       </div>

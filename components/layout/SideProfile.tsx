@@ -4,9 +4,11 @@ import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useProfileImageUpload } from '@/hooks/useProfileImageUpload';
+import useUserStore from '@/store/useUserStore';
 import { useModalStore } from '@/store/modalStore';
 import ProfileImageUploader from '@/components/common/ProfileImageUploader';
 import OneButtonModal from '@/components/common/modal/OneButtonModal';
+import { getUserMe } from '@/services/users';
 
 const menuItems = [
   {
@@ -38,21 +40,48 @@ const menuItems = [
 export default function SideProfile() {
   const pathname = usePathname();
   const { openModal } = useModalStore();
+  const { setUser } = useUserStore();
 
   const imageUploadMutation = useProfileImageUpload(
-    () => openModal(OneButtonModal, { content: '프로필 이미지가 수정되었습니다.', onConfirm: () => {} }),
-    () => openModal(OneButtonModal, { content: '업로드 실패했습니다.', onConfirm: () => {} }),
+    async () => {
+      openModal(OneButtonModal, {
+        content: '프로필 이미지가 수정되었습니다.',
+        onConfirm: () => {},
+      });
+
+      try {
+        const updatedUser = await getUserMe();
+        setUser({
+          id: updatedUser.id,
+          name: updatedUser.nickname,
+          profileImage: updatedUser.profileImageUrl ?? undefined,
+          teamId: 14 - 3,
+          accessToken: '',
+        });
+      } catch (e) {
+        console.error('유저 정보 수정에 실패했습니다', e);
+      }
+    },
+    error => {
+      openModal(OneButtonModal, {
+        content: `프로필 이미지 업로드에 실패했습니다. ${error.message}`,
+        onConfirm: () => {},
+      });
+    },
   );
 
   return (
-    <div className="bg-white border border-gray-300 rounded-xl shadow-md p-6 w-full h-fit shrink-0">
+    <div
+      className="fixed z-30 bg-white border border-gray-300 rounded-xl shadow-md p-6 h-fit
+w-full max-w-[251px] lg:max-w-[384px]"
+    >
       <ProfileImageUploader
         onFileSelected={file => {
           imageUploadMutation.mutate(file);
         }}
       />
 
-      <ul className="space-y-2 w-full">
+      <ul className="space-y-2 w-full mt-4">
         {menuItems.map(({ name, path, icon, iconGray }) => {
           const isActive = pathname.startsWith(path);
           const iconToUse = isActive ? icon : iconGray;
