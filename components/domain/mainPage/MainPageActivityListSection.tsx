@@ -11,7 +11,7 @@ interface MainPageActivityListSectionProps {
 
 export default function MainPageActivityListSection({
   keyword,
-  category: titleOfList = '🛼 모든 체험',
+  category: titleOfList = '⛸️ 모든 체험',
   totalCount,
 }: MainPageActivityListSectionProps) {
   return (

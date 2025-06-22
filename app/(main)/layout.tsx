@@ -6,7 +6,7 @@ export default function MainLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <GNB />
-      <main className="pt-[60px]">{children}</main>
+      <main className="pt-[70px]">{children}</main>
       <Footer />
     </>
   );
