@@ -2,8 +2,8 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import NotificationPopover from '../common/gnb/NotificationPopover';
-import NotificationList from '../common/gnb/NotificationList';
+import NotificationPopover from './NotificationPopover';
+import NotificationList from './NotificationList';
 import Image from 'next/image';
 import alarmIcon from '@/public/ic_alarm.svg';
 import { useQuery } from '@tanstack/react-query';
