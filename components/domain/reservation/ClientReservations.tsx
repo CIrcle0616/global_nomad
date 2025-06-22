@@ -13,7 +13,6 @@ import ComponentSpinner from '@/components/common/spinners/ComponentSpinner';
 import { filterOptions } from '@/constants/filterOption';
 import { getMyReservations } from '@/services/myReservations';
 import useObserver from '@/hooks/useObserver';
-import ScrollToTopButton from '@/components/common/ScrollTopButton';
 
 import { wait } from '@/constants/utils/wait';
 
@@ -134,7 +133,6 @@ export default function ClientReservations() {
         </DropdownMenu>
       </div>
       {renderContent()}
-      <ScrollToTopButton />
     </div>
   );
 }

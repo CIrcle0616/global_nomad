@@ -363,7 +363,7 @@ export default function NewAndEditActivityPage() {
           <button
             type="button"
             onClick={handleAddForm}
-            className="w-16 bg-green-500 text-white py-1 rounded hover:bg-green-600 text-[29px]"
+            className="w-16 bg-nomad-black text-white py-1 rounded hover:bg-green-500 text-[29px]"
           >
             +
           </button>
@@ -506,7 +506,7 @@ export default function NewAndEditActivityPage() {
           </div>
         </>
 
-        <button type="submit" className="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600">
+        <button type="submit" className="w-full bg-nomad-black text-white py-2 rounded hover:bg-green-500">
           저장
         </button>
       </form>
