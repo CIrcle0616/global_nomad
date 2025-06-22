@@ -24,29 +24,21 @@ export default function MyReservationCalendar({ activityId }: { activityId: numb
   const year = format(today, 'yyyy');
   const month = format(today, 'MM');
 
-  const { data, isLoading, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['reservationBoard', activityId, year, month],
     queryFn: () => getMyReservationBoard({ activityId, year, month }),
     enabled: !!activityId,
   });
 
-  const now = new Date();
-
-  if (isLoading) return <div>불러오는 중...</div>;
-  if (error) return <div>에러 발생</div>;
-
   //api를 calendar 형태에 맞게 변환
-  const scheduleData: ScheduleItem[] = (data ?? []).flatMap(item => {
-    const endTime = new Date(`${item.date}T23:59:59`); //하루 지났는지 판단
-    const isPast = endTime < now;
-    const completedCount = isPast ? item.reservations.confirmed : item.reservations.completed;
-
-    return [
-      { date: item.date, status: '예약', count: item.reservations.pending },
-      { date: item.date, status: '승인', count: item.reservations.confirmed },
-      { date: item.date, status: '완료', count: completedCount },
-    ];
-  });
+  const scheduleData: ScheduleItem[] =
+    activityId && data
+      ? data.flatMap(item => [
+          { date: item.date, status: '예약', count: item.reservations.pending },
+          { date: item.date, status: '승인', count: item.reservations.confirmed },
+          { date: item.date, status: '완료', count: item.reservations.completed },
+        ])
+      : [];
 
   return (
     <Calendar
