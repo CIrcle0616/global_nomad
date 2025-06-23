@@ -31,7 +31,7 @@ export default function ActivityCard({ title, img, price, rating, reviewCount, u
 
           {userId !== null && (
             <div className="self-end">
-              <div className="w-[40px] h-[40px] flex items-center justify-center">
+              <div className="w-[40px] h-[40px] flex items-center justify-center cursor-pointer">
                 <DropDownActivityDetail userId={userId} activityId={id} />
               </div>
             </div>
