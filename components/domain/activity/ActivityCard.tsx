@@ -18,7 +18,7 @@ export default function ActivityCard({ title, img, price, rating, reviewCount, u
         <Image src={img} alt={title} fill unoptimized className="object-cover rounded-l-xl" />
       </div>
 
-      <div className="flex flex-col justify-between flex-1 px-4 py-3">
+      <div className="flex flex-col justify-between flex-1 px-6 py-3">
         <div>
           <div className="text-yellow-500 font-bold text-sm mb-1">
             ★ {rating} ({reviewCount})

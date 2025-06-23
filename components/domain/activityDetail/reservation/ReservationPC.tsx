@@ -43,12 +43,12 @@ export default function ReservationPC({
   };
 
   return (
-    <div className="rounded-xl border p-4 shadow bg-white w-[384px]">
+    <div className="rounded-xl border p-6 shadow bg-white w-[384px]">
       <div className="flex items-end gap-2 mb-3">
         <span className="text-2xl-bold text-black">₩ {pricePerPerson.toLocaleString()}</span>
         <span className="text-lg-regular text-gray-900">/인</span>
       </div>
-      <div className="border border-gray-300 mb-4" />
+      <div className="border-t border-gray-300 mb-4" />
 
       <div className="mb-6">
         <span className="block text-black mb-3 text-2lg-bold">날짜</span>
@@ -57,7 +57,7 @@ export default function ReservationPC({
 
       {state.date && (
         <div className="mb-6">
-          <span className="block text-black mb-2 text-2lg-bold">예약 가능한 시간</span>
+          <span className="block text-black mb-3 text-2lg-bold">예약 가능한 시간</span>
           {availableTimes.length > 0 ? (
             <TimeSelector
               times={availableTimes}
@@ -71,21 +71,21 @@ export default function ReservationPC({
           )}
         </div>
       )}
-      <div className="border border-gray-300 mb-4" />
+      <div className="border-t border-gray-300 mb-4" />
 
       <div className="mb-3">
-        <span className="block text-black mb-1 text-2lg-bold">참여 인원 수</span>
+        <span className="block text-black mb-2 text-2lg-bold">참여 인원 수</span>
         <ParticipantSelector count={state.count} setCount={onCountChange} />
       </div>
       <CommonButton
         size="L"
-        className="w-full mb-3 mt-5 rounded-md"
+        className="w-full mb-6 mt-5 rounded-md"
         disabled={!isReservable || loading}
         onClick={handleConfirm}
       >
         예약하기
       </CommonButton>
-      <div className="border border-gray-300 mb-4" />
+      <div className="border-t border-gray-300 mb-4" />
 
       <div className="text-xl-bold">
         <PriceTotal price={pricePerPerson} count={state.count} />
