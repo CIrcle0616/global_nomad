@@ -71,7 +71,7 @@ export default function ReservationMobile({
 
             {state.date && (
               <div className="mt-6">
-                <span className="block text-black mb-2 text-2lg-bold">예약 가능한 시간</span>
+                <span className="block text-black mb-3 text-2lg-bold">예약 가능한 시간</span>
                 {availableTimes.length > 0 ? (
                   <TimeSelector
                     times={availableTimes}

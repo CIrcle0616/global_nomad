@@ -29,7 +29,7 @@ export default function MainPagination({ totalCount }: MainPaginationProps) {
           key={page}
           href={createPageUrl(page)}
           scroll={false}
-          className={`inline-flex w-10 md:w-[55px] h-10 md:h-[55px] border border-green-500 ${currentPage === page ? 'text-white bg-green-500' : 'text-green-500'} rounded-2xl items-center justify-center`}
+          className={`inline-flex w-10 md:w-[55px] h-10 md:h-[55px] border border-green-500 ${currentPage === page ? 'text-white bg-green-500' : 'text-green-500'} rounded-2xl items-center justify-center text-2lg-regular`}
         >
           {page}
         </Link>

@@ -68,7 +68,7 @@ export default function ProfileButton({ user }: ProfileButtonProps) {
               height={32}
               className="w-8 h-8 rounded-full object-cover"
             />
-            <span className="text-sm truncate whitespace-nowrap overflow-hidden min-w-0">{user.nickname}</span>
+            <span className="text-sm truncate whitespace-nowrap overflow-hidden min-w-0 mt-1">{user.nickname}</span>
           </button>
         }
         options={['내 정보', '예약 내역', '내 체험 관리', '예약 현황', '로그아웃']}

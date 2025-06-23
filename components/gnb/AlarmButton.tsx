@@ -78,7 +78,7 @@ export default function AlarmButton({ user }: AlarmButtonProps) {
         }}
         className="transition ease-in-out hover:font-bold hover:scale-105"
       >
-        <Image src={alarmIcon} alt="알림" width={30} height={30} />
+        <Image src={alarmIcon} alt="알림" width={20} height={20} />
         {hasNewNotification && (
           <span className="absolute top-[-2px] right-[-2px] w-[8px] h-[8px] bg-red-500 rounded-full" />
         )}
