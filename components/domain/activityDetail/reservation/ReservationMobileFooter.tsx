@@ -29,7 +29,7 @@ export default function ReservationMobileFooter({
 
   const formattedDateTime = state.date ? formatSelectedDateTime(state.date, state.time, availableTimes) : '';
   return (
-    <div className="p-4 py-[28px]">
+    <div className="p-4">
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-end gap-2 mb-3">

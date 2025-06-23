@@ -4,7 +4,7 @@ import { delMyNotifications, getMyNotifications } from '@/services/myNotificatio
 import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useCallback, useState } from 'react';
 import NotificationCard from './NotificationCard';
-import ComponentSpinner from '../common/spinners/ComponentSpinner';
+import ComponentSpinner from '../spinners/ComponentSpinner';
 
 export default function NotificationList() {
   const queryClient = useQueryClient();

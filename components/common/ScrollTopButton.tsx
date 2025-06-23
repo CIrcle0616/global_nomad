@@ -22,7 +22,7 @@ export default function ScrollToTopButton() {
   return (
     <button
       onClick={scrollToTop}
-      className={`fixed bottom-4 right-12 z-50 w-10 h-10 bg-green-700 transition-all duration-300 rounded-full flex items-center justify-center ${
+      className={`fixed bottom-4 right-6 z-50 w-10 h-10 bg-green-500 transition-all duration-300 rounded-full flex items-center justify-center ${
         isVisible ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0 pointer-events-none'
       }`}
     >

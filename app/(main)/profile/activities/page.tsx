@@ -65,11 +65,11 @@ export default function ActivityManagePage() {
   }, [hasNextPage, fetchNextPage, isFetchingNextPage]);
 
   return (
-    <div className="mb-6 ml-4">
+    <div className="mb-6 ml-6 mt-8">
       <div className="flex items-center justify-between mb-4 max-w-full md:max-w-[600px] lg:max-w-[1000px]">
         <h1 className="text-xl-bold md:text-2xl-bold lg:text-3xl-bold mb-2 mt-1">내 체험 관리</h1>
         <Link href="/profile/activities/new">
-          <button className="bg-nomad-black hover:bg-green-500 transition-colors duration-200 text-white px-4 py-2 rounded shadow">
+          <button className="bg-nomad-black hover:bg-green-500 transition-colirs duration-200 text-white px-4 py-2 rounded shadow">
             체험 등록하기
           </button>
         </Link>

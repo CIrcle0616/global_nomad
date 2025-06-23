@@ -13,7 +13,6 @@ const config: Config = {
         nomad: {
           black: '#112211',
           gray: '#333236',
-          green: '#0B3B2D',
         },
         gray: {
           900: '#4B4B4B',

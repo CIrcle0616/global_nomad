@@ -18,7 +18,7 @@ export default function ActivityCard({ title, img, price, rating, reviewCount, u
         <Image src={img} alt={title} fill unoptimized className="object-cover rounded-l-xl" />
       </div>
 
-      <div className="flex flex-col justify-between flex-1 px-6 py-3">
+      <div className="flex flex-col justify-between flex-1 px-4 py-3">
         <div>
           <div className="text-yellow-500 font-bold text-sm mb-1">
             ★ {rating} ({reviewCount})
@@ -31,7 +31,7 @@ export default function ActivityCard({ title, img, price, rating, reviewCount, u
 
           {userId !== null && (
             <div className="self-end">
-              <div className="w-[40px] h-[40px] flex items-center justify-center cursor-pointer">
+              <div className="w-[40px] h-[40px] flex items-center justify-center">
                 <DropDownActivityDetail userId={userId} activityId={id} />
               </div>
             </div>

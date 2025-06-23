@@ -6,7 +6,7 @@ interface CategoryTabsProps {
   currentSort: string | null;
 }
 
-const linkClasses = `w-20 h-[41px] md:w-[120px] md:h-[58px] px-5 py-3 md:px-[30px] md:py-4 rounded-[15px] whitespace-nowrap border border-nomad-green  flex items-center justify-center text-lg-medium md:text-2lg-medium`;
+const linkClasses = `w-20 h-[41px] md:w-[120px] md:h-[58px] px-5 py-3 md:px-[30px] md:py-4 rounded-[15px] whitespace-nowrap border border-green-500 flex items-center justify-center text-lg-medium md:text-2lg-medium`;
 
 export default function CategoryTabs({ activeCategory, currentSort }: CategoryTabsProps) {
   const sortQuery = currentSort ? `&sort=${currentSort}` : '';
@@ -18,7 +18,7 @@ export default function CategoryTabs({ activeCategory, currentSort }: CategoryTa
           key={i}
           href={`/?category=${category}&sort=${sortQuery}`}
           scroll={false}
-          className={`${linkClasses} ${category === activeCategory ? 'bg-nomad-green text-white' : 'text-nomad-green'}`}
+          className={`${linkClasses} ${category === activeCategory ? 'bg-green-500 text-white' : ''}`}
         >
           {category}
         </Link>

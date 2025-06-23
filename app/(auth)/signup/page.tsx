@@ -22,7 +22,7 @@ export default function SignUpPage() {
       <div>
         <HrWithText text="SNS 계정으로 회원가입하기" />
 
-        <div className="relative w-12 h-12 mx-auto md:w-[72px] md:h-[72px]">
+        <div className="relative w-12 h-12 mx-auto">
           <KakaoOauthLink />
         </div>
       </div>

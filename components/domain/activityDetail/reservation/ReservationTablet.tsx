@@ -88,7 +88,7 @@ export default function ReservationTablet({
           </div>
 
           <div className="mb-4">
-            <span className="block text-black mb-2 text-xl-bold">참여 인원 수</span>
+            <span className="block text-black mb-1 text-xl-bold">참여 인원 수</span>
             <ParticipantSelector count={state.count} setCount={onCountChange} />
           </div>
 

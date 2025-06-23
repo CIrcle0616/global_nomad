@@ -19,7 +19,7 @@ export default function SortDropdown() {
       options={SORT_OPTIONS_KEYS}
       trigger={
         <button className="flex gap-1 border border-green-500 rounded-[15px] w-[90px] h-[41px] md:w-[120px] md:h-[53px] justify-between items-center px-5 py-[10px] whitespace-nowrap">
-          필터 <Image src={'/ic_vector.svg'} width={12} height={7} alt="필터" />
+          필터 <Image src={'/ic_vector.svg'} width={22} height={22} alt="필터" />
         </button>
       }
     />

@@ -1,4 +1,3 @@
-//components/gnb/AlarmButton.tsx
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -8,13 +7,10 @@ import Image from 'next/image';
 import alarmIcon from '@/public/ic_alarm.svg';
 import { useQuery } from '@tanstack/react-query';
 import { getMyNotifications } from '@/services/myNotifications';
-import { UserServiceResponseDto as User } from '@/types';
+import { useMyInfoQuery } from '@/hooks/useMyInfoQuery';
 
-interface AlarmButtonProps {
-  user?: User;
-}
-
-export default function AlarmButton({ user }: AlarmButtonProps) {
+export default function AlarmButton() {
+  const { data: user, isLoading } = useMyInfoQuery();
   const [isAlarmOpen, setIsAlarmOpen] = useState(false);
   const [hasNewNotification, setHasNewNotification] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -54,7 +50,7 @@ export default function AlarmButton({ user }: AlarmButtonProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  if (!user) return null;
+  if (!user || isLoading) return null;
 
   const handleClick = () => {
     setIsAlarmOpen(prev => !prev);
@@ -78,7 +74,7 @@ export default function AlarmButton({ user }: AlarmButtonProps) {
         }}
         className="transition ease-in-out hover:font-bold hover:scale-105"
       >
-        <Image src={alarmIcon} alt="알림" width={20} height={20} />
+        <Image src={alarmIcon} alt="알림" width={30} height={30} />
         {hasNewNotification && (
           <span className="absolute top-[-2px] right-[-2px] w-[8px] h-[8px] bg-red-500 rounded-full" />
         )}

@@ -83,7 +83,7 @@ export default function ReservationCard({ reservation }: { reservation: Reservat
         />
       </div>
 
-      <div className="flex flex-col justify-center px-6 py-2 flex-1 min-w-0">
+      <div className="flex flex-col justify-center p-2 flex-1 min-w-0">
         <p className={`text-md-bold md:text-lg-bold leading-tight mb-1 ${statusTextColorClass}`}>{statusInfo.text}</p>
 
         <h2 className="text-black font-semibold truncate whitespace-nowrap overflow-hidden leading-tight text-md-bold md:text-lg-bold lg:text-xl-bold mb-1 lg:mb-4">
