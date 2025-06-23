@@ -37,8 +37,8 @@ function Search({ value, onChange, onSubmit }: SearchProps) {
     : 'top-1/2 -translate-y-1/2 text-[16px]';
 
   return (
-    <div className="w-full flex flex-col items-start px-6 py-4">
-      <h2 className="text-[16px] md:text-[20px] lg:text-[20px] font-bold text-black mb-3 md:mb-5 lg:mb-8">
+    <div className="w-full flex flex-col items-start px-6 py-4 md:py-8">
+      <h2 className="text-[16px] md:text-[20px] lg:text-[20px] font-bold text-black mb-4 md:mb-8">
         무엇을 체험하고 싶으신가요?
       </h2>
 

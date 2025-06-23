@@ -1,15 +1,18 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import DropdownMenu from '../DropDown';
+import DropdownMenu from '../common/DropDown';
 import Image from 'next/image';
-import { useMyInfoQuery } from '@/hooks/useMyInfoQuery';
 import { useAuthStore } from '@/store/useAuthStore';
 import { useQueryClient } from '@tanstack/react-query';
+import { UserServiceResponseDto as User } from '@/types';
 
-export default function ProfileButton() {
+interface ProfileButtonProps {
+  user?: User;
+}
+
+export default function ProfileButton({ user }: ProfileButtonProps) {
   const router = useRouter();
-  const { data: user, isLoading } = useMyInfoQuery();
   const { setIsLoggedIn, setUser } = useAuthStore();
   const queryClient = useQueryClient();
 
@@ -51,7 +54,7 @@ export default function ProfileButton() {
     }
   };
 
-  if (!user || isLoading) return null;
+  if (!user) return null;
 
   return (
     <div className="text-center min-w-[50px]">
@@ -65,7 +68,7 @@ export default function ProfileButton() {
               height={32}
               className="w-8 h-8 rounded-full object-cover"
             />
-            <span className="text-sm truncate whitespace-nowrap overflow-hidden min-w-0">{user.nickname}</span>
+            <span className="text-sm truncate whitespace-nowrap overflow-hidden min-w-0 mt-1">{user.nickname}</span>
           </button>
         }
         options={['내 정보', '예약 내역', '내 체험 관리', '예약 현황', '로그아웃']}
