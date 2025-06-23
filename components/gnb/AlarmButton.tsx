@@ -1,3 +1,4 @@
+//components/gnb/AlarmButton.tsx
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -7,10 +8,13 @@ import Image from 'next/image';
 import alarmIcon from '@/public/ic_alarm.svg';
 import { useQuery } from '@tanstack/react-query';
 import { getMyNotifications } from '@/services/myNotifications';
-import { useMyInfoQuery } from '@/hooks/useMyInfoQuery';
+import { UserServiceResponseDto as User } from '@/types';
 
-export default function AlarmButton() {
-  const { data: user, isLoading } = useMyInfoQuery();
+interface AlarmButtonProps {
+  user?: User;
+}
+
+export default function AlarmButton({ user }: AlarmButtonProps) {
   const [isAlarmOpen, setIsAlarmOpen] = useState(false);
   const [hasNewNotification, setHasNewNotification] = useState(false);
   const wrapperRef = useRef<HTMLDivElement>(null);
@@ -50,7 +54,7 @@ export default function AlarmButton() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  if (!user || isLoading) return null;
+  if (!user) return null;
 
   const handleClick = () => {
     setIsAlarmOpen(prev => !prev);
